@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Double Dummies — SAYC 2-Over-1 Playbook</title>
+<style>
+:root{
+  --felt-1:#0b1a3a;
+  --felt-2:#12235a;
+  --felt-3:#050b1f;
+  --card:#fbf8f2;
+  --card-2:#f2ecdc;
+  --card-line:#e3d6ae;
+  --ink:#1a1730;
+  --ink-soft:#6b6483;
+  --gold:#ffb020;
+  --gold-deep:#e08e00;
+  --red:#ff3d6e;
+  --red-deep:#d61856;
+  --black:#1a1730;
+  --teal:#00c9a7;
+  --teal-deep:#00a389;
+  --violet:#8b5cf6;
+  --cyan:#22d3ee;
+  --shadow: 0 14px 40px -14px rgba(0,0,0,.6);
+  --glow-gold: 0 0 22px rgba(255,176,32,.45);
+  --glow-teal: 0 0 22px rgba(0,201,167,.4);
+  --glow-red: 0 0 22px rgba(255,61,110,.4);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(1000px 700px at 8% -8%, rgba(139,92,246,.35) 0%, transparent 55%),
+    radial-gradient(900px 650px at 100% 0%, rgba(34,211,238,.28) 0%, transparent 55%),
+    radial-gradient(1100px 800px at 50% 115%, rgba(0,201,167,.28) 0%, transparent 60%),
+    radial-gradient(700px 500px at 90% 80%, rgba(255,61,110,.18) 0%, transparent 55%),
+    linear-gradient(160deg, var(--felt-1), var(--felt-3) 70%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:'Segoe UI',sans-serif;
+  min-height:100vh;
+  padding:0 0 60px 0;
+  overflow-x:hidden;
+}
+.felt-texture{
+  position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+}
+.felt-texture::before, .felt-texture::after{
+  content:''; position:absolute; border-radius:50%; filter:blur(90px); opacity:.55;
+  animation:blobfloat 22s ease-in-out infinite alternate;
+}
+.felt-texture::before{
+  width:520px; height:520px; top:-160px; left:-120px;
+  background:radial-gradient(circle, rgba(139,92,246,.55), transparent 70%);
+}
+.felt-texture::after{
+  width:480px; height:480px; bottom:-140px; right:-100px;
+  background:radial-gradient(circle, rgba(0,201,167,.5), transparent 70%);
+  animation-delay:6s; animation-duration:26s;
+}
+@keyframes blobfloat{
+  0%{transform:translate(0,0) scale(1); border-radius:48% 52% 60% 40% / 45% 55% 45% 55%;}
+  50%{transform:translate(40px,-30px) scale(1.08); border-radius:60% 40% 45% 55% / 55% 45% 60% 40%;}
+  100%{transform:translate(-25px,25px) scale(0.96); border-radius:40% 60% 50% 50% / 60% 40% 55% 45%;}
+}
+@media (prefers-reduced-motion: reduce){
+  .felt-texture::before, .felt-texture::after{animation:none;}
+}
+@media (max-width:820px){
+  .felt-texture::before, .felt-texture::after{animation:none; filter:blur(60px);}
+  nav.tabs{backdrop-filter:none; background:rgba(8,14,36,.94);}
+}
+::selection{background:var(--gold); color:var(--ink);}
+
+/* ---------- Header ---------- */
+header.hero{
+  position:relative; z-index:1;
+  padding:44px 24px 28px;
+  text-align:center;
+  color:var(--card);
+}
+.suit-row{
+  font-size:15px; letter-spacing:.5em; color:var(--gold);
+  margin-bottom:14px; font-family:'Segoe UI',sans-serif;
+  text-shadow:0 0 16px rgba(255,176,32,.6);
+}
+.suit-row .r{color:var(--red); text-shadow:0 0 16px rgba(255,61,110,.6);}
+h1.title{
+  font-family:'Segoe UI',sans-serif; font-weight:700; font-style:normal;
+  font-size:clamp(32px,5.5vw,58px); margin:0 0 6px; letter-spacing:-.01em;
+  color:#ffffff;
+  text-shadow:0 2px 30px rgba(139,92,246,.55), 0 0 60px rgba(0,201,167,.25);
+}
+h1.title em{
+  font-style:italic; font-weight:500;
+  background:linear-gradient(90deg, var(--gold), var(--teal) 55%, var(--cyan));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+p.subtitle{
+  font-family:'Segoe UI',sans-serif; font-size:13px; letter-spacing:.14em;
+  text-transform:uppercase; color:#a9e8d9; margin:0 0 4px;
+}
+.team-names{
+  margin-top:18px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+  font-family:'Segoe UI',sans-serif; font-size:12.5px; color:#e7fff6;
+}
+.team-names span{
+  border:1px solid rgba(0,201,167,.4); padding:5px 14px; border-radius:999px;
+  background:rgba(0,201,167,.1); box-shadow:0 0 14px rgba(0,201,167,.15);
+}
+
+/* ---------- Tabs ---------- */
+nav.tabs{
+  position:sticky; top:0; z-index:30;
+  display:flex; gap:6px; justify-content:center; flex-wrap:wrap;
+  padding:12px 16px; margin:0 0 28px;
+  background:rgba(8,14,36,.78); backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(139,92,246,.3);
+}
+nav.tabs button{
+  font-family:'Segoe UI',sans-serif; font-weight:600; font-size:13.5px;
+  color:#cfd6f5; background:transparent; border:1px solid transparent;
+  padding:9px 16px; border-radius:999px; cursor:pointer; transition:.18s;
+  letter-spacing:.01em;
+}
+nav.tabs button:hover{background:rgba(255,255,255,.1); color:#fff; box-shadow:0 0 16px rgba(139,92,246,.25);}
+nav.tabs button.active{
+  background:linear-gradient(90deg, var(--gold), #ff8a3d); color:#241b06; border-color:transparent;
+  box-shadow:var(--glow-gold);
+}
+
+main{max-width:1180px; margin:0 auto; padding:0 20px; position:relative; z-index:1;}
+.panel{display:none;}
+.panel.active{display:block; animation:fade .18s ease-out;}
+@keyframes fade{from{opacity:0;} to{opacity:1;}}
+
+.section-head{margin:0 0 22px;}
+.section-head h2{
+  font-family:'Segoe UI',sans-serif; font-weight:700; font-size:28px; color:#ffffff;
+  margin:0 0 6px;
+}
+.section-head p{color:#b7c3f0; font-size:14.5px; margin:0; max-width:720px; line-height:1.5;}
+
+/* ---------- Card shell ---------- */
+.card{
+  background:linear-gradient(165deg, rgba(255,252,244,.97), rgba(246,238,218,.94));
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:16px;
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.6);
+  padding:18px 20px;
+  transition:box-shadow .2s;
+}
+.card:hover{box-shadow:var(--shadow), 0 0 0 1px rgba(139,92,246,.18), inset 0 1px 0 rgba(255,255,255,.6);}
+
+/* ---------- Auction ladder ---------- */
+.ladder{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+}
+.stage-block{display:flex; flex-direction:column;}
+.stage-header{
+  font-family:'Segoe UI',sans-serif; font-size:15.5px; font-weight:800; letter-spacing:.08em;
+  text-transform:uppercase; text-align:center;
+  padding:0 0 10px; border-bottom:3px solid var(--gold);
+  color:#fff2d6; text-shadow:0 0 16px rgba(255,176,32,.6), 0 2px 6px rgba(0,0,0,.4);
+  background:none; border-left:none; border-right:none; border-top:none;
+  width:100%; cursor:default; font:inherit; letter-spacing:.08em;
+  display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;
+}
+.stage-block.grp-responder .stage-header{
+  border-bottom-color:var(--teal);
+  color:#d4fff5; text-shadow:0 0 16px rgba(0,201,167,.65), 0 2px 6px rgba(0,0,0,.4);
+}
+.stage-header .chev{display:none; font-size:13px; transition:transform .2s;}
+.stage-col{
+  display:flex; flex-direction:column; gap:12px;
+  padding:14px 10px; border-radius:16px;
+}
+.stage-col.grp-opener{
+  background:linear-gradient(180deg, rgba(255,176,32,.14), rgba(255,176,32,.03));
+  border:1px solid rgba(255,176,32,.32);
+}
+.stage-col.grp-responder{
+  background:linear-gradient(180deg, rgba(0,201,167,.14), rgba(34,211,238,.03));
+  border:1px solid rgba(0,201,167,.35);
+}
+.bidcard{
+  background:linear-gradient(165deg, rgba(255,252,244,.97), rgba(246,238,218,.94));
+  border:1px solid rgba(255,255,255,.5); border-radius:13px; padding:14px 15px;
+  box-shadow:0 8px 22px -10px rgba(5,8,24,.55);
+  position:relative; transition:transform .18s, box-shadow .18s;
+}
+.stage-col.grp-opener .bidcard{
+  background:linear-gradient(165deg, rgba(255,246,222,.97), rgba(255,232,186,.88));
+  border-color:rgba(255,176,32,.4);
+}
+.stage-col.grp-responder .bidcard{
+  background:linear-gradient(165deg, rgba(222,252,246,.97), rgba(190,244,232,.88));
+  border-color:rgba(0,201,167,.4);
+}
+.bidcard:hover{transform:translateY(-2px); box-shadow:0 12px 28px -10px rgba(5,8,24,.6);}
+.bidcard::before{
+  content:''; position:absolute; left:0; top:14px; bottom:14px; width:4px;
+  background:linear-gradient(180deg, var(--teal), var(--cyan)); border-radius:4px;
+  box-shadow:0 0 10px rgba(0,201,167,.6);
+}
+.bidcard.gold::before{background:linear-gradient(180deg, var(--gold), #ff8a3d); box-shadow:0 0 10px rgba(255,176,32,.6);}
+.bidcard.red::before{background:linear-gradient(180deg, var(--red), var(--violet)); box-shadow:0 0 10px rgba(255,61,110,.6);}
+.bidcard.muted{opacity:.68;}
+.bidcard.muted::before{background:#9a9184; box-shadow:none;}
+.bidcard.muted h4{color:#5c574a;}
+.bidcard h4{
+  font-family:'Segoe UI',sans-serif; font-size:15.5px; margin:0 0 6px 8px; color:var(--ink);
+  display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+}
+.bidcard .range{
+  font-family:'Segoe UI',sans-serif; font-size:11px; color:var(--gold-deep);
+  background:rgba(255,176,32,.16); border:1px solid rgba(255,176,32,.4);
+  padding:1px 7px; border-radius:999px; font-weight:700;
+}
+.bidcard ul{margin:6px 0 0 22px; padding:0; font-size:13px; line-height:1.55; color:#3a3529;}
+.bidcard ul li{margin-bottom:4px;}
+.bidcard ul li b{color:var(--red-deep); font-weight:800;}
+.bidcard p.desc{margin:4px 0 0 8px; font-size:13px; line-height:1.55; color:#3a3529;}
+
+/* convention pill + tooltip */
+.pill{
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:'Segoe UI',sans-serif; font-size:11px; font-weight:700;
+  background:linear-gradient(90deg, var(--teal), var(--cyan)); color:#04241d; padding:2px 10px 3px; border-radius:999px;
+  cursor:help; border-bottom:1px dashed transparent; position:relative;
+  white-space:nowrap; box-shadow:0 2px 10px -2px rgba(0,201,167,.55);
+  transition:transform .15s, box-shadow .15s;
+}
+.pill:hover, .pill:focus{transform:translateY(-1px) scale(1.03); box-shadow:0 4px 16px -2px rgba(0,201,167,.75); outline:none;}
+.pill.p2{background:linear-gradient(90deg, var(--red), var(--violet)); color:#fff0f4; box-shadow:0 2px 10px -2px rgba(255,61,110,.55);}
+.pill.p2:hover{box-shadow:0 4px 16px -2px rgba(255,61,110,.8);}
+
+#tooltip{
+  position:fixed; z-index:1000; max-width:280px; background:linear-gradient(165deg,#181234,#0d0a20);
+  color:#f3eefd;
+  border:1px solid rgba(139,92,246,.6); border-radius:12px; padding:11px 14px;
+  font-size:12.5px; line-height:1.5; box-shadow:0 14px 34px rgba(0,0,0,.6), 0 0 24px rgba(139,92,246,.25);
+  pointer-events:none; opacity:0; transform:translateY(4px); transition:opacity .12s, transform .12s;
+  font-family:'Segoe UI',sans-serif;
+}
+#tooltip.show{opacity:1; transform:translateY(0);}
+#tooltip b{
+  font-family:'Segoe UI',sans-serif; font-weight:700; display:block; margin-bottom:3px; font-size:13px;
+  background:linear-gradient(90deg, var(--gold), var(--teal)); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+/* ---------- generic reference cards grid ---------- */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+@media (max-width:900px){
+  .grid2,.grid3{grid-template-columns:1fr;}
+  .ladder{grid-template-columns:1fr; gap:10px;}
+  .stage-header{
+    cursor:pointer; text-align:left; justify-content:space-between; padding:12px 14px;
+    border:1px solid rgba(255,176,32,.35); border-radius:12px; margin-bottom:0;
+    background:rgba(255,176,32,.08);
+  }
+  .stage-block.grp-responder .stage-header{
+    border:1px solid rgba(0,201,167,.4); background:rgba(0,201,167,.1);
+  }
+  .stage-header .chev{display:inline-block;}
+  .stage-block.open .stage-header .chev{transform:rotate(90deg);}
+  .stage-block .stage-col{display:none; margin-top:10px;}
+  .stage-block.open .stage-col{display:flex;}
+}
+@media (min-width:901px){
+  .stage-col{display:flex !important;}
+}
+
+.card h3{
+  font-family:'Segoe UI',sans-serif; font-size:18px; margin:0 0 10px; color:var(--ink);
+  display:flex; align-items:center; gap:8px;
+}
+.card h3 .suit{font-size:16px;}
+.card ul{margin:0; padding-left:20px; font-size:13.5px; line-height:1.6;}
+.card ul li{margin-bottom:6px;}
+.card ul li b{color:var(--violet); font-weight:700;}
+.lines-of-defence ul li b{color:var(--ink); font-weight:800;}
+.lines-of-defence .defence-name{color:var(--violet); font-weight:800; display:block; margin-bottom:4px; font-size:14px;}
+.lines-of-defence > .grid2 > ul > li{list-style:none; margin-bottom:14px;}
+.lines-of-defence > .grid2 > ul > li > ul{margin:0; padding-left:18px;}
+.lines-of-defence > .grid2 > ul > li > ul li{margin-bottom:4px;}
+.card p{font-size:13.5px; line-height:1.6; margin:0 0 8px;}
+.note{
+  background:rgba(255,176,32,.16); border:1px solid rgba(255,176,32,.5);
+  border-radius:10px; padding:10px 13px; font-size:12.5px; color:#6b4600; margin-top:10px;
+  box-shadow:0 0 16px rgba(255,176,32,.12);
+}
+.highlight-box{
+  background:rgba(0,201,167,.14); border:1px solid rgba(0,201,167,.5);
+  border-left:4px solid var(--teal); border-radius:10px; padding:12px 15px 10px; margin-top:14px;
+  box-shadow:0 0 16px rgba(0,201,167,.12);
+}
+.highlight-box h4{
+  font-family:'Segoe UI',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--teal-deep); margin:0 0 6px;
+}
+.highlight-box ul{margin:0; padding-left:18px;}
+.highlight-box li{margin-bottom:5px;}
+
+/* ---------- convention table ---------- */
+.search-wrap{margin-bottom:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+.search-wrap input[type=text]{
+  flex:1; min-width:220px; padding:11px 16px; border-radius:999px; border:1px solid rgba(139,92,246,.35);
+  background:#fffdf7; font-family:'Segoe UI',sans-serif; font-size:14px; color:var(--ink);
+  box-shadow:inset 0 1px 4px rgba(0,0,0,.06);
+}
+.search-wrap input[type=text]:focus{outline:2px solid var(--violet); box-shadow:0 0 0 4px rgba(139,92,246,.18);}
+.chipfilter{display:flex; gap:6px; flex-wrap:wrap;}
+.chipfilter button{
+  font-family:'Segoe UI',sans-serif; font-size:11px; font-weight:600; padding:6px 13px; border-radius:999px;
+  border:1px solid rgba(34,211,238,.35); background:rgba(34,211,238,.1); color:#d6faff; cursor:pointer;
+  transition:.15s;
+}
+.chipfilter button:hover{background:rgba(34,211,238,.22);}
+.chipfilter button.active{
+  background:linear-gradient(90deg, var(--cyan), var(--violet)); color:#0c0824; border-color:transparent;
+  box-shadow:0 0 14px rgba(34,211,238,.5);
+}
+
+table.conv-table{width:100%; border-collapse:collapse; font-size:13px; color:var(--ink);}
+table.conv-table th{
+  text-align:left; font-family:'Segoe UI',sans-serif; font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.08em; color:var(--gold-deep); padding:8px 10px; border-bottom:2px solid rgba(255,176,32,.4);
+}
+table.conv-table td{padding:11px 10px; border-bottom:1px solid var(--card-line); vertical-align:top; line-height:1.5; color:var(--ink);}
+table.conv-table tr:hover td{background:rgba(139,92,246,.08);}
+.cat-tag{
+  font-family:'Segoe UI',sans-serif; font-size:10px; font-weight:700; padding:2px 9px; border-radius:999px;
+  background:linear-gradient(90deg, var(--violet), #6d28d9); color:#f4edff; white-space:nowrap;
+}
+.cat-tag.notinuse{background:#9a9184; color:#2b2620;}
+.by-tag{
+  font-family:'Segoe UI',sans-serif; font-size:10px; font-weight:700; padding:2px 9px; border-radius:999px;
+  white-space:nowrap; display:inline-block;
+}
+.by-tag.by-opener{background:linear-gradient(90deg, var(--gold), #ff8a3d); color:#241b06;}
+.by-tag.by-responder{background:linear-gradient(90deg, var(--teal), var(--cyan)); color:#04241d;}
+.by-tag.by-competitive{background:linear-gradient(90deg, var(--red), var(--violet)); color:#fff0f4;}
+.by-tag.by-either{background:linear-gradient(90deg,#94a3b8,#64748b); color:#f4efe3;}
+tr.dim-row td{opacity:.6; background:rgba(120,110,90,.08) !important;}
+.conv-name{font-family:'Segoe UI',sans-serif; font-weight:700; font-size:14.5px; color:var(--ink);}
+
+/* ---------- LTC / points table ---------- */
+.scroll-table{
+  overflow-x:auto; border-radius:14px; border:1px solid rgba(255,255,255,.5);
+  background:linear-gradient(165deg, rgba(255,252,244,.97), rgba(246,238,218,.94));
+  box-shadow:var(--shadow);
+}
+table.ltc{width:100%; border-collapse:collapse; font-size:12.5px; min-width:680px; color:var(--ink);}
+table.ltc th{
+  position:sticky; top:0; background:linear-gradient(90deg, var(--felt-2), #1a2d6e); color:#eaf0ff; text-align:left; padding:9px 10px;
+  font-family:'Segoe UI',sans-serif; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+}
+table.ltc td{padding:8px 10px; border-bottom:1px solid var(--card-line); color:var(--ink);}
+table.ltc tr:nth-child(even) td{background:rgba(255,176,32,.08);}
+table.ltc tr:hover td{background:rgba(0,201,167,.1);}
+table.ltc td.num{font-family:'Segoe UI',sans-serif; text-align:center; font-weight:600; white-space:nowrap;}
+table.ltc th:nth-child(2), table.ltc th:nth-child(3){min-width:110px;}
+
+/* ---------- static reference tables (leaping michaels, preempt handling) ---------- */
+.ref-table-wrap{overflow-x:auto; border-radius:12px; border:1px solid var(--card-line); margin-top:8px;}
+table.ref-table{width:100%; border-collapse:collapse; font-size:12.5px; min-width:640px; color:var(--ink);}
+table.ref-table th{
+  background:linear-gradient(90deg, var(--felt-2), #1a2d6e); color:#eaf0ff; text-align:left; padding:8px 10px;
+  font-family:'Segoe UI',sans-serif; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
+}
+table.ref-table td{padding:8px 10px; border-bottom:1px solid var(--card-line); vertical-align:top; line-height:1.5;}
+table.ref-table tr:nth-child(even) td{background:rgba(255,176,32,.06);}
+table.ref-table tr:hover td{background:rgba(0,201,167,.08);}
+table.ref-table td.rowhead{font-weight:700; white-space:nowrap; color:var(--gold-deep);}
+table.ref-table td.na{color:var(--ink-soft); font-style:italic;}
+
+.s-red{color:var(--red-deep);}
+.s-black{color:var(--ink);}
+
+table.leaping-table td, table.leaping-table th{white-space:nowrap;}
+table.leaping-table td.rowhead{
+  background:rgba(255,255,255,.88); color:var(--ink); font-weight:800;
+  border-left:4px solid var(--violet); border-radius:6px 0 0 6px;
+}
+table.leaping-table tr td:nth-child(2){background:rgba(255,176,32,.14); color:#6b4600;}
+table.leaping-table tr td:nth-child(3){background:rgba(0,201,167,.14); color:#00594c;}
+table.leaping-table tr td:nth-child(4){background:rgba(255,61,110,.12); color:#7a0f30;}
+table.leaping-table tr:nth-child(even) td:nth-child(2){background:rgba(255,176,32,.24);}
+table.leaping-table tr:nth-child(even) td:nth-child(3){background:rgba(0,201,167,.24);}
+table.leaping-table tr:nth-child(even) td:nth-child(4){background:rgba(255,61,110,.2); border-radius:0 6px 6px 0;}
+table.leaping-table td.na{background:rgba(120,110,90,.08) !important; color:var(--ink-soft);}
+table.leaping-table td{font-weight:600;}
+
+table.preempt-table td, table.preempt-table th{white-space:nowrap;}
+table.preempt-table td.rowhead{
+  background:linear-gradient(90deg, var(--gold), #ff8a3d); color:#241b06; font-weight:800;
+  border-radius:6px 0 0 6px;
+}
+table.preempt-table tr td:nth-child(2){background:rgba(139,92,246,.14); color:#3a1f6b;}
+table.preempt-table tr td:nth-child(3){background:rgba(255,176,32,.14); color:#6b4600;}
+table.preempt-table tr td:nth-child(4){background:rgba(255,61,110,.12); color:#7a0f30;}
+table.preempt-table tr td:nth-child(5){background:rgba(0,201,167,.14); color:#00594c;}
+table.preempt-table tr td:nth-child(6){background:rgba(34,211,238,.14); color:#0a4a56;}
+table.preempt-table tr td:nth-child(7){background:rgba(255,61,110,.12); color:#7a0f30; border-radius:0 6px 6px 0;}
+table.preempt-table tr:nth-child(even) td:nth-child(2){background:rgba(139,92,246,.22);}
+table.preempt-table tr:nth-child(even) td:nth-child(3){background:rgba(255,176,32,.22);}
+table.preempt-table tr:nth-child(even) td:nth-child(4){background:rgba(255,61,110,.2);}
+table.preempt-table tr:nth-child(even) td:nth-child(5){background:rgba(0,201,167,.22);}
+table.preempt-table tr:nth-child(even) td:nth-child(6){background:rgba(34,211,238,.22);}
+table.preempt-table tr:nth-child(even) td:nth-child(7){background:rgba(255,61,110,.2);}
+table.preempt-table td.na{background:rgba(120,110,90,.08) !important; color:var(--ink-soft);}
+table.preempt-table td{font-weight:600;}
+
+.principle-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+.principle-list li{
+  background:linear-gradient(165deg, rgba(255,252,244,.97), rgba(246,238,218,.94));
+  border:1px solid rgba(255,255,255,.5); border-radius:12px; padding:12px 16px;
+  font-size:13.5px; line-height:1.55; box-shadow:var(--shadow);
+}
+.principle-list li b{color:var(--red-deep);}
+
+/* ---------- Hand trainer widget ---------- */
+#handTrainerCard button{
+  font-family:'Segoe UI',sans-serif; font-weight:700; font-size:13px; cursor:pointer;
+  border:none; border-radius:999px; padding:9px 18px; transition:.15s;
+}
+#dealHandBtn{
+  background:linear-gradient(90deg, var(--violet), var(--cyan)); color:#fff;
+  box-shadow:0 4px 16px -4px rgba(139,92,246,.55);
+}
+#dealHandBtn:hover{transform:translateY(-1px); box-shadow:0 6px 20px -4px rgba(139,92,246,.75);}
+.hand-display{
+  margin-top:14px; display:flex; flex-direction:column; gap:6px;
+  background:rgba(255,255,255,.55); border:1px solid var(--card-line); border-radius:10px;
+  padding:12px 14px; min-height:20px;
+}
+.hand-display .suit-line{
+  display:flex; align-items:baseline; gap:8px; font-family:'Segoe UI',sans-serif; font-size:15px;
+}
+.hand-display .suit-line .sym{font-size:17px; width:20px; flex-shrink:0;}
+.hand-display .suit-line .ranks{font-weight:700; letter-spacing:.03em;}
+.hand-display .suit-line.black .sym, .hand-display .suit-line.black .ranks{color:var(--ink);}
+.hand-display .suit-line.red .sym, .hand-display .suit-line.red .ranks{color:var(--red-deep);}
+.hand-display .empty-hint{color:var(--ink-soft); font-size:13px; font-style:italic;}
+.hand-check-row{
+  margin-top:14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.hand-check-row label{font-size:13px; color:var(--ink-soft); font-weight:600;}
+.hand-check-row input[type=number]{
+  width:90px; padding:8px 12px; border-radius:8px; border:1px solid var(--card-line);
+  font-family:'Segoe UI',sans-serif; font-size:14px; color:var(--ink); background:#fffdf7;
+}
+.hand-check-row input[type=number]:focus{outline:2px solid var(--violet);}
+#checkHandBtn{background:linear-gradient(90deg, var(--gold), #ff8a3d); color:#241b06; box-shadow:0 4px 16px -4px rgba(255,176,32,.55);}
+#checkHandBtn:hover{transform:translateY(-1px); box-shadow:0 6px 20px -4px rgba(255,176,32,.75);}
+.hand-result{margin-top:12px; font-size:13.5px; line-height:1.6;}
+.hand-result .result-box{
+  border-radius:10px; padding:10px 14px;
+}
+.hand-result .result-box.correct{background:rgba(0,201,167,.16); border:1px solid rgba(0,201,167,.5); color:#00594c;}
+.hand-result .result-box.wrong{background:rgba(255,61,110,.14); border:1px solid rgba(255,61,110,.5); color:#7a0f30;}
+.hand-result .breakdown{margin-top:6px; font-size:12.5px; color:var(--ink-soft);}
+
+
+footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px; font-family:'Segoe UI',sans-serif;}
+</style>
+</head>
+<body>
+<div class="felt-texture"></div>
+
+<header class="hero">
+  <div class="suit-row">♠ <span class="r">♥</span> ♣ <span class="r">♦</span></div>
+  <h1 class="title">Double Dummies <em>– Bridge Playbook</em></h1>
+  <p class="subtitle">SAYC 2-Over-1 · Team System Reference</p>
+  <div class="team-names">
+    <span>Arunkumar</span><span>Ramanan</span><span>Vivek</span><span>Anandan</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-tab="evaluation" class="active">Hand Evaluation</button>
+  <button data-tab="auction">O-R-O-R Bidding Sequences</button>
+  <button data-tab="competitive">Overcalls &amp; Doubles</button>
+  <button data-tab="conventions">Conventions</button>
+  <button data-tab="defence">Defence</button>
+  <button data-tab="principles">Principles &amp; Notes</button>
+  <button data-tab="teamsimps">Teams / IMPS</button>
+</nav>
+
+<main>
+
+<!-- ======================= AUCTION LADDER ======================= -->
+<section class="panel" id="panel-auction">
+  <div class="section-head">
+    <h2>The Auction, Bid by Bid</h2>
+    <p>The core sequence of bidding, laid out as opener bid → responder bid → opener rebid → responder rebid. Teal/red chips are conventions — hover or tap one for a quick explanation. On a phone, tap a heading to open that section.</p>
+  </div>
+
+  <div class="ladder" id="ladder"></div>
+</section>
+
+<!-- ======================= CONVENTIONS ======================= -->
+<section class="panel" id="panel-conventions">
+  <div class="section-head">
+    <h2>Conventions Glossary</h2>
+    <p>Every convention referenced in the team's Unlearnings Checklist, with its trigger, meaning, and the points/losing-trick range that goes with it.</p>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="convSearch" placeholder="Search a convention — e.g. Gazzilli, Kickback, Splinter…">
+  </div>
+  <div class="chipfilter" id="byFilter" style="margin-bottom:10px;"></div>
+  <div class="chipfilter" id="convFilter" style="margin-bottom:16px;"></div>
+  <div class="card">
+    <div style="overflow-x:auto;">
+      <table class="conv-table" id="convTable">
+        <thead><tr><th>Convention</th><th>Category</th><th>Bid By</th><th style="min-width:230px;">Trigger / Structure</th><th>Meaning</th><th>Points / NLTC</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= HAND EVALUATION ======================= -->
+<section class="panel active" id="panel-evaluation">
+  <div class="section-head">
+    <h2>Hand Evaluation</h2>
+    <p>The Bergen method for starting-hand points, adjustments once a fit is confirmed, and the New Losing Trick Count used to validate the final level.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="suit">♠</span>Bergen — Starting Points</h3>
+      <ul>
+        <li>HCP: A=4, K=3, Q=2, J=1</li>
+        <li>Length points: +1 for a 5-card suit, +2 for 6-card, +3 for 7-card, etc.</li>
+        <li>Suit quality: +1 for every 4+ card suit holding 3 of the top 5 honours</li>
+        <li>Dubious honours: −1 for K, Q, J, Qx, Jx, KQ, AJ, KJ, QJ</li>
+        <li>Honour position vs. the bidding: <b>+1</b> with Kx or AQ in a suit that <b>RHO has opened or overcalled</b>; <b>−1</b> with Kx or AQ in a suit that <b>LHO has opened or overcalled</b> (Kx here means any suit combination without a singleton K; AQ can also be AQ doubleton, AQx, AQxx, etc.)</li>
+      </ul>
+      <div class="highlight-box">
+        <h4>Additional Adjustments</h4>
+        <ul>
+          <li>Flatness: −1 if your hand has ≥2 cards in every suit (suit contract); −1 only with 4333 shape in an NT contract</li>
+          <li>Honour adjustment: count (Aces+Tens) minus (Queens+Jacks). Difference &gt;2 → +1 HCP, &gt;5 → +2 HCP; &lt;−2 → −1 HCP, &lt;−5 → −2 HCP (Aces and Tens are undervalued; Queens and Jacks are overvalued)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" id="handTrainerCard">
+      <h3><span class="suit">♥</span>Practice: Count Bergen Points and NLTC</h3>
+      <p style="margin-bottom:10px;">Deal a random 13-card hand, work out its Bergen <b>starting points</b> (HCP + length + suit quality − dubious honours) and its <b>NLTC losers</b>, then check yourself. Declarer/dummy points aren't needed here.</p>
+      <button id="dealHandBtn" type="button">🔀 Deal Random Hand</button>
+      <div id="handDisplay" class="hand-display"></div>
+      <div id="handCheckRow" class="hand-check-row" style="display:none;">
+        <label for="handGuessInput">Starting points:</label>
+        <input type="number" id="handGuessInput" inputmode="numeric" placeholder="e.g. 14">
+        <label for="nltcGuessInput">NLTC count:</label>
+        <input type="number" id="nltcGuessInput" inputmode="decimal" step="0.5" placeholder="e.g. 7.5">
+        <button id="checkHandBtn" type="button">Check</button>
+      </div>
+      <div id="handResult" class="hand-result"></div>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-top:16px;">
+    <div class="card">
+      <h3><span class="suit">♣</span>Declarer Points (after 8+ fit confirmed)</h3>
+      <ul>
+        <li>+1 per doubleton, +2 per singleton, +4 per void</li>
+        <li>+1 for every trump above an 8-card fit</li>
+        <li>+1 for every 4+ card side suit</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♦</span>Dummy Points (after 8+ fit confirmed)</h3>
+      <ul>
+        <li>+1 for every trump above an 8-card fit</li>
+        <li>+1 per doubleton, +2 per singleton</li>
+        <li>+1 point per total trump held, for every void</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Guidelines &amp; Game/Slam Levels</h3>
+    <div class="grid2">
+      <ul>
+        <li>Open only with 12+ Bergen points</li>
+        <li><b>Regardless of Bergen points, a 1-level suit opening needs 10+ HCP for sure</b></li>
+        <li><b>Regardless of Bergen points, a 1NT opening needs 14+ HCP for sure</b></li>
+        <li><b>Regardless of Bergen points, a 1-level response should have 4+ HCP for sure</b></li>
+        <li>In the <b>3rd seat</b>, we can also open with <b>10 HCP</b></li>
+        <li>Respond in a new suit or NT with 6+ points; with a fit, respond at the 2-level with 6–9 and at the 3-level with 10–12</li>
+        <li>Balanced hand test: the two longest suits together add up to 8 cards or fewer</li>
+        <li>Use the New Losing Trick Count to validate the final level once a fit is found</li>
+      </ul>
+      <ul>
+        <li>Game in a major: 26+ Bergen points</li>
+        <li>Game in a minor: 29+ Bergen points</li>
+        <li>Game in NT: 26+ Bergen points</li>
+        <li>Small slam (NT or suit): 33+ Bergen points</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Slam-Bidding Toolkit</h3>
+    <ul>
+      <li><span class="pill" data-conv="kickback">Kickback</span> and <span class="pill" data-conv="gerber">Gerber</span> ask for key cards/aces once a suit or NT slam is in view; <span class="pill" data-conv="depo">DEPO</span> takes over if opponents interfere over either ask.</li>
+      <li><span class="pill" data-conv="pickASlam5NT">5NT — Pick a Slam</span> lets partner choose the denomination when the slam is on but the strain isn't settled.</li>
+      <li>Need at least 3 aces between the two hands and no 2 immediate losers before bidding a small slam in a major; a 7NT grand slam with 13 top tricks is safer than a trump-suit grand, since the opening lead can't be ruffed away.</li>
+    </ul>
+  </div>
+
+  <div class="section-head" style="margin-top:34px;">
+    <h2>New Losing Trick Count (NLTC)</h2>
+    <p>Applicable only after a confirmed 8-card fit. Count 1.5 losers per missing Ace, 1 per missing King, 0.5 per missing Queen. Subtract one loser with a confirmed 9+ card trump fit; subtract both hands' losers from 19 to set the suit-contract level.</p>
+  </div>
+
+  <div class="card">
+    <h3>How the NLTC Method Works</h3>
+    <div class="grid2">
+      <ul>
+        <li><b>Step 1 — count losers, one hand at a time.</b> For each suit, look only at your top 3 cards: a missing Ace costs 1.5 losers, a missing King costs 1 loser, a missing Queen costs 0.5 losers. A suit with fewer than 3 cards is only judged on the cards actually held.</li>
+        <li><b>Step 2 — add both hands' losers together.</b> This only makes sense once an 8-card (or better) trump fit is confirmed between the two hands.</li>
+        <li><b>Step 3 — adjust for extra trumps.</b> With a confirmed 9-card (or longer) trump fit, subtract one loser from the combined total.</li>
+      </ul>
+      <ul>
+        <li><b>Step 4 — subtract from 19.</b> 19 minus the combined loser count gives the recommended contract level (e.g. a combined 7.5 losers → bid to the 19 − 7.5 = 11.5, i.e. a game-level contract).</li>
+        <li><b>Why "New" NLTC?</b> The half-point granularity (1.5 / 1 / 0.5, instead of the old flat 1-loser-per-honour count) gives a finer, more accurate level — this is what the "New NLTC" and "LTC" columns below compare.</li>
+        <li>Use NLTC to validate the level once a fit is found — but blend it with hand evaluation (honour location, concentrated vs. scattered honours) rather than following it blindly.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="scroll-table">
+    <table class="ltc" id="ltcTable">
+      <thead><tr><th>Bid / Situation</th><th>New NLTC</th><th>LTC</th><th>Points Range</th><th>Remarks</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======================= COMPETITIVE ======================= -->
+<section class="panel" id="panel-competitive">
+  <div class="section-head">
+    <h2>Overcalls, Doubles &amp; Competitive Auctions</h2>
+    <p>How the partnership competes once an opponent has entered the auction.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="suit">♠</span>Overcalls</h3>
+      <ul>
+        <li><b>Mandate:</b> if partner opens a 1-level suit and an opponent overcalls at any level, responder with <b>10+ points must bid something</b> — at minimum, 1NT with a stopper in the opponent's suit if there's no long suit to overcall with. Opener will have <b>12-16 points minimum</b>, so passing with 10+ risks missing games.</li>
+        <li><b>1-level overcall:</b> 8–17 points, suit quality 7+ (can be a 4-carder)</li>
+        <li><b>2-level overcall:</b> 12–17 points, suit quality 8+</li>
+        <li><b>1NT immediate overcall:</b> 15–17 with a stopper</li>
+        <li><b>Jump overcalls:</b> weak, 6–11 points</li>
+        <li>Overcalls can be a <b>bit lighter (a king shy)</b> if partner or yourself has passed earlier</li>
+        <li><span class="pill" data-conv="michaels">Michaels Cue Bid</span> — <b>5-5 two-suiter</b>. 2♣ over 1♣ and 2♦ over 1♦ promise <b>5+ in both majors</b>; 2♥ over 1♥ promises <b>5+ spades and a minor</b>, 2♠ over 1♠ promises <b>5+ hearts and a minor</b></li>
+        <li><span class="pill" data-conv="unusual2NT">Unusual 2NT</span> — <b>5-5 in the two lowest unbid suits</b>, 9+</li>
+        <li><span class="pill p2" data-conv="leapingMichaels">Leaping Michaels</span> — near game force, 18+; see the dedicated table below for the exact suits shown</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♥</span><span class="pill" data-conv="redouble10">Redouble</span></h3>
+      <p>After partner's 1-level suit opening is doubled by an opponent, responder's redouble shows <b>10+ points</b> with <b>no 8-card fit</b> found yet — it keeps the auction alive and sets up for penalty if the opponents compete further.</p>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♣</span>Takeout Double</h3>
+      <p><b>Double:</b> 12+ points and <b>3+ card support</b> for the unbid suits.</p>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♦</span>Double and then Overcall</h3>
+      <ul>
+        <li><b>Double then an NT overcall:</b> 18–20 with a stopper</li>
+        <li><b>Double then a suit overcall:</b> 18–20, unbalanced</li>
+        <li><b>Double then a jump overcall in NT:</b> 21+ with a stopper</li>
+        <li><b>Double then a jump suit overcall:</b> 21+, unbalanced</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♣</span><span class="pill" data-conv="negativeDouble">Negative Double</span></h3>
+      <p>After partner's 1-level opening and a weak jump overcall by the opponent, our double is <b>negative — not penalty</b>, even at the 3-level.</p>
+      <ul>
+        <li><b>1-level negative double:</b> 6+ points</li>
+        <li><b>2-level negative double:</b> 9+ points</li>
+        <li><b>3-level negative double:</b> 12+ (game force)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♦</span>Advancer (Overcaller's Partner)</h3>
+      <ul>
+        <li><b>Cue bid</b> of opener's suit: shows 8 losers or fewer</li>
+        <li><b>Direct support</b> of the overcalled suit: below 8 points</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Penalty Doubles</h3>
+    <ul>
+      <li>Any double of a <b>3-level or higher</b> suit contract is for <b>penalty</b> — the one exception is a double after an opponent's <b>3-level preempt opening</b>, which is for takeout instead.</li>
+      <li>We judge penalty doubles using the <b>Rule of 11</b> and the <b>Rule of 13</b>.</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Exhaustive Types of Doubles in Our System</h3>
+    <ol style="margin:0; padding-left:20px; font-size:13.5px; line-height:1.7;">
+      <li>1st or 2nd level, after an opponent's bid — <b>takeout double</b></li>
+      <li>3-level, after an opponent's preempt opening — <b>takeout, 15+</b></li>
+      <li>3+ level, after a normal bid — <b>penalty</b></li>
+      <li>Interference over our 1NT — <b>12+, without a stopper</b></li>
+      <li>Opener's rebid double after interference — <b>15+, without a stopper</b></li>
+      <li><span class="pill" data-conv="leadDirectingDouble">Double of an artificial bid</span> — lead-directing</li>
+      <li>Opponent opens 1NT, we double — <b>hearts and a minor</b></li>
+      <li>After partner opens 2♣ or 2NT and opponents interfere, double at the 3-level is <b>game force without a stopper</b></li>
+    </ol>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Defending Against Opponents' Bids</h3>
+    <ul>
+      <li><span class="pill" data-conv="tonto">TONT</span> — vs a strong/weak opposing 1NT, and vs 1♣ Precision; see the dedicated table below for the full structure. Use only with <b>≥8 HCP</b> from the 2nd seat; prefer it when non-vulnerable and avoid it from the 4th seat.</li>
+      <li><span class="pill" data-conv="mathe">Mathe</span> — over an opponent's strong 2♣: <b>2♦ = hearts and spades</b>, <b>2♥ = hearts and a minor</b>, <b>2♠ = spades and a minor</b>, <b>2NT = both minors</b>, and any <b>3-level bid = a natural 6+ card suit</b></li>
+      <li>Rule of 2 to overcall from the balancing (4th) seat over 1NT: interfere with <b>6+ starting points</b>, or with <b>2+ shortness points</b> (a singleton or void) regardless of vulnerability — otherwise pass</li>
+      <li><span class="pill" data-conv="balancingSeat">Balancing seat, passout position</span> — 2NT shows both minors, Double shows both majors, bidding your own suit shows 5+ cards</li>
+      <li><span class="pill" data-conv="stolenBid">Stolen Bid</span> — partner doubles when opponents interfere over our 1NT opening</li>
+      <li>If our <b>1NT opening is doubled</b>, all our conventions (<span class="pill" data-conv="puppetStayman">Puppet Stayman</span> and <span class="pill" data-conv="fourWayTransfers">transfers</span>) stay <b>ON</b></li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3><span class="pill" data-conv="tonto">TONT</span> — Full Structure</h3>
+    <p>Our defense over an opponent's 1NT (or a strong 1♣ Precision).</p>
+    <div class="ref-table-wrap">
+      <table class="ref-table">
+        <thead><tr><th>Our Bid</th><th>Shows</th></tr></thead>
+        <tbody>
+          <tr><td class="rowhead">2♣</td><td>Diamonds + Spades (5-4 or 4-5, prefer 5-5)</td></tr>
+          <tr><td class="rowhead">2♦</td><td>Hearts + Spades (5-4 or 4-5, prefer 5-5)</td></tr>
+          <tr><td class="rowhead">2♥</td><td>Spades + Clubs (5-4 or 4-5, prefer 5-5)</td></tr>
+          <tr><td class="rowhead">2♠</td><td>Clubs + Diamonds (5-4 or 4-5, prefer 5-5)</td></tr>
+          <tr><td class="rowhead">2NT</td><td>Transfer — 6+ clubs, partner <b>must bid 3♣</b></td></tr>
+          <tr><td class="rowhead">3♣</td><td>Transfer — 6+ diamonds, partner <b>must bid 3♦</b></td></tr>
+          <tr><td class="rowhead">3♦</td><td>Transfer — 6+ hearts, partner <b>must bid 3♥</b></td></tr>
+          <tr><td class="rowhead">3♥</td><td>Transfer — 6+ spades, partner <b>must bid 3♠</b></td></tr>
+          <tr><td class="rowhead">Double</td><td>Hearts + a minor (4/5 or 5/4) — the one combination not covered above</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">Use TONT (or any similar convention over the opponent's strong 1NT) only when <b>non-vulnerable</b>, and prefer it from the <b>2nd seat</b> — avoid it from the 4th seat.</div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3><span class="pill p2" data-conv="leapingMichaels">Leaping Michaels</span> — Full Structure</h3>
+    <p>What our 4♣, 4♦, or Double shows, depending on what the opponent opened.</p>
+    <div class="ref-table-wrap">
+      <table class="ref-table leaping-table">
+        <thead><tr><th>Opponent Opens</th><th>Our 4♣</th><th>Our 4♦</th><th>Our Double</th></tr></thead>
+        <tbody>
+          <tr><td class="rowhead"><span class="s-red">2♦</span> / <span class="s-red">3♦</span> (weak)</td><td><span class="s-black">♣</span> + a major (partner bids <span class="s-red">4♦</span> for us to choose the major)</td><td>Both majors</td><td class="na">—</td></tr>
+          <tr><td class="rowhead"><span class="s-red">2♦</span> (Multi, showing a major)</td><td><span class="s-black">♣</span> + a major</td><td><span class="s-red">♦</span> + a major</td><td class="na">—</td></tr>
+          <tr><td class="rowhead"><span class="s-red">2♥</span> / <span class="s-red">3♥</span></td><td><span class="s-black">♣</span> + <span class="s-black">♠</span></td><td><span class="s-red">♦</span> + <span class="s-black">♠</span></td><td>After <span class="s-red">3♥</span>, double shows the minors <i>(tentative)</i></td></tr>
+          <tr><td class="rowhead"><span class="s-black">2♠</span> / <span class="s-black">3♠</span></td><td><span class="s-black">♣</span> + <span class="s-red">♥</span></td><td><span class="s-red">♦</span> + <span class="s-red">♥</span></td><td>After <span class="s-black">3♠</span>, double shows the minors <i>(tentative)</i></td></tr>
+          <tr><td class="rowhead"><span class="s-black">2♣</span> (preempt) / <span class="s-black">3♣</span></td><td>Both majors</td><td><span class="s-red">♦</span> + a major</td><td class="na">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Handling Preempts by Opponent</h3>
+    <p>B = balanced hand, S = stopper, MM = both majors. NA marks a bid that isn't used at that level.</p>
+    <div class="ref-table-wrap">
+      <table class="ref-table preempt-table">
+        <thead><tr><th>Preempt</th><th>Double</th><th>2NT</th><th>3NT</th><th>4♣</th><th>4♦</th><th>Cue Bid (same suit)</th></tr></thead>
+        <tbody>
+          <tr><td class="rowhead">2♣</td><td>12-14, B hand w/o S</td><td>15+, B hand with stopper</td><td>GF, with stopper</td><td>15+, both majors</td><td>15+, D &amp; a major</td><td>15+ w/o S</td></tr>
+          <tr><td class="rowhead">3♣</td><td>15+, B w/o S</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, both majors</td><td>15+, D &amp; a major</td><td class="na">NA</td></tr>
+          <tr><td class="rowhead">2♦</td><td>12-14, B hand w/o S</td><td>15+, B hand with stopper</td><td>GF, with stopper</td><td>15+, C &amp; a major</td><td>15+, both majors</td><td>15+ w/o S</td></tr>
+          <tr><td class="rowhead">3♦</td><td>15+, B w/o S</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, C &amp; a major</td><td>15+, both majors</td><td class="na">NA</td></tr>
+          <tr><td class="rowhead">2♥</td><td>12-14, B hand w/o S</td><td>15+, B hand with stopper</td><td>GF, with stopper</td><td>15+, ♠ &amp; ♣</td><td>15+, ♠ &amp; ♦</td><td>15+ w/o S</td></tr>
+          <tr><td class="rowhead">3♥</td><td>15+, B w/o S</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, ♠ &amp; ♣</td><td>15+, ♠ &amp; ♦</td><td class="na">NA</td></tr>
+          <tr><td class="rowhead">2♠</td><td>12-14, B hand w/o S</td><td>15+, B hand with stopper</td><td>GF, with stopper</td><td>15+, ♥ &amp; ♣</td><td>15+, ♥ &amp; ♦</td><td>15+ w/o S</td></tr>
+          <tr><td class="rowhead">3♠</td><td>15+, B w/o S</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, ♥ &amp; ♣</td><td>15+, ♥ &amp; ♦</td><td class="na">NA</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= DEFENCE ======================= -->
+<section class="panel" id="panel-defence">
+  <div class="section-head">
+    <h2>Defence</h2>
+    <p>Opening leads, discards, and signalling priorities.</p>
+  </div>
+
+  <div class="card lines-of-defence" style="margin-bottom:16px;">
+    <h3>Lines of Defence</h3>
+    <p>Both defenders should identify the right line of defence — from the <b>bidding</b>, the <b>likely layout of the hands</b>, and <b>declarer's plan</b> — <b>before the opening lead</b>, <b>again once dummy is tabled</b>, and should <b>keep re-checking it as the hand unfolds</b>. <b>When in doubt, go with passive defence</b> in general.</p>
+    <div class="grid2">
+      <ul>
+        <li>
+          <span class="defence-name">Forcing Defence</span>
+          <ul>
+            <li>Best when declarer has a <b>two-suiter</b>, or is in a <b>4-3 trump fit</b> or a <b>4-4 fit with a 4-1 break</b></li>
+            <li>Lead your partnership's <b>longest/strongest suit</b> to make declarer ruff and run short of trumps</li>
+            <li><b>Dummy should hold a weak suit</b> to force through, and <b>shouldn't be short</b> in that suit — if dummy can ruff it, forcing there just helps declarer</li>
+            <li>Holding the trump ace, <b>hold it up</b> until dummy is out of trumps (often the 3rd round) rather than draw it early</li>
+          </ul>
+        </li>
+        <li>
+          <span class="defence-name">Active Defence</span>
+          <ul>
+            <li>Needed when declarer or dummy has a long side suit, or your tricks look like they could disappear</li>
+            <li>Used against <b>suit slam contracts</b></li>
+            <li>Be aggressive when a side suit is breaking well or the bidding showed slam interest</li>
+            <li>We <b>voluntarily break new suits</b> ourselves to take our tricks before they vanish</li>
+            <li>Against a gambling 3NT, <b>lead an ace</b> and race for 5 quick tricks</li>
+          </ul>
+        </li>
+        <li>
+          <span class="defence-name">Passive Defence</span>
+          <ul>
+            <li>Right when you want declarer to break new suits themselves</li>
+            <li>Best when dummy is balanced, declarer has no strong side suit, or it's a misfit</li>
+            <li><b>Leading trumps is generally a passive defence</b></li>
+            <li>We <b>keep returning the same suit</b> rather than breaking new ones</li>
+            <li><b>Essential against 6NT and grand slams</b></li>
+            <li>Identify this line when the <b>opponents have stopped in a part-score at the 3-level or below</b> and <b>points are roughly evenly split</b> between both pairs</li>
+            <li>Avoid leading a 4-card suit with only one honour; a 5-card suit headed by an honour is a better risk</li>
+          </ul>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <span class="defence-name">Cutting Down on Ruffing</span>
+          <ul>
+            <li>Lead trumps when your side holds a trump stack, on misfits, or when you control everything except trumps (opponents sacrificing)</li>
+            <li>Also lead trumps when dummy's bidding suggests it will ruff (avoided NT, or bid two suits and raised a third), or when you control their side suit</li>
+            <li>Favour a <b>trump lead against two-suited hands</b> like Michaels or Unusual 2NT, unless the opponents clearly have a big fit</li>
+            <li>If <b>declarer is not drawing trumps</b>, we should draw them ourselves</li>
+            <li>If declarer's contract involves a <b>preempt bid</b>, or declarer has made a <b>sacrifice over our game</b>, <b>lead trumps and draw them</b></li>
+          </ul>
+        </li>
+        <li>
+          <span class="defence-name">Creating Trump Tricks</span>
+          <ul>
+            <li>Look for this when you're <b>short</b> (singleton/doubleton) in an unbid suit, or <b>long</b> in their bid-and-raised side suit (partner rates to be short there)</li>
+            <li>Also worth trying when your hand is weak with nothing better to try</li>
+            <li>Look for an <b>uppercut</b> — forcing declarer or dummy to ruff high — to promote a trump honour in your or partner's hand</li>
+            <li>Don't chase ruffing tricks if you already hold natural trump tricks (e.g. QJ10)</li>
+            <li>A high trump entry helps you cash in on a short holding</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="suit">♠</span>Opening Leads</h3>
+      <ul>
+        <li>4th highest in a notrump contract</li>
+        <li>3rd/5th highest in a suit contract</li>
+        <li>Do not lead away from honours</li>
+        <li>Always play the <b>lower of touching honours</b> — A to T (e.g. with J-T lead the T; with A-Q-J lead the J)</li>
+        <li>Against a <b>NT contract</b>, with <b>3 or fewer small cards</b> in a suit, lead the <b>top card</b></li>
+      </ul>
+      <h3 style="margin-top:16px;"><span class="suit">♥</span>Passive Defence</h3>
+      <p>When there's no attractive attacking lead, passive defence usually produces the best long-term results. Good passive leads:</p>
+      <ul>
+        <li>A trump</li>
+        <li>A suit headed only by small cards</li>
+        <li>A suit containing no unsupported honour</li>
+        <li>Don't lead a <b>bare Ace from Axx</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♣</span>Discards</h3>
+      <p>Give attitude first (a low card shows no interest in the discarded suit), then show count with the second card discarded in that suit (low is odd, high is even).</p>
+      <h3 style="margin-top:16px;"><span class="suit">♦</span>Signal Order</h3>
+      <ol style="margin:0; padding-left:20px; font-size:13.5px; line-height:1.7;">
+        <li>Attitude</li>
+        <li>Count, when declarer plays a suit</li>
+        <li>Suit preference</li>
+      </ol>
+      <div class="note">Work out declarer's shape and points as early in the defence as possible.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Classic Defensive Guidelines</h3>
+    <div class="grid2">
+      <ul>
+        <li><b>Second hand low</b> — as second to play to a trick, play low and keep your options open rather than rising with an honour.</li>
+        <li><b>Third hand high</b> — as third to play, play your highest card (unless it can't beat anything useful) to try to force out or promote an honour.</li>
+        <li><b>Cover an honour with an honour</b> — covering can promote a lower honour in your or partner's hand; don't cover if it can't possibly promote anything.</li>
+        <li><b>Lead through strength, up to weakness</b> — lead toward dummy's weak holding or through declarer's known strong suit to set up finesses for partner.</li>
+      </ul>
+      <ul>
+        <li><b>Return partner's suit</b> — normally the higher of touching honours, or your original fourth-best, so partner can read the remaining count.</li>
+        <li><b>Win as cheaply as possible</b> — don't spend an unnecessary high card when a lower one wins the trick just as well.</li>
+        <li><b>Don't break a new suit needlessly</b> — when you have a safe exit, avoid opening a suit that could cost a trick; let declarer do the work.</li>
+        <li><b>When in doubt, play third hand high or return partner's suit</b> — the two safest defaults when you don't have a clear read on the hand.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PRINCIPLES ======================= -->
+<section class="panel" id="panel-principles">
+  <div class="section-head">
+    <h2>General Principles</h2>
+    <p>The guiding ideas behind the whole system — from the July 2026 unlearnings review.</p>
+  </div>
+  <ul class="principle-list">
+    <li><b>Slow and fast arrival —</b> with strong hands, show strength first and fit second; bid slowly with strong hands, fast with weaker ones. E.g. 1♠–4♠ is a weak hand with no slam interest; 1♠–2♣–2♦–4♠ is strong.</li>
+    <li><b>Never lie about strength —</b> when you can lie temporarily about shape instead. For example, opener's rebid of the same suit may sometimes be with only a 5-carder.</li>
+    <li><b>If opener has to lie, prefer lying about shape, not strength —</b> rebidding the opened suit with a 5-carder as if it were a 6-carder is a smaller error than reversing or rebidding 1NT, since they falsely claim higher strength or a balanced hand when the hand is actually unbalanced and not strong — a far more serious misdescription.</li>
+    <li><b>Responder is the temporizer, opener is the describer —</b> responder cannot jump to show values, but opener can.</li>
+    <li><b>Once partner has passed —</b> any subsequent bids by you or by your partner will be a King (3 points) shy of what that bid usually promises.</li>
+  </ul>
+
+  <div class="section-head" style="margin-top:34px;">
+    <h2>Alerts for Live Tourneys</h2>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <ul>
+        <li>Pre-alert before the deal — announce the system as "SAYC 2-over-1"</li>
+        <li>Alert the 1NT opening range, and that NT rebids can include a 4-card major or a partner fit</li>
+        <li>Ask the opponent of the bidder for an explanation, not the bidder</li>
+        <li>Only explain an alert if asked, and only in the opponent's ear</li>
+        <li>Never correct partner's wrong alert explanation before the auction ends</li>
+      </ul>
+    </div>
+    <div class="card">
+      <ul>
+        <li>As declarer, clarify and explain every alert to defenders before the opening lead</li>
+        <li>As defenders, explain to declarer after the deal but before scores are agreed (integrity!)</li>
+        <li>Dummy's sole job is tracking tricks won and lost until the 13th card, before returning cards to the board</li>
+        <li>Don't alert slam-asking bids during the auction — offer to explain before the opening lead</li>
+        <li>Artificial, takeout, and penalty doubles need no alert</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TEAMS / IMPS ======================= -->
+<section class="panel" id="panel-teamsimps">
+  <div class="section-head">
+    <h2>Teams / IMPS — General Tips</h2>
+    <p>Scoring by IMPs changes the risk calculus from matchpoints: single hands matter less, and the shape of the outcome (make/down, not overtricks) matters more.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="suit">♠</span>Bidding Philosophy</h3>
+      <ul>
+        <li><b>Bid close games</b> — especially when vulnerable, which feels counter-intuitive. This is the <b>platinum rule</b> for winning at IMPs.</li>
+        <li><b>Stretch to bid a vulnerable game</b> even at a 40% chance; a non-vulnerable game at 50%. If you have to think about it, bid game.</li>
+        <li><b>Bid thin games, but avoid thin slams</b> — only bid slams that are at least 75%.</li>
+        <li><b>Overcalls should be sound</b> — upgrade by roughly a Queen versus what you'd need at matchpoints.</li>
+        <li><b>Preempts can be lighter</b>, since they mainly deny opponents room to find games and slams.</li>
+        <li>With an 8-card fit and non-vulnerable, be willing to <b>compete to the 3-level</b>.</li>
+        <li><b>Don't stretch part scores</b>, especially when vulnerable, and don't make wild preemptive bids just because you hold a long suit.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♥</span>Competing &amp; Doubling</h3>
+      <ul>
+        <li><b>Overbidding costs more than underbidding</b> at IMPs — when in doubt, prefer the safer, more normal action.</li>
+        <li><b>Don't double their partscore</b> unless you have it beaten in your own hand (a fistful of trump tricks) — never double on high cards alone.</li>
+        <li><b>No penalty doubles</b> unless the opponents have clearly sacrificed.</li>
+        <li>If opponents have already bid to game, <b>don't sacrifice</b> — but interfere more before they get there, especially once partner has passed.</li>
+        <li><b>Sacrifice more</b> when you're non-vulnerable and they're vulnerable.</li>
+        <li>With 18 points when the opponents open, <b>double</b> and plan to find the best game — assume 6 points opposite even if partner passes.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♣</span>Declarer Play</h3>
+      <ul>
+        <li>The moment dummy comes down, <b>check how a bad trump break would affect the contract</b> and plan for that contingency first.</li>
+        <li><b>Play safety lines over greedy ones</b> — duck a trick early if it guarantees the contract, rather than risk it for an overtrick.</li>
+        <li><b>Test suits for bad breaks</b> by leading toward your honours, and keep the hand that plays after the "danger" opponent able to finesse through.</li>
+        <li><b>Make or set the contract</b> — don't worry about over- or under-tricks once you're in the right spot.</li>
+        <li><b>Play your safest contract:</b> a making minor-suit partial beats a risky major-suit one — plus 110 vs plus 140 rarely decides a match.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♦</span>Defence &amp; Team Mentality</h3>
+      <ul>
+        <li>As a defender, it's worth <b>taking a risk</b> (like leading an unsupported King) that you wouldn't try at matchpoints, if it has a real chance to defeat the contract.</li>
+        <li><b>You have partners at the other table</b> — don't make a risky bid or play just because you think your team is behind in the match.</li>
+        <li>There will be a hand each match where <b>both sides can make game</b> — usually a wild, distributional deal. It's usually right to bid one more, unless you're sure they're going down.</li>
+        <li><b>Don't be a hero:</b> avoid a confusing call that might get passed when it's forcing, or that overstates your values.</li>
+        <li>The player holding your cards at the other table faces the same tough decision — <b>if it's hard for you, it's hard for them too.</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="tooltip"></div>
+<footer>Double Dummies · Team Playbook<br>Maintained by Arunkumar · arunk8186@gmail.com</footer>
+
+<script>
+/* ===================== DATA: CONVENTIONS ===================== */
+const CONVENTIONS = {
+  redouble10:      {name:"Redouble (10+)", cat:"Competitive", by:"Responder", trigger:"1-level suit open, doubled by opponent", meaning:"10+ points, no 8-card fit found — keep the auction alive / defend for penalty.", pts:"10+", short:"10+ points, no 8-card fit yet — keeps the auction alive after an opposing double."},
+  puppetStayman:   {name:"Puppet Stayman", cat:"NT Structure", by:"Responder", trigger:"After 1NT or 2NT opening, opener rebids", meaning:"Asks opener to show a 3-card major (not just 4+), finding 5-3 fits as well as 4-4. Responder bids the artificial 2♣ with 9+ points, or with 8 points provided there are 8 cards above 8.", pts:"9+ (or 8 with 8 cards above 8)", short:"Asks opener for a 3-5 card major fit too, not just 4-4, after 1NT/2NT. Bid with 9+ points, or 8 points with 8 cards above 8."},
+  fourWayTransfers:{name:"Four-Way Transfers", cat:"NT Structure", by:"Responder", trigger:"After 1NT or 2NT opening, opener rebids", meaning:"Transfers to all four suits, not just the majors. Responder can transfer with any point count, and opener must mandatorily accept the transfer. A minor-suit transfer always promises 6+ cards; a major-suit transfer can be 5+ cards.", pts:"Any", short:"Transfers to all four suits after our 1NT/2NT opening — usable with any points; opener must accept. Minors need 6+ cards, majors can be 5+."},
+  ekren2D:         {name:"Ekren 2♦", cat:"Weak Opening", by:"Opener", trigger:"Opening bid of 2♦", meaning:"Weak, 4+ cards in both majors.", pts:"5-10 (8.5 NLTC)", short:"Weak opening, 4+ cards in both majors, 5–10 points."},
+  muiderberg:      {name:"Muiderberg", cat:"Weak Opening", by:"Opener", trigger:"Opening 2♥ or 2♠", meaning:"5 cards in the bid major plus a 4-5 card minor, weak hand.", pts:"5-10 (8.5 NLTC)", short:"Weak 2♥/2♠: 5 cards in the major plus a 4-5 card minor, 6-10 HCP."},
+  strong2C:        {name:"2♣ Strong", cat:"Strong Opening", by:"Opener", trigger:"Opening bid of 2♣", meaning:"Artificial, strong. 22+ points, or a 4.5-loser hand (NLTC). Responder needs 3+ points to respond 2♦ (artificial relay); otherwise, respond any other bid to show the long suit at the cheapest level. If an opponent interferes over 2♣, responder's double is game-forcing, not penalty.", pts:"22+ pts or 4.5 NLTC", short:"Strong, artificial opening — 22+ points, or a 4.5-loser hand (NLTC)."},
+  tonto:           {name:"TONT", cat:"Defense vs NT", by:"Competitive", trigger:"Over an opponent's 1NT (or 1♣ Precision)", meaning:"After opponent's 1NT: 2♣ shows diamonds + spades, 2♦ shows hearts + spades, 2♥ shows spades + clubs, 2♠ shows clubs + diamonds (5-4 or 4-5, prefer 5-5 for the 2-level bids). 2NT/3♣/3♦/3♥ are transfers to a 6+ card single suit — 2NT shows 6+ clubs (partner bids 3♣), 3♣ shows 6+ diamonds (partner bids 3♦), 3♦ shows 6+ hearts (partner bids 3♥), 3♥ shows 6+ spades (partner bids 3♠). Double shows hearts + a minor (4/5 or 5/4), the only combination not otherwise covered.", pts:"9+ (8.5 NLTC)", short:"Defense to an opposing 1NT: 2♣/2♦/2♥/2♠ show two-suiters one suit removed from natural; 2NT/3♣/3♦/3♥ transfer to a 6+ single suit; Double shows hearts + a minor."},
+  mathe:           {name:"Mathe", cat:"Defense vs 2♣", by:"Competitive", trigger:"Over an opponent's strong/artificial 2♣", meaning:"Interference structure over the opponent's 2♣. Our 2♦ = hearts and spades. Our 2♥ = hearts and a minor. Our 2♠ = spades and a minor. Our 2NT = both minors. Any bid at the 3-level = a natural 6+ card suit.", pts:"9+ (8.5 NLTC)", short:"Interference over an opponent's strong 2♣: 2♦=both majors, 2♥=hearts+minor, 2♠=spades+minor, 2NT=both minors, 3-level=natural 6+ suit."},
+  michaels:        {name:"Michaels Cue Bid", cat:"Overcall", by:"Competitive", trigger:"Cue bid of opener's own suit", meaning:"5-5 two-suiter. 2♣ over 1♣ promises 5+ in both majors; 2♦ over 1♦ promises 5+ in both majors. 2♥ over 1♥ promises 5+ in spades and a minor; 2♠ over 1♠ promises 5+ in hearts and a minor.", pts:"9+ (7.5 NLTC)", short:"A cue bid of opener's suit — 5-5 two-suiter. Over a minor, shows both majors; over a major, shows the other major plus a minor."},
+  unusual2NT:      {name:"Unusual 2NT", cat:"Overcall", by:"Competitive", trigger:"2NT overcall after a 1-level opening", meaning:"Shows the two lowest unbid suits, 5-5.", pts:"9+ (7.5 NLTC)", short:"Overcall showing 5-5 in the two lowest unbid suits."},
+  leapingMichaels: {name:"Leaping Michaels", cat:"Overcall", by:"Competitive", trigger:"4♣ / 4♦ / Double over an opponent's weak-two or 3-level preempt", meaning:"Shows a two-suited hand, near game-force strength — the exact suits shown depend on what the opponent opened. See the dedicated Leaping Michaels table for the full structure.", pts:"18+ (6.5-5.5 NLTC)", short:"4♣/4♦/Double over an opponent's weak preempt — two-suiter, essentially game force. Exact suits depend on their opening (see table)."},
+  negativeDouble:  {name:"Negative Double", cat:"Competitive", by:"Competitive", trigger:"Partner opens, opponent overcalls, we double", meaning:"Shows 4+ cards in the unbid major(s) — not a penalty double, even at the 3-level.", pts:"6+/9+/12+ by level", short:"Shows 4+ cards in the unbid major(s) after partner opens and an opponent overcalls."},
+  leadDirectingDouble:{name:"Lead-Directing Double", cat:"Competitive", by:"Competitive", trigger:"Double of an artificial bid", meaning:"Asks partner to lead that suit — needs no alert.", pts:"—", short:"Doubling an artificial bid asks partner to lead that suit."},
+  kickback:        {name:"Kickback", cat:"Slam Try", by:"Either", trigger:"A bid at the 4-level, one step below the agreed trump suit", meaning:"Key-card ask keyed to the trump suit rather than always 4NT — saves bidding space and avoids Blackwood ambiguity. Handling interference: DEPO.", pts:"—", short:"Key-card ask pitched one level below 4NT, keyed to the agreed trump suit."},
+  gerber:          {name:"Gerber", cat:"Slam Try", by:"Either", trigger:"4♣ after a natural NT auction (e.g. after 3NT)", meaning:"Ace-ask for slams in notrump. Off if there is interference (except after a takeout double, when it stays on).", pts:"33+ combined for the auction to be live", short:"4♣ ace-ask for NT slams, used once the partnership is already in a natural NT auction."},
+  pickASlam5NT:    {name:"5NT — Pick a Slam", cat:"Slam Try", by:"Either", trigger:"5NT after establishing a fit or a 4-card suit", meaning:"Asks partner to choose the slam denomination.", pts:"—", short:"Asks partner to pick the denomination for the slam."},
+  balancingSeat:   {name:"Balancing in Passout Seat", cat:"Competitive", by:"Competitive", trigger:"Passout (4th) seat, after 1NT-P-P or similar", meaning:"2NT shows both minors, Double shows both majors, bidding your own suit shows 5+ cards.", pts:"6+ starting points, or 2+ shortness points", short:"In the passout seat: 2NT=minors, Double=majors, own suit=5+ cards."},
+  jacoby2NT:       {name:"Jacoby 2NT", cat:"Slam Try", by:"Responder", trigger:"2NT response to partner's major-suit opening", meaning:"Forcing raise, slam invitational in the suit contract with a balanced-ish hand.", pts:"15+ (losers matter more than points)", short:"Forcing raise of partner's major — sets up a slam-going auction."},
+  splinter:        {name:"Splinter Bid", cat:"Slam Try", by:"Responder", trigger:"Double-jump response, showing a void or singleton", meaning:"Slam invite in a suit contract, showing shortness in the bid suit.", pts:"15+ (losers matter more than points)", short:"Double-jump response showing a singleton/void — a slam try with shortness."},
+  helpSuitGameTry: {name:"Help Suit Game Try", cat:"Game Try", by:"Opener", trigger:"After 1M–2M, opener rebids a new suit at the 3-level", meaning:"Opener needs 6.5 losers or below, and bids the suit he needs help in — where he holds exactly 3 losers. Responder bids game in the major with 2 or below losers in that suit; otherwise responder bids the 3-level suit and opener passes.", pts:"6.5 losers or below (opener)", short:"After a major fit, opener's new-suit bid at the 3-level (6.5 losers or below, 3 losers in that suit) asks for help there."},
+  drury:           {name:"Drury", cat:"Competitive", by:"Responder", trigger:"2♣ by a passed-hand responder, after partner opens a major in 3rd/4th seat, with a confirmed 8-card fit", meaning:"Checks that opener isn't a light 3rd/4th-seat opening before committing higher. Bid 2♣ with 8.5 losers or below; with 9.5 or more losers, respond directly in the suit at the 2-level instead.", pts:"8.5 NLTC or below", short:"2♣ by a passed hand after partner's 3rd/4th-seat major opening, with an 8-card fit and 8.5 losers or below — checks it isn't a light opening."},
+  depo:            {name:"DEPO", cat:"Slam Try", by:"Either", trigger:"Opponents interfere over our Kickback or Gerber", meaning:"Double = Even number of key cards/aces, Pass = Odd number.", pts:"—", short:"Double = Even key cards/aces, Pass = Odd — used when opponents interfere over Kickback/Gerber."},
+  invertedMinors:  {name:"Inverted Minors", cat:"Responding (not in use)", by:"Responder", trigger:"Raise of partner's minor-suit opening", meaning:"1m–3m is weak, 9 points or below; 1m–2m is strong, 10-12 points. Not currently played — kept for reference only.", pts:"9 or below (weak) / 10-12 (strong)", short:"Not currently played. 1m-3m would be weak (9 or below); 1m-2m would be strong (10-12 pts) and forcing."},
+  fsf:             {name:"Fourth Suit Forcing (FSF)", cat:"Rebidding", by:"Responder", trigger:"Partnership has bid three suits in the first two rounds; responder bids the fourth", meaning:"Artificial, forcing for one round, doesn't promise a stopper — must be alerted; asks opener to describe further.", pts:"10+", short:"Artificial bid of the unbid 4th suit — forcing one round, asks opener to keep describing."},
+  nmf:             {name:"New Minor Forcing (NMF)", cat:"Rebidding (not in use)", by:"Responder", trigger:"After responder bids 1H/1S and hears a 1NT rebid", meaning:"2♣/2♦ is artificial, forcing one round, usually shows a 5-card major and says nothing about clubs/diamonds. Not currently played — FSF/direct methods used instead.", pts:"10+", short:"Not currently played. 2♣/2♦ after opener's 1NT rebid would be an artificial forcing probe for a 5-card major."},
+  gazzilli:        {name:"Gazzilli", cat:"Rebidding", by:"Opener", trigger:"1-level suit open, 1NT response, opener rebids 2♣", meaning:"Artificial, shows 15-16 points. Responder rebids 2♦ artificially with 10+ points; any other responder rebid is a sign-off, not interested in game.", pts:"15-16 (6.5 NLTC)", short:"After a 1NT response, opener's 2♣ rebid is artificial and shows 15-16 points."},
+  ingberman:       {name:"Ingberman", cat:"Rebidding", by:"Responder", trigger:"After opener reverses, responder wants to sign off", meaning:"Responder's 2NT is an artificial relay; opener must bid 3♣, and responder's next bid signs off at the 3-level.", pts:"—", short:"Responder's 2NT after a reverse is an artificial relay asking opener to bid 3♣, so responder can sign off at the 3-level."},
+  wjs:             {name:"Weak Jump Shift (WJS)", cat:"Responding", by:"Responder", trigger:"Jump response in a new suit at the 2-level or above, after partner's 1-level open", meaning:"Very weak, a sign-off in that suit (minimum 6-carder).", pts:"Below 6 (8.5 NLTC)", short:"A jump response in a new suit — very weak (below 6 points), a sign-off."},
+  stolenBid:       {name:"Stolen Bid", cat:"Competitive", by:"Responder", trigger:"Partner opens 1NT and opponents interfere", meaning:"Partner's double in that auction shows the values that were 'stolen' from a natural sequence.", pts:"—", short:"Partner's double when opponents interfere over our 1NT opening."},
+  reverse:         {name:"Reverse", cat:"Rebidding", by:"Opener", trigger:"Opener's 2nd bid is in a new suit ranked higher than the suit opened", meaning:"Shows 17-18 points (the 'Barrier Principle'). Forcing for one round. No jump is involved — that distinguishes it from a jump shift. Reverses are on even after interference, if still biddable; if not possible, prefer 1NT, supporting partner, or rebidding your own suit rather than lying.", pts:"17-18 (6.5 NLTC)", short:"Opener bids a new, higher-ranking suit — shows 17-18 points, forcing one round."},
+  balancedHand:    {name:"Balanced Hand", cat:"Hand Evaluation", by:"Either", trigger:"Judging any hand's shape", meaning:"If the sum of the lengths of your two longest suits is 8 or below, the hand is balanced; if it's 9 or more, the hand is unbalanced.", pts:"—", short:"Add the lengths of your two longest suits: 8 or below = balanced, 9 or more = unbalanced."},
+  supportDouble:   {name:"Support Double", cat:"Competitive", by:"Opener", trigger:"Partner opens, responder bids a 4+ card major, opponent interferes", meaning:"Opener's double or redouble at that point shows exactly 3-card support for responder's major, 12-16 points.", pts:"12-16", short:"After responder bids a major and an opponent interferes, opener's double/redouble shows exactly 3-card support, 12-16 points."},
+};
+
+const CONV_CATS = [...new Set(Object.values(CONVENTIONS).map(c=>c.cat))].sort();
+
+/* ===================== DATA: LTC / POINTS TABLE ===================== */
+const LTC_ROWS = [
+ ["1-level suit open","7.5","7","12-21",""],
+ ["2-level response after fit","9.5","9","6 to 9",""],
+ ["3-level response after fit","8.5","8","10 to 12",""],
+ ["4-level response after fit","7.5","7","13+","Weak hand, no slam interest. With strong, go slow"],
+ ["1NT open","6.5","6","15-17 Balanced",""],
+ ["2NT open","5.5","5","20-21 Balanced",""],
+ ["Takeout Double","7.5","7","12+","3+ support for unbid suits"],
+ ["Response after Takeout double","10.5","10","0+",""],
+ ["1-level overcall","8.5 to 6.5","8 to 6","8 to 17","Suit Quality of 7+, can be 4 carder"],
+ ["2-level overcall","7.5 to 6.5","7 to 6","12 to 17","Suit Quality of 8+"],
+ ["Opener rebid without reverse/jump","7.5 to 6.5","7 to 6","12 to 16",""],
+ ["Reverse by opener","6.5","6","17+","Typically 17-18"],
+ ["Gazzilli by opener rebid","6.5","6","15 to 16",""],
+ ["2NT rebid by opener after 1NT response","5.5","5","17 to 18",""],
+ ["Jump rebid in NT by opener","5.5","5","18-19",""],
+ ["Jump rebid in new suit by opener","5.5","5","19-21",""],
+ ["Jump rebid in same suit by opener","6.5","6","15 to 17",""],
+ ["3C, 3D, 3H, 3S open","7.5","7","5 to 10",""],
+ ["Puppet Stayman after 1NT","8.5","8","9+","Can be 8 points provided there are 8 cards above 8"],
+ ["Puppet Stayman after 2NT","9.5","9","5+",""],
+ ["Jacoby 2NT — suit slam check","6.5","6","15+","Points can be lower, this is based on losers"],
+ ["Splinter bid — suit slam check","6.5","6","15+","Points can be lower, this is based on losers"],
+ ["Help Suit Game Try by opener","6.5","6","15+",""],
+ ["Ekren 2D","8.5","8","5 to 10",""],
+ ["Muiderberg","8.5","8","5 to 10",""],
+ ["2C strong","4.5","4","22+ pts",""],
+ ["TONT","8.5","8","9+","Based on distribution"],
+ ["Mathe","8.5","8","9+","Based on distribution"],
+ ["Michaels Cue Bid","7.5","7","9+","Based on distribution"],
+ ["Unusual 2NT","7.5","7","9+","Based on distribution"],
+ ["Leaping Michaels","6.5 to 5.5","6 to 5","18+","Based on distribution"],
+ ["Negative Double","9.5 to 7.5","9 to 7","6+: 1 level, 9: 2 level, 12+: 3 level",""],
+ ["Drury by responder","8.5","8","10+",""],
+ ["Inverted Minors","8.5","8","10 to 12",""],
+ ["Fourth Suit Forcing","8.5 to 7.5","8 to 7","10+",""],
+ ["New Minor Forcing","8.5 to 7.5","8 to 7","10+",""],
+ ["Weak Jump Shift Response (WJS)","8.5","8","Below 6",""],
+];
+
+/* ===================== RENDER: AUCTION LADDER ===================== */
+function pill(key, alt){
+  const c = CONVENTIONS[key];
+  if(!c) return alt||key;
+  const cls = c.cat.includes("Defense") || c.cat==="Overcall" ? "pill p2" : "pill";
+  return `<span class="${cls}" data-conv="${key}" tabindex="0">${alt||c.name}</span>`;
+}
+
+const LADDER = {
+  opener: [
+    {cls:"gold", h:"1-Level Suit Opening", range:"12-21 pts · 7.5 NLTC", body:`<ul><li>Open with <b>12+ Bergen points</b></li><li><b>Open your longest suit first</b>, irrespective of which suit it is</li><li>With equal-length suits, open the <b>higher of two 5-card suits</b>, or the <b>higher of two 4-card suits</b></li></ul>`},
+    {h:"1NT Opening", range:"15-17 pts · 6.5 NLTC", body:`<ul><li><b>Balanced hand, 15-17 points</b></li><li>Responder uses ${pill('puppetStayman')}, ${pill('fourWayTransfers','four-way transfers')}, or Jacoby/minor transfers</li><li>If interfered with: <b>2NT is game force</b> with a stopper (then Puppet/transfers); a <b>cue bid</b> of the opponent's suit is game force without a stopper</li></ul>`},
+    {h:"2NT Opening", range:"20-21 pts · 5.5 NLTC", body:`<ul><li><b>Balanced, 20-21 points</b></li><li>Responder needs <b>5+ points</b> to respond</li><li>Puppet Stayman applies with 5+</li></ul>`},
+    {h:"2♣ Strong", range:"22+ pts · 4.5 NLTC", body:`<ul><li>${pill('strong2C','Artificial')}, <b>22+ points, or a 4.5-loser hand (NLTC)</b></li><li>Responder needs <b>3+ points</b> to bid the artificial 2♦ relay</li><li>Otherwise, respond any other bid to show the <b>long suit at the cheapest level</b></li><li>If an opponent interferes over 2♣, responder's <b>double is game-forcing, not penalty</b></li><li>Defended against with ${pill('mathe')}</li></ul>`},
+    {h:"Weak Openings", range:"5-10 pts · 8.5 NLTC", body:`<ul><li>${pill('ekren2D')} — <b>weak, 4+ in both majors</b></li><li>${pill('muiderberg')} — weak 2♥/2♠, <b>5 cards in the major</b> plus a 4-5 card minor</li></ul>`},
+    {h:"Preempts (3-level+)", range:"5-10 pts · 7.5 NLTC", body:`<ul><li>Use the <b>Suit Quality test</b> and the <b>rule of 2/3/4</b> to size the preempt</li><li><b>3rd seat</b> is the ideal preempting position; be more aggressive at favourable vulnerability and in IMPs</li><li>Once you've preempted, <b>don't bid again</b> unless partner forces you to</li></ul>`},
+    {h:"Overcalls Recap", range:"8-17 pts · 8.5-6.5 NLTC", body:`<ul><li><b>1-level overcall 8-17 points</b></li><li><b>2-level overcall 12-17 points</b></li><li>1NT overcall 15-17 with a stopper</li><li>Jump overcalls weak (6-11)</li><li>See the Overcalls &amp; Doubles tab for the full picture</li></ul>`},
+  ],
+  responder: [
+    {h:"Longest Suit First", range:"6+ pts", body:`<ul><li>Respond in a new suit or NT with <b>6+ points</b></li><li><b>Bid your longest suit first</b> (5D + 4S → respond 1D) — helps find major fits</li><li>With equal length, bid the <b>lower suit first</b></li><li>One-level new-suit response ranges from 6 up to 28 points</li></ul>`},
+    {h:"1NT Response", range:"≤12 pts", body:`<ul><li>Respond 1NT with <b>12 points or fewer</b> when a new-suit or NT response isn't available/appropriate</li></ul>`},
+    {cls:"red", h:"Weak Jump Shift", range:"Below 6 pts · 8.5 NLTC", body:`<ul><li>${pill('wjs')} — a jump response in a new suit at the 2-level or above is a <b>weak sign-off</b> (minimum 6-card suit)</li></ul>`},
+    {h:"Game Force in New Suit", range:"12+ pts", body:`<ul><li>A 2-level response without a jump in a new suit is <b>game-forcing with 12+ points</b> (5+ suit if it's a major)</li><li>Otherwise respond at the 1-level and force to game after opener's rebid</li><li>Show any game-force intent <b>before showing fit</b></li></ul>`},
+    {h:"With a Confirmed Fit", range:"6-9 pts (9.5 NLTC) / 10-12 pts (8.5 NLTC)", body:`<ul><li>After an 8-card fit: <b>2-level response shows 6-9 points</b></li><li><b>3-level response shows 10-12 points</b></li></ul>`},
+    {cls:"muted", h:"Raising Partner's Minor (not played)", range:"9 or below (weak) / 10-12 (strong) · 8.5 NLTC", body:`<ul><li>${pill('invertedMinors')} — kept for <b>reference only</b></li><li><b>Not currently in the system</b></li></ul>`},
+    {h:"Responding to 2♣ Open", range:"3+ pts", body:`<ul><li>Against a 2♣ opening, respond the artificial 2♦ with <b>3+ points</b></li><li>Otherwise, respond any other bid to show your <b>long suit at the cheapest level</b></li></ul>`},
+    {h:"Responding to 2NT Open", range:"5+ pts", body:`<ul><li>Against a 2NT opening, respond with <b>5+ points</b></li><li>${pill('puppetStayman')} is applicable after a 2NT open as well</li></ul>`},
+    {h:"Puppet Stayman (after 1NT)", range:"9+ pts", body:`<ul><li>${pill('puppetStayman')} — respond the artificial 2♣ with <b>9 points or above</b></li><li>Also usable with <b>8 points</b>, provided there are 8 cards above 8 (i.e. above the 10)</li><li>Asks opener to show a <b>3-card major</b> as well as 4+, finding 5-3 fits too</li></ul>`},
+    {h:"Four-Way Transfers (after 1NT/2NT)", range:"Any points", body:`<ul><li>${pill('fourWayTransfers')} — responder can transfer with <b>any point count</b>, weak or strong</li><li>A <b>minor-suit transfer always needs 6+ cards</b>; a <b>major-suit transfer can be 5+ cards</b></li><li>Opener must <b>mandatorily accept</b> and complete the transfer</li></ul>`},
+    {cls:"gold", h:"Slam Tries After Any 8+ Suit Fit (All Suits)", range:"15+ pts · 6.5 NLTC", body:`<ul><li>${pill('jacoby2NT')} — <b>forcing raise</b>, balanced-ish slam invite</li><li>${pill('splinter')} — double-jump shows a <b>void/singleton</b>, slam invite with shortness</li><li>Both are based on <b>losers</b> as much as raw points</li></ul>`},
+    {cls:"", h:"Drury", range:"8.5 NLTC or below", body:`<ul><li>${pill('drury')} — a passed-hand responder's <b>2♣</b> after partner opens a major from the 3rd or 4th seat, <b>only with a confirmed 8-card fit</b></li><li>Bid 2♣ when your <b>losing tricks are 8.5 or below</b></li><li>With <b>9.5 or more losers</b>, respond directly in the suit at the <b>2-level</b> instead</li><li>Checks that the opening <b>isn't sub-minimum</b></li></ul>`},
+    {h:"After a Takeout Double by Partner", range:"0 to 13+ pts", body:`<ul><li><b>0 to 9 points:</b> bid an unbid suit with 4+ cards, at the minimum level</li><li><b>10 to 12 points:</b> jump bid and show suit</li><li><b>13+ points:</b> ensure game (cue bid)</li><li>With no long suit, bid <b>1NT with a stopper (6 to 9 points)</b></li><li>With no long suit, bid <b>2NT with a stopper (10-12 points)</b></li><li>With no long suit, bid <b>3NT with a stopper (13+ points)</b></li><li>If the opponents interfere, <b>pass with below 9 points</b> and <b>bid something with 10+ points</b></li></ul>`},
+  ],
+  openerRebid: [
+    {cls:"gold", h:`${pill('balancedHand','Balanced Hands')}`, range:"", body:`<ul><li><b>1NT rebid:</b> 12-14 balanced</li><li><b>2NT</b> (or 3NT if 2NT unavailable): 18-19 balanced</li></ul>`},
+    {h:"Same Suit, No Jump", range:"12-14 pts · 7.5 NLTC", body:`<ul><li>Rebid of opener's own suit without a jump: <b>6+ cards, 12-14 points</b></li></ul>`},
+    {h:"New Suit, No Jump/Reverse", range:"12-16 pts · 7.5-6.5 NLTC", body:`<ul><li>A new suit at the 1- or 2-level without jumping or reversing: <b>12-16 points</b></li></ul>`},
+    {cls:"red", h:"Reverse", range:"17-18 pts · 6.5 NLTC", body:`<ul><li>${pill('reverse')} — <b>forcing for one round</b></li><li>It should <b>not involve a jump</b> in the new-suit bid — that's a jump shift instead</li><li>If a true reverse isn't possible, <b>don't fake one</b> — prefer 1NT, support, or rebidding your own suit instead</li><li>Reverses and jump shifts stay <b>on even after interference</b>, when still biddable</li><li>Reverses and jump bids used to show extra strength are also applicable <b>after responder has already forced to game</b></li></ul>`},
+    {h:"Jump in Same Suit", range:"15-18 pts · 6.5 NLTC", body:`<ul><li>Jump rebid in opener's own suit: <b>6+ cards, 15-18 points</b></li></ul>`},
+    {h:"Double Jump Rebid of Opener Suit", range:"19-21 pts", body:`<ul><li>A <b>double jump rebid</b> in opener's own suit shows <b>19-21 points</b></li></ul>`},
+    {h:"Jump in New Suit", range:"19-21 pts · 5.5 NLTC", body:`<ul><li>Jump rebid in a new suit: <b>19-21 points, game force</b></li></ul>`},
+    {h:"Game Try After a Fit", range:"6.5 losers or below", body:`<ul><li>${pill('helpSuitGameTry')} — after 1M-2M, opener needs <b>6.5 losers or below</b></li><li>Opener bids the <b>suit he needs help in</b>, where he holds <b>3 losers</b> in that suit</li><li>Responder with <b>2 or below losers</b> in that suit bids <b>game in the major</b></li><li>Responder with <b>more than 2 losers</b> in that suit bids the <b>3-level suit</b>, and opener passes</li></ul>`},
+    {cls:"gold", h:"After a 1NT Response", range:"Mandatory", body:`<ul><li>Opener <b>must rebid</b> — passing 1NT is not allowed here</li><li>${pill('gazzilli','2♣ Gazzilli')} — artificial, <b>15-16 pts</b>, 6.5 NLTC</li><li>Reverse — <b>17-18 pts</b>, 6.5 NLTC</li><li>2NT — also 17-18 (when reverse unavailable), 5.5 NLTC</li><li>Jump rebid in a new suit — <b>19-21 pts</b>, 5.5 NLTC</li><li>Any other suit bid — 12-14 pts</li></ul>`},
+    {cls:"gold", h:"After 2♣ — 2♦", range:"", body:`<ul><li>Opener rebids <b>any 6+ card suit</b> at the <b>cheapest level</b></li><li>With <b>no 6+ suit</b>, opener rebids <b>2NT</b> instead</li><li>Responder then continues with ${pill('puppetStayman')} or transfers</li></ul>`},
+    {h:"After a Transfer (1NT open)", range:"17+ pts", body:`<ul><li><b>Super-acceptance:</b> jump to the 3-level after responder's transfer</li><li>Needs <b>17 points and 4+ card support</b></li></ul>`},
+    {h:"Four-Way Transfers — Opener's Duty", range:"Any points", body:`<ul><li>${pill('fourWayTransfers')} — responder can transfer with <b>any point count</b> after 1NT or 2NT</li><li>A <b>minor-suit transfer always needs 6+ cards</b>; a <b>major-suit transfer can be 5+ cards</b></li><li>Opener must <b>mandatorily accept</b> and complete the transfer</li></ul>`},
+    {h:"After Interference over Responder's Major", range:"12-16 pts", body:`<ul><li>${pill('supportDouble')} — if responder has bid a 4+ card major and an opponent interferes</li><li>Opener's double or redouble shows <b>exactly 3-card support</b> for that major, <b>12-16 points</b></li></ul>`},
+  ],
+  responderRebid: [
+    {h:"Deciding the Final Contract", range:"", body:`<ul><li>Responder decides the <b>final level and strain</b> based on actual strength and Bergen points</li></ul>`},
+    {h:"Jump Rebid of Same Suit", range:"15+ pts", body:`<ul><li>Rebid of responder's own suit <b>with a jump</b> shows <b>15+ points</b></li><li>Promises a <b>6+ card suit</b></li></ul>`},
+    {h:"NT Rebid by Strength", range:"6-9 / 10-12 / 13+ pts", body:`<ul><li><b>1NT = 6-9 points</b></li><li><b>2NT = 10-12 points</b></li><li><b>3NT = 13+ points</b></li></ul>`},
+    {cls:"gold", h:"After Gazzilli", range:"10+ pts", body:`<ul><li>${pill('gazzilli')} 2♦ is artificial with <b>10+ points</b></li><li>Any other rebid is a <b>sign-off</b>, not interested in game</li></ul>`},
+    {cls:"red", h:"After a Reverse", range:"", body:`<ul><li>${pill('ingberman')} — sign off with an <b>artificial 2NT</b></li><li>Opener relays 3♣, and responder's next bid <b>signs off at the 3-level</b></li></ul>`},
+    {h:"After Opener's NT Rebid", range:"11+ pts for GF", body:`<ul><li>With <b>game force</b>, use ${pill('puppetStayman')} or a transfer</li><li>Otherwise, pass or rebid your own suit, which opener is expected to pass</li><li>After 1H/1S met by a 1NT rebid, go to Puppet Stayman/transfers with <b>11+ points</b></li></ul>`},
+    {cls:"gold", h:"Fourth Suit Forcing", range:"10+ pts · 8.5-7.5 NLTC", body:`<ul><li>${pill('fsf')} — <b>forcing one round</b>, no promised stopper, must be alerted</li><li>Opener with 15-16 bids <b>2NT</b> (game force, responder transfers/puppets)</li><li>Any other rebid is <b>12-14</b>, showing 3-card support for responder's major or extra length in a suit already shown</li></ul>`},
+    {cls:"muted", h:"New Minor Forcing (not played)", range:"10+ pts · 8.5-7.5 NLTC", body:`<ul><li>${pill('nmf')} — kept for <b>reference only</b></li><li><b>Not currently in the system</b></li></ul>`},
+  ],
+};
+
+function renderLadder(){
+  const wrap = document.getElementById('ladder');
+  const cols = [
+    ['opener',LADDER.opener,'grp-opener','① Opener Bid'],
+    ['responder',LADDER.responder,'grp-responder','② Responder Bid'],
+    ['openerRebid',LADDER.openerRebid,'grp-opener','③ Opener Rebid'],
+    ['responderRebid',LADDER.responderRebid,'grp-responder','④ Responder Rebid'],
+  ];
+  wrap.innerHTML = cols.map(([key,items,grp,label], idx)=>{
+    return `<div class="stage-block ${grp}${idx===0?' open':''}" data-stage="${key}">
+      <button class="stage-header" type="button" aria-expanded="${idx===0?'true':'false'}">
+        <span>${label}</span><span class="chev">▸</span>
+      </button>
+      <div class="stage-col ${grp}">${items.map(it=>`
+        <div class="bidcard ${it.cls||''}">
+          <h4>${it.h} ${it.range?`<span class="range">${it.range}</span>`:''}</h4>
+          ${it.body}
+        </div>`).join('')}</div>
+    </div>`;
+  }).join('');
+
+  wrap.querySelectorAll('.stage-header').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const block = btn.closest('.stage-block');
+      const willOpen = !block.classList.contains('open');
+      block.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+  });
+}
+
+/* ===================== RENDER: CONVENTIONS TABLE ===================== */
+function renderConvFilters(){
+  const wrap = document.getElementById('convFilter');
+  wrap.innerHTML = `<button data-cat="all" class="active">All Categories</button>` + CONV_CATS.map(c=>`<button data-cat="${c}">${c}</button>`).join('');
+  wrap.addEventListener('click', e=>{
+    if(e.target.tagName!=='BUTTON') return;
+    wrap.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    e.target.classList.add('active');
+    applyConvFilters();
+  });
+
+  const byWrap = document.getElementById('byFilter');
+  const BY_OPTIONS = ['All','Opener','Responder','Competitive'];
+  byWrap.innerHTML = BY_OPTIONS.map((b,i)=>`<button data-by="${b}" class="${i===0?'active':''}">${b}</button>`).join('');
+  byWrap.addEventListener('click', e=>{
+    if(e.target.tagName!=='BUTTON') return;
+    byWrap.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    e.target.classList.add('active');
+    applyConvFilters();
+  });
+}
+
+function applyConvFilters(){
+  const cat = document.querySelector('#convFilter button.active').dataset.cat;
+  const by = document.querySelector('#byFilter button.active').dataset.by;
+  renderConvTable(document.getElementById('convSearch').value, cat, by);
+  paintSuits(document.getElementById('convTable'));
+}
+
+function renderConvTable(filterText='', cat='all', by='All'){
+  const tbody = document.querySelector('#convTable tbody');
+  const ft = filterText.trim().toLowerCase();
+  const rows = Object.entries(CONVENTIONS).filter(([k,c])=>{
+    if(cat!=='all' && c.cat!==cat) return false;
+    if(by!=='All'){
+      if(by==='Competitive'){ if(c.by!=='Competitive') return false; }
+      else { if(c.by!==by && c.by!=='Either') return false; }
+    }
+    if(!ft) return true;
+    return (c.name+c.cat+c.by+c.trigger+c.meaning+c.pts).toLowerCase().includes(ft);
+  }).sort((a,b)=> a[1].name.localeCompare(b[1].name));
+  const byClass = by => by==='Opener' ? 'by-opener' : by==='Responder' ? 'by-responder' : by==='Competitive' ? 'by-competitive' : 'by-either';
+  tbody.innerHTML = rows.map(([k,c])=>{
+    const notInUse = c.cat.includes('not in use');
+    return `
+    <tr${notInUse ? ' class="dim-row"' : ''}>
+      <td class="conv-name">${c.name}</td>
+      <td><span class="cat-tag${notInUse?' notinuse':''}">${c.cat}</span></td>
+      <td><span class="by-tag ${byClass(c.by)}">${c.by}</span></td>
+      <td>${c.trigger}</td>
+      <td>${c.meaning}</td>
+      <td style="font-family:'Segoe UI',sans-serif; white-space:nowrap;">${c.pts}</td>
+    </tr>`;}).join('') || `<tr><td colspan="6" style="text-align:center; color:var(--ink-soft); padding:24px;">No conventions match that search.</td></tr>`;
+}
+
+/* ===================== RENDER: LTC TABLE ===================== */
+function renderLTC(){
+  const tbody = document.querySelector('#ltcTable tbody');
+  const parseFirstNum = s => {
+    const m = s.match(/[\d.]+/);
+    return m ? parseFloat(m[0]) : -Infinity;
+  };
+  const sortedRows = LTC_ROWS.slice().sort((a,b)=> parseFirstNum(a[1]) - parseFirstNum(b[1]));
+  tbody.innerHTML = sortedRows.map(r=>`
+    <tr>
+      <td>${r[0]}</td>
+      <td class="num">${r[1]}</td>
+      <td class="num">${r[2]}</td>
+      <td>${r[3]}</td>
+      <td>${r[4]}</td>
+    </tr>`).join('');
+}
+
+/* ===================== TOOLTIPS ===================== */
+const tooltipEl = document.getElementById('tooltip');
+function showTooltip(target){
+  const key = target.dataset.conv;
+  const c = CONVENTIONS[key];
+  if(!c) return;
+  tooltipEl.innerHTML = `<b>${c.name}</b>${c.short}`;
+  tooltipEl.classList.add('show');
+  const r = target.getBoundingClientRect();
+  let left = r.left;
+  let top = r.bottom + 8;
+  const maxLeft = window.innerWidth - 300;
+  if(left>maxLeft) left = maxLeft;
+  if(top > window.innerHeight - 140){ top = r.top - 100; }
+  tooltipEl.style.left = left+'px';
+  tooltipEl.style.top = top+'px';
+}
+function hideTooltip(){ tooltipEl.classList.remove('show'); }
+
+document.addEventListener('mouseover', e=>{
+  const t = e.target.closest('.pill');
+  if(t) showTooltip(t);
+});
+document.addEventListener('mouseout', e=>{
+  const t = e.target.closest('.pill');
+  if(t) hideTooltip();
+});
+document.addEventListener('focusin', e=>{
+  const t = e.target.closest('.pill');
+  if(t) showTooltip(t);
+});
+document.addEventListener('focusout', e=>{
+  const t = e.target.closest('.pill');
+  if(t) hideTooltip();
+});
+document.addEventListener('click', e=>{
+  const t = e.target.closest('.pill');
+  if(t){ showTooltip(t); setTimeout(hideTooltip, 3500); }
+});
+
+/* ===================== TABS ===================== */
+document.getElementById('tabs').addEventListener('click', e=>{
+  if(e.target.tagName!=='BUTTON') return;
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+e.target.dataset.tab).classList.add('active');
+});
+
+/* ===================== SEARCH ===================== */
+document.getElementById('convSearch').addEventListener('input', e=>{
+  applyConvFilters();
+});
+
+/* ===================== HAND TRAINER ===================== */
+const SUITS = [
+  {key:'S', sym:'♠', color:'black'},
+  {key:'H', sym:'♥', color:'red'},
+  {key:'D', sym:'♦', color:'red'},
+  {key:'C', sym:'♣', color:'black'},
+];
+const RANKS = ['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
+const RANK_LABEL = {T:'10'};
+const HCP_VALUE = {A:4,K:3,Q:2,J:1};
+const HONOR_TOP5 = ['A','K','Q','J','T'];
+
+let currentHand = null; // { S:[ranks desc], H:[...], D:[...], C:[...] }
+
+function dealRandomHand(){
+  const deck = [];
+  SUITS.forEach(s => RANKS.forEach(r => deck.push(s.key+r)));
+  // Fisher-Yates shuffle
+  for(let i=deck.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]] = [deck[j],deck[i]];
+  }
+  const dealt = deck.slice(0,13);
+  const hand = {S:[],H:[],D:[],C:[]};
+  dealt.forEach(card=>{
+    hand[card[0]].push(card.slice(1));
+  });
+  SUITS.forEach(s => hand[s.key].sort((a,b)=> RANKS.indexOf(a)-RANKS.indexOf(b)));
+  return hand;
+}
+
+function isDubious(holding){
+  // holding: array of ranks for one suit
+  const n = holding.length;
+  if(n===1){
+    return ['K','Q','J'].includes(holding[0]);
+  }
+  if(n===2){
+    const set = new Set(holding);
+    const isPair = (a,b) => set.size===2 && set.has(a) && set.has(b);
+    if(isPair('K','Q') || isPair('A','J') || isPair('K','J') || isPair('Q','J')) return true;
+    const isLow = r => !['A','K','Q','J'].includes(r);
+    if(set.has('Q') && !set.has('J') && !set.has('K') && !set.has('A') && holding.some(isLow)) return true;
+    if(set.has('J') && !set.has('Q') && !set.has('K') && !set.has('A') && holding.some(isLow)) return true;
+  }
+  return false;
+}
+
+function computeBergenStart(hand){
+  let hcp=0, length=0, suitQ=0, dubious=0;
+  SUITS.forEach(s=>{
+    const holding = hand[s.key];
+    holding.forEach(r=>{ hcp += HCP_VALUE[r]||0; });
+    if(holding.length>=5) length += (holding.length-4);
+    if(holding.length>=4){
+      const topCount = holding.filter(r=>HONOR_TOP5.includes(r)).length;
+      if(topCount>=3) suitQ += 1;
+    }
+    if(isDubious(holding)) dubious += 1;
+  });
+  return {hcp, length, suitQ, dubious, total: hcp+length+suitQ-dubious};
+}
+
+function suitLosers(holding){
+  // Look at only the top 3 cards of the suit: missing A = 1.5, missing K = 1, missing Q = 0.5
+  const checks = Math.min(holding.length, 3);
+  const order = ['A','K','Q'];
+  const value = {A:1.5, K:1, Q:0.5};
+  let losers = 0;
+  for(let i=0;i<checks;i++){
+    const r = order[i];
+    if(!holding.includes(r)) losers += value[r];
+  }
+  return losers;
+}
+
+function computeNLTC(hand){
+  let total = 0;
+  const bySuit = {};
+  SUITS.forEach(s=>{
+    const l = suitLosers(hand[s.key]);
+    bySuit[s.key] = l;
+    total += l;
+  });
+  return {total, bySuit};
+}
+
+function renderHandDisplay(hand){
+  const el = document.getElementById('handDisplay');
+  el.innerHTML = SUITS.map(s=>{
+    const holding = hand[s.key];
+    const ranksStr = holding.length ? holding.map(r=>RANK_LABEL[r]||r).join(' ') : '—';
+    return `<div class="suit-line ${s.color}"><span class="sym">${s.sym}</span><span class="ranks">${ranksStr}</span></div>`;
+  }).join('');
+}
+
+document.getElementById('dealHandBtn').addEventListener('click', ()=>{
+  currentHand = dealRandomHand();
+  renderHandDisplay(currentHand);
+  document.getElementById('handCheckRow').style.display = 'flex';
+  document.getElementById('handGuessInput').value = '';
+  document.getElementById('nltcGuessInput').value = '';
+  document.getElementById('handResult').innerHTML = '';
+});
+
+document.getElementById('checkHandBtn').addEventListener('click', ()=>{
+  if(!currentHand) return;
+  const pointsRaw = document.getElementById('handGuessInput').value;
+  const nltcRaw = document.getElementById('nltcGuessInput').value;
+  if(pointsRaw==='' && nltcRaw===''){ return; }
+  const resultEl = document.getElementById('handResult');
+  let html = '';
+
+  if(pointsRaw !== ''){
+    const guess = parseFloat(pointsRaw);
+    const b = computeBergenStart(currentHand);
+    const correct = Math.abs(guess - b.total) < 0.001;
+    html += `
+    <div class="result-box ${correct?'correct':'wrong'}">
+      ${correct ? '✅ Correct! ' : '❌ Not quite. '} The starting points for this hand are <b>${b.total}</b>.
+      <div class="breakdown">HCP ${b.hcp} + Length ${b.length} + Suit Quality ${b.suitQ} − Dubious Honours ${b.dubious} = ${b.total}</div>
+    </div>`;
+  }
+
+  if(nltcRaw !== ''){
+    const guessN = parseFloat(nltcRaw);
+    const n = computeNLTC(currentHand);
+    const correctN = Math.abs(guessN - n.total) < 0.001;
+    const bySuitStr = SUITS.map(s=>`${s.sym} ${n.bySuit[s.key]}`).join('  ·  ');
+    html += `
+    <div class="result-box ${correctN?'correct':'wrong'}" style="margin-top:8px;">
+      ${correctN ? '✅ Correct! ' : '❌ Not quite. '} The NLTC losers for this hand are <b>${n.total}</b>.
+      <div class="breakdown">By suit — ${bySuitStr}</div>
+    </div>`;
+  }
+
+  resultEl.innerHTML = html;
+  paintSuits(resultEl);
+});
+
+/* ===================== SUIT COLOURING ===================== */
+/* Colours every ♥/♦ red and every ♠/♣ black across the whole dashboard,
+   except inside the decorative header (dark background) and anything
+   already explicitly coloured. */
+function paintSuits(root){
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node){
+      if(!node.nodeValue || !/[♠♥♦♣]/.test(node.nodeValue)) return NodeFilter.FILTER_SKIP;
+      const el = node.parentElement;
+      if(!el) return NodeFilter.FILTER_SKIP;
+      if(el.closest('script, style, .suit-row, .s-red, .s-black, .pill, th')) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes = [];
+  let n;
+  while((n = walker.nextNode())) nodes.push(n);
+  nodes.forEach(node=>{
+    const frag = document.createDocumentFragment();
+    node.nodeValue.split(/([♠♥♦♣])/).forEach(part=>{
+      if(part === '♥' || part === '♦'){
+        const span = document.createElement('span');
+        span.className = 's-red';
+        span.textContent = part;
+        frag.appendChild(span);
+      } else if(part === '♠' || part === '♣'){
+        const span = document.createElement('span');
+        span.className = 's-black';
+        span.textContent = part;
+        frag.appendChild(span);
+      } else if(part){
+        frag.appendChild(document.createTextNode(part));
+      }
+    });
+    node.parentNode.replaceChild(frag, node);
+  });
+}
+
+/* ===================== INIT ===================== */
+renderLadder();
+renderConvFilters();
+renderConvTable();
+renderLTC();
+paintSuits(document.body);
+</script>
+</body>
+</html>
