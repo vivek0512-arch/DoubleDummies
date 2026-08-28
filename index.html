@@ -134,6 +134,24 @@ nav.tabs button.active{
 main{max-width:1180px; margin:0 auto; padding:0 20px; position:relative; z-index:1;}
 .panel{display:none;}
 .panel.active{display:block; animation:fade .18s ease-out;}
+
+/* ---------- Sub-tabs (nested within a tab) ---------- */
+nav.subtabs{
+  display:flex; gap:8px; flex-wrap:wrap; margin:0 0 24px;
+  padding-bottom:14px; border-bottom:1px solid rgba(0,201,167,.3);
+}
+nav.subtabs button{
+  font-family:'Segoe UI',sans-serif; font-weight:700; font-size:13px;
+  color:#cfe3d8; background:rgba(0,201,167,.1); border:1px solid rgba(0,201,167,.35);
+  padding:9px 18px; border-radius:999px; cursor:pointer; transition:.18s;
+}
+nav.subtabs button:hover{background:rgba(0,201,167,.2); color:#fff;}
+nav.subtabs button.active{
+  background:linear-gradient(90deg, var(--teal), var(--cyan)); color:#04241d; border-color:transparent;
+  box-shadow:var(--glow-teal);
+}
+.subpanel{display:none;}
+.subpanel.active{display:block; animation:fade .18s ease-out;}
 @keyframes fade{from{opacity:0;} to{opacity:1;}}
 
 .section-head{margin:0 0 22px;}
@@ -465,6 +483,54 @@ table.preempt-table td{font-weight:600;}
 .hand-result .result-box.wrong{background:rgba(255,61,110,.14); border:1px solid rgba(255,61,110,.5); color:#7a0f30;}
 .hand-result .breakdown{margin-top:6px; font-size:12.5px; color:var(--ink-soft);}
 
+/* ---------- Bridge scoring quiz ---------- */
+#scoringQuizCard button{
+  font-family:'Segoe UI',sans-serif; font-weight:700; font-size:13px; cursor:pointer;
+  border:none; border-radius:999px; padding:9px 18px; transition:.15s;
+}
+#dealScoreBtn{
+  background:linear-gradient(90deg, var(--red), var(--violet)); color:#fff;
+  box-shadow:0 4px 16px -4px rgba(255,61,110,.5);
+}
+#dealScoreBtn:hover{transform:translateY(-1px); box-shadow:0 6px 20px -4px rgba(255,61,110,.7);}
+#checkScoreBtn{background:linear-gradient(90deg, var(--gold), #ff8a3d); color:#241b06; box-shadow:0 4px 16px -4px rgba(255,176,32,.55);}
+#checkScoreBtn:hover{transform:translateY(-1px); box-shadow:0 6px 20px -4px rgba(255,176,32,.75);}
+.score-deal-display{
+  margin-top:14px; display:none; flex-direction:column; gap:6px;
+  background:rgba(255,255,255,.55); border:1px solid var(--card-line); border-radius:10px;
+  padding:14px 16px; font-family:'Segoe UI',sans-serif;
+}
+.score-deal-display.show{display:flex;}
+
+.calc-grid{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:14px; align-items:end;
+}
+.calc-field{display:flex; flex-direction:column; gap:5px;}
+.calc-field label{font-size:11.5px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em;}
+.calc-field select, .calc-field input[type=number]{
+  padding:9px 12px; border-radius:8px; border:1px solid var(--card-line);
+  font-family:'Segoe UI',sans-serif; font-size:14px; color:var(--ink); background:#fffdf7;
+}
+.calc-field select:focus, .calc-field input[type=number]:focus{outline:2px solid var(--violet);}
+.calc-field-btn{justify-content:flex-end;}
+#calcScoreBtn{
+  width:100%; font-family:'Segoe UI',sans-serif; font-weight:700; font-size:13px; cursor:pointer;
+  border:none; border-radius:8px; padding:10px 14px; transition:.15s;
+  background:linear-gradient(90deg, var(--teal), var(--cyan)); color:#04241d;
+  box-shadow:0 4px 16px -4px rgba(0,201,167,.5);
+}
+#calcScoreBtn:hover{transform:translateY(-1px); box-shadow:0 6px 20px -4px rgba(0,201,167,.7);}
+@media (max-width:820px){
+  .calc-grid{grid-template-columns:1fr 1fr;}
+}
+
+.score-deal-display .contract-line{font-size:19px; font-weight:800; color:var(--ink);}
+.score-deal-display .meta-line{font-size:13px; color:var(--ink-soft);}
+.score-deal-display .result-line{font-size:14px; font-weight:700;}
+.score-deal-display .result-line.made{color:#00594c;}
+.score-deal-display .result-line.down{color:#7a0f30;}
+
+
 
 footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px; font-family:'Segoe UI',sans-serif;}
 </style>
@@ -489,6 +555,7 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   <button data-tab="defence">Defence</button>
   <button data-tab="principles">Principles &amp; Notes</button>
   <button data-tab="teamsimps">Teams / IMPS</button>
+  <button data-tab="scoring">Bridge Scoring</button>
 </nav>
 
 <main>
@@ -510,7 +577,7 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
     <p>Every convention referenced in the team's Unlearnings Checklist, with its trigger, meaning, and the points/losing-trick range that goes with it.</p>
   </div>
   <div class="search-wrap">
-    <input type="text" id="convSearch" placeholder="Search a convention — e.g. Gazzilli, Kickback, Splinter…">
+    <input type="text" id="convSearch" placeholder="Search a convention — e.g. Reverse, Kickback, Splinter…">
   </div>
   <div class="chipfilter" id="byFilter" style="margin-bottom:10px;"></div>
   <div class="chipfilter" id="convFilter" style="margin-bottom:16px;"></div>
@@ -546,6 +613,11 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
         <ul>
           <li>Flatness: −1 if your hand has ≥2 cards in every suit (suit contract); −1 only with 4333 shape in an NT contract</li>
           <li>Honour adjustment: count (Aces+Tens) minus (Queens+Jacks). Difference &gt;2 → +1 HCP, &gt;5 → +2 HCP; &lt;−2 → −1 HCP, &lt;−5 → −2 HCP (Aces and Tens are undervalued; Queens and Jacks are overvalued)</li>
+          <li><b>Honours opposite partner shortness are wasted</b></li>
+          <li><b>Shortness opposite partner honours are also wasted</b></li>
+          <li><b>Honours (other than the Ace) opposite an opponent's long suit are also wastage</b></li>
+          <li><b>Length in an opponent's suit is also wasted</b>, since you can't develop your own long suits with your partner</li>
+          <li>If partner <b>takeout doubles</b> and you have <b>more losers in that opponent suit</b> (implying no wasted values opposite partner's shortness), it's <b>good for us</b> and we can <b>stretch bidding</b></li>
         </ul>
       </div>
     </div>
@@ -650,6 +722,14 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   <div class="section-head">
     <h2>Overcalls, Doubles &amp; Competitive Auctions</h2>
     <p>How the partnership competes once an opponent has entered the auction.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <h3>How to Identify a Takeout Double from a Penalty Double?</h3>
+    <ul>
+      <li>For contracts at the <b>3-level or below</b>: if the double is the <b>very first double</b> made by you or partner in the auction, it can <b>never be for penalty</b> — it's always <b>takeout</b></li>
+      <li>For contracts at the <b>4-level or above</b> (and <b>3NT</b>) by the opponents: <b>all doubles are for penalty</b></li>
+    </ul>
   </div>
 
   <div class="grid2">
@@ -760,16 +840,16 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
 
   <div class="card" style="margin-top:16px;">
     <h3><span class="pill p2" data-conv="leapingMichaels">Leaping Michaels</span> — Full Structure</h3>
-    <p>What our 4♣, 4♦, or Double shows, depending on what the opponent opened.</p>
+    <p>What our 4♣ or 4♦ shows, depending on what the opponent opened.</p>
     <div class="ref-table-wrap">
       <table class="ref-table leaping-table">
-        <thead><tr><th>Opponent Opens</th><th>Our 4♣</th><th>Our 4♦</th><th>Our Double</th></tr></thead>
+        <thead><tr><th>Opponent Opens</th><th>Our 4♣</th><th>Our 4♦</th></tr></thead>
         <tbody>
-          <tr><td class="rowhead"><span class="s-red">2♦</span> / <span class="s-red">3♦</span> (weak)</td><td><span class="s-black">♣</span> + a major (partner bids <span class="s-red">4♦</span> for us to choose the major)</td><td>Both majors</td><td class="na">—</td></tr>
-          <tr><td class="rowhead"><span class="s-red">2♦</span> (Multi, showing a major)</td><td><span class="s-black">♣</span> + a major</td><td><span class="s-red">♦</span> + a major</td><td class="na">—</td></tr>
-          <tr><td class="rowhead"><span class="s-red">2♥</span> / <span class="s-red">3♥</span></td><td><span class="s-black">♣</span> + <span class="s-black">♠</span></td><td><span class="s-red">♦</span> + <span class="s-black">♠</span></td><td>After <span class="s-red">3♥</span>, double shows the minors <i>(tentative)</i></td></tr>
-          <tr><td class="rowhead"><span class="s-black">2♠</span> / <span class="s-black">3♠</span></td><td><span class="s-black">♣</span> + <span class="s-red">♥</span></td><td><span class="s-red">♦</span> + <span class="s-red">♥</span></td><td>After <span class="s-black">3♠</span>, double shows the minors <i>(tentative)</i></td></tr>
-          <tr><td class="rowhead"><span class="s-black">2♣</span> (preempt) / <span class="s-black">3♣</span></td><td>Both majors</td><td><span class="s-red">♦</span> + a major</td><td class="na">—</td></tr>
+          <tr><td class="rowhead"><span class="s-red">2♦</span> / <span class="s-red">3♦</span> (weak)</td><td><span class="s-black">♣</span> + a major (partner bids <span class="s-red">4♦</span> for us to choose the major)</td><td>Both majors</td></tr>
+          <tr><td class="rowhead"><span class="s-red">2♦</span> (Multi, showing a major)</td><td><span class="s-black">♣</span> + a major</td><td><span class="s-red">♦</span> + a major</td></tr>
+          <tr><td class="rowhead"><span class="s-red">2♥</span> / <span class="s-red">3♥</span></td><td><span class="s-black">♣</span> + <span class="s-black">♠</span></td><td><span class="s-red">♦</span> + <span class="s-black">♠</span></td></tr>
+          <tr><td class="rowhead"><span class="s-black">2♠</span> / <span class="s-black">3♠</span></td><td><span class="s-black">♣</span> + <span class="s-red">♥</span></td><td><span class="s-red">♦</span> + <span class="s-red">♥</span></td></tr>
+          <tr><td class="rowhead"><span class="s-black">2♣</span> (preempt) / <span class="s-black">3♣</span></td><td>Both majors</td><td><span class="s-red">♦</span> + a major</td></tr>
         </tbody>
       </table>
     </div>
@@ -849,6 +929,7 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
             <li>Favour a <b>trump lead against two-suited hands</b> like Michaels or Unusual 2NT, unless the opponents clearly have a big fit</li>
             <li>If <b>declarer is not drawing trumps</b>, we should draw them ourselves</li>
             <li>If declarer's contract involves a <b>preempt bid</b>, or declarer has made a <b>sacrifice over our game</b>, <b>lead trumps and draw them</b></li>
+            <li>If we've <b>penalty doubled</b> the opponents, <b>lead trumps</b></li>
           </ul>
         </li>
         <li>
@@ -924,7 +1005,13 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   </div>
   <ul class="principle-list">
     <li><b>Slow and fast arrival —</b> with strong hands, show strength first and fit second; bid slowly with strong hands, fast with weaker ones. E.g. 1♠–4♠ is a weak hand with no slam interest; 1♠–2♣–2♦–4♠ is strong.</li>
-    <li><b>Never lie about strength —</b> when you can lie temporarily about shape instead. For example, opener's rebid of the same suit may sometimes be with only a 5-carder.</li>
+    <li><b>Never lie about strength —</b> when you can lie temporarily about shape instead. For example, opener's rebid of the same suit may sometimes be with only a 5-carder.
+      <ul style="margin-top:8px; padding-left:20px; font-weight:400;">
+        <li><b>Example 1:</b> Opener has 4432 shape with 12-14 points in S-H-D-C. Opener opens 1♦ and responder bids 1NT. Now opener's rebid can only be 2♣, with a doubleton. Any other rebid becomes a reverse — we shouldn't lie about strength (lying about shape is OK).</li>
+        <li><b>Example 2:</b> Opener has 4522 shape with 12-14 points in S-H-D-C. Opener opens 1♥ and responder bids 1NT. Now opener's rebid can only be 2♣ or 2♦, with a doubleton. Any other rebid becomes a reverse — we shouldn't lie about strength (lying about shape is OK).</li>
+        <li><b>Example 3:</b> When partner has <b>game-forced</b> the auction, opener can rebid in <b>NT with an unbalanced hand</b> if any other available bid would become a reverse.</li>
+      </ul>
+    </li>
     <li><b>If opener has to lie, prefer lying about shape, not strength —</b> rebidding the opened suit with a 5-carder as if it were a 6-carder is a smaller error than reversing or rebidding 1NT, since they falsely claim higher strength or a balanced hand when the hand is actually unbalanced and not strong — a far more serious misdescription.</li>
     <li><b>Responder is the temporizer, opener is the describer —</b> responder cannot jump to show values, but opener can.</li>
     <li><b>Once partner has passed —</b> any subsequent bids by you or by your partner will be a King (3 points) shy of what that bid usually promises.</li>
@@ -1009,6 +1096,192 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   </div>
 </section>
 
+<!-- ======================= BRIDGE SCORING ======================= -->
+<section class="panel" id="panel-scoring">
+  <div class="section-head">
+    <h2>Bridge Scoring</h2>
+    <p>How duplicate bridge is scored — contract points, overtricks, bonuses, and penalties — plus a live quiz and calculator to test yourself.</p>
+  </div>
+
+  <nav class="subtabs" id="scoringSubtabs">
+    <button data-subtab="methodology" class="active">Scoring Methodology</button>
+    <button data-subtab="quiz">Quiz Yourself on Deal Scores</button>
+    <button data-subtab="calculator">Enter Deal and Calculate Score</button>
+  </nav>
+
+  <div class="subpanel active" id="subpanel-methodology">
+  <div class="grid2">
+    <div class="card">
+      <h3>Contract (Trick) Points</h3>
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead><tr><th></th><th>Undoubled</th><th>Doubled</th><th>Redoubled</th></tr></thead>
+          <tbody>
+            <tr><td class="rowhead">Major</td><td>30/trick</td><td>60/trick</td><td>120/trick</td></tr>
+            <tr><td class="rowhead">Minor</td><td>20/trick</td><td>40/trick</td><td>80/trick</td></tr>
+            <tr><td class="rowhead">NT</td><td>40, then 30</td><td>80, then 60</td><td>160, then 120</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">NT: the first odd trick is worth 40 (undoubled); every trick after that is 30 — then doubled/redoubled as usual.</div>
+    </div>
+
+    <div class="card">
+      <h3>Overtrick Points</h3>
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead><tr><th></th><th>Non-Vulnerable</th><th>Vulnerable</th></tr></thead>
+          <tbody>
+            <tr><td class="rowhead">Undoubled</td><td>30 (NT/Major), 20 (Minor)</td><td>30 (NT/Major), 20 (Minor)</td></tr>
+            <tr><td class="rowhead">Doubled</td><td>100 / overtrick</td><td>200 / overtrick</td></tr>
+            <tr><td class="rowhead">Redoubled</td><td>200 / overtrick</td><td>400 / overtrick</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Bonus for making a Part Score / Game / Slams</h3>
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead><tr><th></th><th>Part Score</th><th>Game</th><th>Small Slam</th><th>Grand Slam</th></tr></thead>
+          <tbody>
+            <tr><td class="rowhead">Any Strain</td><td>50</td><td>300 (NV) / 500 (V)</td><td>500 (NV) / 750 (V)</td><td>1000 (NV) / 1500 (V)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">The slam bonus is <b>on top of</b> the game bonus — a made slam always scores both.</div>
+    </div>
+
+    <div class="card">
+      <h3>Insult Bonus</h3>
+      <p style="margin-bottom:0;">Declarer side only, when the contract is made (not for the defending side):</p>
+      <div class="ref-table-wrap" style="margin-top:8px;">
+        <table class="ref-table">
+          <thead><tr><th>Doubled</th><th>Redoubled</th></tr></thead>
+          <tbody>
+            <tr><td>50</td><td>100</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Undertrick Penalties</h3>
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead><tr><th>Undertrick</th><th>Undbl (NV)</th><th>Dbl (NV)</th><th>Rdbl (NV)</th><th>Undbl (V)</th><th>Dbl (V)</th><th>Rdbl (V)</th></tr></thead>
+          <tbody>
+            <tr><td class="rowhead">1st</td><td>50</td><td>100</td><td>200</td><td>100</td><td>200</td><td>400</td></tr>
+            <tr><td class="rowhead">2nd, 3rd</td><td>50</td><td>200</td><td>400</td><td>100</td><td>300</td><td>600</td></tr>
+            <tr><td class="rowhead">4th+</td><td>50</td><td>300</td><td>600</td><td>100</td><td>300</td><td>600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Doubling/Redoubling "Into" Game</h3>
+    <ul>
+      <li>If the <b>contract/trick points</b> applicable for the doubled/redoubled contract are <b>≥100</b>, we're also eligible for the bonus applicable for making a <b>game</b></li>
+      <li>Doubling into game — <b>2M doubled, 3m doubled, 2NT doubled</b> all get the game bonus if made</li>
+      <li>The sillier the opponents' double, the more points you get. <b>2♠ doubled NV making 4</b> is worth <b>670</b> (2×2×30 for tricks + 300 "into" NV game bonus + 100×2 doubled overtricks + 50 insult), but <b>4♠ doubled making 4</b> is only <b>590</b> (4×2×30 + 300 game bonus + 50 insult) — once doubled into game, <b>there's no reason to bid on</b> unless you think slam is there</li>
+      <li>The "into game" bonus applies whenever the regular trick score reaches 100+ once doubled — e.g. 2♠ doubled (→4♠=game), 3♣ doubled (→6♣=game), or 2NT doubled</li>
+      <li><b>Doubling into slam is not rewarded with a slam bonus</b></li>
+    </ul>
+    <div class="note">
+      <b>Examples:</b><br>
+      1♠ doubled making 1 = 30×2 + 50 insult + 50 partscore = <b>160</b><br>
+      2♠ doubled making 3 (Vul) = 60×2 + 200 doubled overtrick + 500 Vul game bonus + 50 insult = <b>870</b><br>
+      5♦ doubled making 5 (NV) = 100×2 + 50 insult + 300 game = <b>550</b>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Scoring Redoubled Contracts</h3>
+    <p>Same idea as doubled, at double the rate. If the redouble is "into game," the game bonus (300 NV / 500 V) is still given — e.g. 1♠ redoubled (→4♠=game), 2♣ redoubled (→8♣=game), or 1NT redoubled. <b>Redoubling into slam is not rewarded with a slam bonus.</b></p>
+    <div class="note">
+      <b>Examples:</b><br>
+      1♣ redoubled making 2 (NV) = 20×4 + 100 insult + 50 partscore + 200 overtrick = <b>430</b><br>
+      2♠ redoubled making 3 (Vul) = 60×4 + 400 doubled overtrick + 500 game bonus + 100 insult = <b>1240</b><br>
+      5♦ redoubled making 5 (NV) = 100×4 + 100 insult + 300 game = <b>800</b>
+    </div>
+  </div>
+
+  </div>
+
+  <div class="subpanel" id="subpanel-quiz">
+  <div class="section-head" style="margin-top:0;">
+    <h2>Quiz Yourself on Deal Scores</h2>
+    <p>Deal a random result and work out your side's score before checking.</p>
+  </div>
+
+  <div class="card" id="scoringQuizCard">
+    <button id="dealScoreBtn" type="button">🎲 Deal a Random Result</button>
+    <div id="scoreDealDisplay" class="score-deal-display"></div>
+    <div id="scoreCheckRow" class="hand-check-row" style="display:none;">
+      <label for="scoreGuessInput">Declarer side's score (use a minus sign if they went down):</label>
+      <input type="number" id="scoreGuessInput" inputmode="numeric" placeholder="e.g. 420 or -100">
+      <button id="checkScoreBtn" type="button">Check</button>
+    </div>
+    <div id="scoreResult" class="hand-result"></div>
+  </div>
+  </div>
+
+  <div class="subpanel" id="subpanel-calculator">
+  <div class="section-head" style="margin-top:0;">
+    <h2>Enter Deal and Calculate Score</h2>
+    <p>Pick the contract and result yourself, and get a full line-by-line breakdown of the score.</p>
+  </div>
+
+  <div class="card" id="scoreCalcCard">
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label for="calcLevel">Level</label>
+        <select id="calcLevel">
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label for="calcStrain">Strain</label>
+        <select id="calcStrain">
+          <option value="C">♣ Clubs</option>
+          <option value="D">♦ Diamonds</option>
+          <option value="H">♥ Hearts</option>
+          <option value="S">♠ Spades</option>
+          <option value="N">NT</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label for="calcDoubled">Doubled?</label>
+        <select id="calcDoubled">
+          <option value="0">Undoubled</option>
+          <option value="1">Doubled</option>
+          <option value="2">Redoubled</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label for="calcVul">Vulnerability</label>
+        <select id="calcVul">
+          <option value="0">Non-Vulnerable</option>
+          <option value="1">Vulnerable</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label for="calcTricks">Tricks Taken by Declarer</label>
+        <input type="number" id="calcTricks" min="0" max="13" placeholder="e.g. 9">
+      </div>
+      <div class="calc-field calc-field-btn">
+        <button id="calcScoreBtn" type="button">🧮 Calculate Score</button>
+      </div>
+    </div>
+    <div id="calcResult" class="hand-result"></div>
+  </div>
+  </div>
+</section>
+
 </main>
 
 <div id="tooltip"></div>
@@ -1027,7 +1300,7 @@ const CONVENTIONS = {
   mathe:           {name:"Mathe", cat:"Defense vs 2♣", by:"Competitive", trigger:"Over an opponent's strong/artificial 2♣", meaning:"Interference structure over the opponent's 2♣. Our 2♦ = hearts and spades. Our 2♥ = hearts and a minor. Our 2♠ = spades and a minor. Our 2NT = both minors. Any bid at the 3-level = a natural 6+ card suit.", pts:"9+ (8.5 NLTC)", short:"Interference over an opponent's strong 2♣: 2♦=both majors, 2♥=hearts+minor, 2♠=spades+minor, 2NT=both minors, 3-level=natural 6+ suit."},
   michaels:        {name:"Michaels Cue Bid", cat:"Overcall", by:"Competitive", trigger:"Cue bid of opener's own suit", meaning:"5-5 two-suiter. 2♣ over 1♣ promises 5+ in both majors; 2♦ over 1♦ promises 5+ in both majors. 2♥ over 1♥ promises 5+ in spades and a minor; 2♠ over 1♠ promises 5+ in hearts and a minor.", pts:"9+ (7.5 NLTC)", short:"A cue bid of opener's suit — 5-5 two-suiter. Over a minor, shows both majors; over a major, shows the other major plus a minor."},
   unusual2NT:      {name:"Unusual 2NT", cat:"Overcall", by:"Competitive", trigger:"2NT overcall after a 1-level opening", meaning:"Shows the two lowest unbid suits, 5-5.", pts:"9+ (7.5 NLTC)", short:"Overcall showing 5-5 in the two lowest unbid suits."},
-  leapingMichaels: {name:"Leaping Michaels", cat:"Overcall", by:"Competitive", trigger:"4♣ / 4♦ / Double over an opponent's weak-two or 3-level preempt", meaning:"Shows a two-suited hand, near game-force strength — the exact suits shown depend on what the opponent opened. See the dedicated Leaping Michaels table for the full structure.", pts:"18+ (6.5-5.5 NLTC)", short:"4♣/4♦/Double over an opponent's weak preempt — two-suiter, essentially game force. Exact suits depend on their opening (see table)."},
+  leapingMichaels: {name:"Leaping Michaels", cat:"Overcall", by:"Competitive", trigger:"4♣ / 4♦ over an opponent's weak-two or 3-level preempt", meaning:"Shows a two-suited hand, near game-force strength — the exact suits shown depend on what the opponent opened. See the dedicated Leaping Michaels table for the full structure.", pts:"18+ (6.5-5.5 NLTC)", short:"4♣/4♦ over an opponent's weak preempt — two-suiter, essentially game force. Exact suits depend on their opening (see table)."},
   negativeDouble:  {name:"Negative Double", cat:"Competitive", by:"Competitive", trigger:"Partner opens, opponent overcalls, we double", meaning:"Shows 4+ cards in the unbid major(s) — not a penalty double, even at the 3-level.", pts:"6+/9+/12+ by level", short:"Shows 4+ cards in the unbid major(s) after partner opens and an opponent overcalls."},
   leadDirectingDouble:{name:"Lead-Directing Double", cat:"Competitive", by:"Competitive", trigger:"Double of an artificial bid", meaning:"Asks partner to lead that suit — needs no alert.", pts:"—", short:"Doubling an artificial bid asks partner to lead that suit."},
   kickback:        {name:"Kickback", cat:"Slam Try", by:"Either", trigger:"A bid at the 4-level, one step below the agreed trump suit", meaning:"Key-card ask keyed to the trump suit rather than always 4NT — saves bidding space and avoids Blackwood ambiguity. Handling interference: DEPO.", pts:"—", short:"Key-card ask pitched one level below 4NT, keyed to the agreed trump suit."},
@@ -1035,18 +1308,17 @@ const CONVENTIONS = {
   pickASlam5NT:    {name:"5NT — Pick a Slam", cat:"Slam Try", by:"Either", trigger:"5NT after establishing a fit or a 4-card suit", meaning:"Asks partner to choose the slam denomination.", pts:"—", short:"Asks partner to pick the denomination for the slam."},
   balancingSeat:   {name:"Balancing in Passout Seat", cat:"Competitive", by:"Competitive", trigger:"Passout (4th) seat, after 1NT-P-P or similar", meaning:"2NT shows both minors, Double shows both majors, bidding your own suit shows 5+ cards.", pts:"6+ starting points, or 2+ shortness points", short:"In the passout seat: 2NT=minors, Double=majors, own suit=5+ cards."},
   jacoby2NT:       {name:"Jacoby 2NT", cat:"Slam Try", by:"Responder", trigger:"2NT response to partner's major-suit opening", meaning:"Forcing raise, slam invitational in the suit contract with a balanced-ish hand.", pts:"15+ (losers matter more than points)", short:"Forcing raise of partner's major — sets up a slam-going auction."},
-  splinter:        {name:"Splinter Bid", cat:"Slam Try", by:"Responder", trigger:"Double-jump response, showing a void or singleton", meaning:"Slam invite in a suit contract, showing shortness in the bid suit.", pts:"15+ (losers matter more than points)", short:"Double-jump response showing a singleton/void — a slam try with shortness."},
+  splinter:        {name:"Splinter Bid", cat:"Slam Try", by:"Responder", trigger:"Double-jump response, showing a void or singleton", meaning:"Slam invite in a suit contract, showing shortness in the bid suit. Off when there is interference.", pts:"15+ (losers matter more than points)", short:"Double-jump response showing a singleton/void — a slam try with shortness. Off when opponents interfere."},
   helpSuitGameTry: {name:"Help Suit Game Try", cat:"Game Try", by:"Opener", trigger:"After 1M–2M, opener rebids a new suit at the 3-level", meaning:"Opener needs 6.5 losers or below, and bids the suit he needs help in — where he holds exactly 3 losers. Responder bids game in the major with 2 or below losers in that suit; otherwise responder bids the 3-level suit and opener passes.", pts:"6.5 losers or below (opener)", short:"After a major fit, opener's new-suit bid at the 3-level (6.5 losers or below, 3 losers in that suit) asks for help there."},
   drury:           {name:"Drury", cat:"Competitive", by:"Responder", trigger:"2♣ by a passed-hand responder, after partner opens a major in 3rd/4th seat, with a confirmed 8-card fit", meaning:"Checks that opener isn't a light 3rd/4th-seat opening before committing higher. Bid 2♣ with 8.5 losers or below; with 9.5 or more losers, respond directly in the suit at the 2-level instead.", pts:"8.5 NLTC or below", short:"2♣ by a passed hand after partner's 3rd/4th-seat major opening, with an 8-card fit and 8.5 losers or below — checks it isn't a light opening."},
   depo:            {name:"DEPO", cat:"Slam Try", by:"Either", trigger:"Opponents interfere over our Kickback or Gerber", meaning:"Double = Even number of key cards/aces, Pass = Odd number.", pts:"—", short:"Double = Even key cards/aces, Pass = Odd — used when opponents interfere over Kickback/Gerber."},
   invertedMinors:  {name:"Inverted Minors", cat:"Responding (not in use)", by:"Responder", trigger:"Raise of partner's minor-suit opening", meaning:"1m–3m is weak, 9 points or below; 1m–2m is strong, 10-12 points. Not currently played — kept for reference only.", pts:"9 or below (weak) / 10-12 (strong)", short:"Not currently played. 1m-3m would be weak (9 or below); 1m-2m would be strong (10-12 pts) and forcing."},
   fsf:             {name:"Fourth Suit Forcing (FSF)", cat:"Rebidding", by:"Responder", trigger:"Partnership has bid three suits in the first two rounds; responder bids the fourth", meaning:"Artificial, forcing for one round, doesn't promise a stopper — must be alerted; asks opener to describe further.", pts:"10+", short:"Artificial bid of the unbid 4th suit — forcing one round, asks opener to keep describing."},
   nmf:             {name:"New Minor Forcing (NMF)", cat:"Rebidding (not in use)", by:"Responder", trigger:"After responder bids 1H/1S and hears a 1NT rebid", meaning:"2♣/2♦ is artificial, forcing one round, usually shows a 5-card major and says nothing about clubs/diamonds. Not currently played — FSF/direct methods used instead.", pts:"10+", short:"Not currently played. 2♣/2♦ after opener's 1NT rebid would be an artificial forcing probe for a 5-card major."},
-  gazzilli:        {name:"Gazzilli", cat:"Rebidding", by:"Opener", trigger:"1-level suit open, 1NT response, opener rebids 2♣", meaning:"Artificial, shows 15-16 points. Responder rebids 2♦ artificially with 10+ points; any other responder rebid is a sign-off, not interested in game.", pts:"15-16 (6.5 NLTC)", short:"After a 1NT response, opener's 2♣ rebid is artificial and shows 15-16 points."},
-  ingberman:       {name:"Ingberman", cat:"Rebidding", by:"Responder", trigger:"After opener reverses, responder wants to sign off", meaning:"Responder's 2NT is an artificial relay; opener must bid 3♣, and responder's next bid signs off at the 3-level.", pts:"—", short:"Responder's 2NT after a reverse is an artificial relay asking opener to bid 3♣, so responder can sign off at the 3-level."},
+  ingberman:       {name:"Ingberman", cat:"Rebidding (not in use)", by:"Responder", trigger:"After opener reverses, responder wants to sign off", meaning:"Responder's 2NT is an artificial relay; opener must bid 3♣, and responder's next bid signs off at the 3-level. Not currently played — kept for reference only.", pts:"—", short:"Not currently played. Responder's 2NT after a reverse would be an artificial relay asking opener to bid 3♣, so responder can sign off at the 3-level."},
   wjs:             {name:"Weak Jump Shift (WJS)", cat:"Responding", by:"Responder", trigger:"Jump response in a new suit at the 2-level or above, after partner's 1-level open", meaning:"Very weak, a sign-off in that suit (minimum 6-carder).", pts:"Below 6 (8.5 NLTC)", short:"A jump response in a new suit — very weak (below 6 points), a sign-off."},
   stolenBid:       {name:"Stolen Bid", cat:"Competitive", by:"Responder", trigger:"Partner opens 1NT and opponents interfere", meaning:"Partner's double in that auction shows the values that were 'stolen' from a natural sequence.", pts:"—", short:"Partner's double when opponents interfere over our 1NT opening."},
-  reverse:         {name:"Reverse", cat:"Rebidding", by:"Opener", trigger:"Opener's 2nd bid is in a new suit ranked higher than the suit opened", meaning:"Shows 17-18 points (the 'Barrier Principle'). Forcing for one round. No jump is involved — that distinguishes it from a jump shift. Reverses are on even after interference, if still biddable; if not possible, prefer 1NT, supporting partner, or rebidding your own suit rather than lying.", pts:"17-18 (6.5 NLTC)", short:"Opener bids a new, higher-ranking suit — shows 17-18 points, forcing one round."},
+  reverse:         {name:"Reverse", cat:"Rebidding", by:"Opener", trigger:"Opener's 2nd bid is in a new suit ranked higher than the suit opened", meaning:"Shows 17-18 points (the 'Barrier Principle'). The suit reversed into should be opener's second-longest suit — don't reverse into a short suit just to show 17-18 points. Not forcing for one round — responder is allowed to pass. No jump is involved — that distinguishes it from a jump shift. Reverses are on even after interference, if still biddable; if not possible, prefer 1NT, supporting partner, or rebidding your own suit rather than lying.", pts:"17-18 (6.5 NLTC)", short:"Opener bids a new, higher-ranking suit — should be opener's 2nd-longest suit, shows 17-18 points. Not forcing; responder may pass."},
   balancedHand:    {name:"Balanced Hand", cat:"Hand Evaluation", by:"Either", trigger:"Judging any hand's shape", meaning:"If the sum of the lengths of your two longest suits is 8 or below, the hand is balanced; if it's 9 or more, the hand is unbalanced.", pts:"—", short:"Add the lengths of your two longest suits: 8 or below = balanced, 9 or more = unbalanced."},
   supportDouble:   {name:"Support Double", cat:"Competitive", by:"Opener", trigger:"Partner opens, responder bids a 4+ card major, opponent interferes", meaning:"Opener's double or redouble at that point shows exactly 3-card support for responder's major, 12-16 points.", pts:"12-16", short:"After responder bids a major and an opponent interferes, opener's double/redouble shows exactly 3-card support, 12-16 points."},
 };
@@ -1067,7 +1339,6 @@ const LTC_ROWS = [
  ["2-level overcall","7.5 to 6.5","7 to 6","12 to 17","Suit Quality of 8+"],
  ["Opener rebid without reverse/jump","7.5 to 6.5","7 to 6","12 to 16",""],
  ["Reverse by opener","6.5","6","17+","Typically 17-18"],
- ["Gazzilli by opener rebid","6.5","6","15 to 16",""],
  ["2NT rebid by opener after 1NT response","5.5","5","17 to 18",""],
  ["Jump rebid in NT by opener","5.5","5","18-19",""],
  ["Jump rebid in new suit by opener","5.5","5","19-21",""],
@@ -1123,31 +1394,29 @@ const LADDER = {
     {h:"Responding to 2NT Open", range:"5+ pts", body:`<ul><li>Against a 2NT opening, respond with <b>5+ points</b></li><li>${pill('puppetStayman')} is applicable after a 2NT open as well</li></ul>`},
     {h:"Puppet Stayman (after 1NT)", range:"9+ pts", body:`<ul><li>${pill('puppetStayman')} — respond the artificial 2♣ with <b>9 points or above</b></li><li>Also usable with <b>8 points</b>, provided there are 8 cards above 8 (i.e. above the 10)</li><li>Asks opener to show a <b>3-card major</b> as well as 4+, finding 5-3 fits too</li></ul>`},
     {h:"Four-Way Transfers (after 1NT/2NT)", range:"Any points", body:`<ul><li>${pill('fourWayTransfers')} — responder can transfer with <b>any point count</b>, weak or strong</li><li>A <b>minor-suit transfer always needs 6+ cards</b>; a <b>major-suit transfer can be 5+ cards</b></li><li>Opener must <b>mandatorily accept</b> and complete the transfer</li></ul>`},
-    {cls:"gold", h:"Slam Tries After Any 8+ Suit Fit (All Suits)", range:"15+ pts · 6.5 NLTC", body:`<ul><li>${pill('jacoby2NT')} — <b>forcing raise</b>, balanced-ish slam invite</li><li>${pill('splinter')} — double-jump shows a <b>void/singleton</b>, slam invite with shortness</li><li>Both are based on <b>losers</b> as much as raw points</li></ul>`},
+    {cls:"gold", h:"Slam Tries After Any 8+ Suit Fit (All Suits)", range:"15+ pts · 6.5 NLTC", body:`<ul><li>${pill('jacoby2NT')} — <b>forcing raise</b>, balanced-ish slam invite</li><li>${pill('splinter')} — double-jump shows a <b>void/singleton</b>, slam invite with shortness</li><li>Splinter is <b>off when there is interference</b></li><li>Both are based on <b>losers</b> as much as raw points</li></ul>`},
     {cls:"", h:"Drury", range:"8.5 NLTC or below", body:`<ul><li>${pill('drury')} — a passed-hand responder's <b>2♣</b> after partner opens a major from the 3rd or 4th seat, <b>only with a confirmed 8-card fit</b></li><li>Bid 2♣ when your <b>losing tricks are 8.5 or below</b></li><li>With <b>9.5 or more losers</b>, respond directly in the suit at the <b>2-level</b> instead</li><li>Checks that the opening <b>isn't sub-minimum</b></li></ul>`},
     {h:"After a Takeout Double by Partner", range:"0 to 13+ pts", body:`<ul><li><b>0 to 9 points:</b> bid an unbid suit with 4+ cards, at the minimum level</li><li><b>10 to 12 points:</b> jump bid and show suit</li><li><b>13+ points:</b> ensure game (cue bid)</li><li>With no long suit, bid <b>1NT with a stopper (6 to 9 points)</b></li><li>With no long suit, bid <b>2NT with a stopper (10-12 points)</b></li><li>With no long suit, bid <b>3NT with a stopper (13+ points)</b></li><li>If the opponents interfere, <b>pass with below 9 points</b> and <b>bid something with 10+ points</b></li></ul>`},
   ],
   openerRebid: [
-    {cls:"gold", h:`${pill('balancedHand','Balanced Hands')}`, range:"", body:`<ul><li><b>1NT rebid:</b> 12-14 balanced</li><li><b>2NT</b> (or 3NT if 2NT unavailable): 18-19 balanced</li></ul>`},
+    {cls:"gold", h:`${pill('balancedHand','Opener Rebid — Point Ladder')}`, range:"", body:`<p class="desc" style="font-weight:700; margin-top:0;">Balanced Hands</p><ul><li><b>Rebid NT without jump, or pass partner's 1NT</b> — 12-14</li><li><b>Rebid new suit without jump</b> — 12-14</li><li><b>Jump rebid in NT</b> — 18-19</li></ul><p class="desc" style="font-weight:700;">Unbalanced Hands</p><ul><li><b>Rebid new suit without jump/reverse</b> — 12-16</li><li><b>Rebid 2NT after a 1NT response</b> — 15-16</li><li><b>Rebid reverse</b> — 17-18</li><li><b>Jump rebid in new suit</b> — 19-21</li></ul>`},
     {h:"Same Suit, No Jump", range:"12-14 pts · 7.5 NLTC", body:`<ul><li>Rebid of opener's own suit without a jump: <b>6+ cards, 12-14 points</b></li></ul>`},
     {h:"New Suit, No Jump/Reverse", range:"12-16 pts · 7.5-6.5 NLTC", body:`<ul><li>A new suit at the 1- or 2-level without jumping or reversing: <b>12-16 points</b></li></ul>`},
-    {cls:"red", h:"Reverse", range:"17-18 pts · 6.5 NLTC", body:`<ul><li>${pill('reverse')} — <b>forcing for one round</b></li><li>It should <b>not involve a jump</b> in the new-suit bid — that's a jump shift instead</li><li>If a true reverse isn't possible, <b>don't fake one</b> — prefer 1NT, support, or rebidding your own suit instead</li><li>Reverses and jump shifts stay <b>on even after interference</b>, when still biddable</li><li>Reverses and jump bids used to show extra strength are also applicable <b>after responder has already forced to game</b></li></ul>`},
+    {cls:"red", h:"Reverse", range:"17-18 pts · 6.5 NLTC", body:`<ul><li>${pill('reverse')} — <b>not forcing for one round</b>; responder is allowed to pass</li><li>The suit reversed into should be opener's <b>second-longest suit</b> — don't reverse into a short suit just to show 17-18 points</li><li>It should <b>not involve a jump</b> in the new-suit bid — that's a jump shift instead</li><li>If a true reverse isn't possible, <b>don't fake one</b> — prefer 1NT, support, or rebidding your own suit instead</li><li>Reverses and jump shifts stay <b>on even after interference</b>, when still biddable</li><li>Reverses and jump bids used to show extra strength are also applicable <b>after responder has already forced to game</b></li></ul>`},
     {h:"Jump in Same Suit", range:"15-18 pts · 6.5 NLTC", body:`<ul><li>Jump rebid in opener's own suit: <b>6+ cards, 15-18 points</b></li></ul>`},
     {h:"Double Jump Rebid of Opener Suit", range:"19-21 pts", body:`<ul><li>A <b>double jump rebid</b> in opener's own suit shows <b>19-21 points</b></li></ul>`},
     {h:"Jump in New Suit", range:"19-21 pts · 5.5 NLTC", body:`<ul><li>Jump rebid in a new suit: <b>19-21 points, game force</b></li></ul>`},
     {h:"Game Try After a Fit", range:"6.5 losers or below", body:`<ul><li>${pill('helpSuitGameTry')} — after 1M-2M, opener needs <b>6.5 losers or below</b></li><li>Opener bids the <b>suit he needs help in</b>, where he holds <b>3 losers</b> in that suit</li><li>Responder with <b>2 or below losers</b> in that suit bids <b>game in the major</b></li><li>Responder with <b>more than 2 losers</b> in that suit bids the <b>3-level suit</b>, and opener passes</li></ul>`},
-    {cls:"gold", h:"After a 1NT Response", range:"Mandatory", body:`<ul><li>Opener <b>must rebid</b> — passing 1NT is not allowed here</li><li>${pill('gazzilli','2♣ Gazzilli')} — artificial, <b>15-16 pts</b>, 6.5 NLTC</li><li>Reverse — <b>17-18 pts</b>, 6.5 NLTC</li><li>2NT — also 17-18 (when reverse unavailable), 5.5 NLTC</li><li>Jump rebid in a new suit — <b>19-21 pts</b>, 5.5 NLTC</li><li>Any other suit bid — 12-14 pts</li></ul>`},
     {cls:"gold", h:"After 2♣ — 2♦", range:"", body:`<ul><li>Opener rebids <b>any 6+ card suit</b> at the <b>cheapest level</b></li><li>With <b>no 6+ suit</b>, opener rebids <b>2NT</b> instead</li><li>Responder then continues with ${pill('puppetStayman')} or transfers</li></ul>`},
     {h:"After a Transfer (1NT open)", range:"17+ pts", body:`<ul><li><b>Super-acceptance:</b> jump to the 3-level after responder's transfer</li><li>Needs <b>17 points and 4+ card support</b></li></ul>`},
     {h:"Four-Way Transfers — Opener's Duty", range:"Any points", body:`<ul><li>${pill('fourWayTransfers')} — responder can transfer with <b>any point count</b> after 1NT or 2NT</li><li>A <b>minor-suit transfer always needs 6+ cards</b>; a <b>major-suit transfer can be 5+ cards</b></li><li>Opener must <b>mandatorily accept</b> and complete the transfer</li></ul>`},
     {h:"After Interference over Responder's Major", range:"12-16 pts", body:`<ul><li>${pill('supportDouble')} — if responder has bid a 4+ card major and an opponent interferes</li><li>Opener's double or redouble shows <b>exactly 3-card support</b> for that major, <b>12-16 points</b></li></ul>`},
   ],
   responderRebid: [
-    {h:"Deciding the Final Contract", range:"", body:`<ul><li>Responder decides the <b>final level and strain</b> based on actual strength and Bergen points</li></ul>`},
+    {h:"Deciding the Final Contract", range:"", body:`<ul><li>Responder decides the <b>final level and strain</b> based on actual strength and Bergen points</li><li>After responder's rebid, opener can <b>only pass if responder has made a limit bid</b> — identifiable if responder had <b>passed earlier</b>, had responded <b>1NT</b> to opener's bid (6-12 points max), or is now <b>rebidding the same suit</b></li><li>If responder is rebidding a <b>new suit</b> and none of those limit-bid markers apply, <b>opener cannot pass</b></li></ul>`},
     {h:"Jump Rebid of Same Suit", range:"15+ pts", body:`<ul><li>Rebid of responder's own suit <b>with a jump</b> shows <b>15+ points</b></li><li>Promises a <b>6+ card suit</b></li></ul>`},
     {h:"NT Rebid by Strength", range:"6-9 / 10-12 / 13+ pts", body:`<ul><li><b>1NT = 6-9 points</b></li><li><b>2NT = 10-12 points</b></li><li><b>3NT = 13+ points</b></li></ul>`},
-    {cls:"gold", h:"After Gazzilli", range:"10+ pts", body:`<ul><li>${pill('gazzilli')} 2♦ is artificial with <b>10+ points</b></li><li>Any other rebid is a <b>sign-off</b>, not interested in game</li></ul>`},
-    {cls:"red", h:"After a Reverse", range:"", body:`<ul><li>${pill('ingberman')} — sign off with an <b>artificial 2NT</b></li><li>Opener relays 3♣, and responder's next bid <b>signs off at the 3-level</b></li></ul>`},
+    {cls:"muted", h:"After a Reverse (Ingberman — not played)", range:"", body:`<ul><li>${pill('ingberman')} — kept for <b>reference only</b></li><li><b>Not currently in the system</b></li></ul>`},
     {h:"After Opener's NT Rebid", range:"11+ pts for GF", body:`<ul><li>With <b>game force</b>, use ${pill('puppetStayman')} or a transfer</li><li>Otherwise, pass or rebid your own suit, which opener is expected to pass</li><li>After 1H/1S met by a 1NT rebid, go to Puppet Stayman/transfers with <b>11+ points</b></li></ul>`},
     {cls:"gold", h:"Fourth Suit Forcing", range:"10+ pts · 8.5-7.5 NLTC", body:`<ul><li>${pill('fsf')} — <b>forcing one round</b>, no promised stopper, must be alerted</li><li>Opener with 15-16 bids <b>2NT</b> (game force, responder transfers/puppets)</li><li>Any other rebid is <b>12-14</b>, showing 3-card support for responder's major or extra length in a suit already shown</li></ul>`},
     {cls:"muted", h:"New Minor Forcing (not played)", range:"10+ pts · 8.5-7.5 NLTC", body:`<ul><li>${pill('nmf')} — kept for <b>reference only</b></li><li><b>Not currently in the system</b></li></ul>`},
@@ -1305,6 +1574,14 @@ document.getElementById('tabs').addEventListener('click', e=>{
   e.target.classList.add('active');
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+e.target.dataset.tab).classList.add('active');
+});
+
+document.getElementById('scoringSubtabs').addEventListener('click', e=>{
+  if(e.target.tagName!=='BUTTON') return;
+  document.querySelectorAll('#scoringSubtabs button').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  document.querySelectorAll('#panel-scoring .subpanel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('subpanel-'+e.target.dataset.subtab).classList.add('active');
 });
 
 /* ===================== SEARCH ===================== */
@@ -1489,6 +1766,171 @@ function paintSuits(root){
     node.parentNode.replaceChild(frag, node);
   });
 }
+
+/* ===================== BRIDGE SCORING QUIZ ===================== */
+const SCORE_STRAINS = [
+  {key:'C', sym:'♣', label:'Clubs', color:'black', group:'minor'},
+  {key:'D', sym:'♦', label:'Diamonds', color:'red', group:'minor'},
+  {key:'H', sym:'♥', label:'Hearts', color:'red', group:'major'},
+  {key:'S', sym:'♠', label:'Spades', color:'black', group:'major'},
+  {key:'N', sym:'NT', label:'No Trump', color:'black', group:'nt'},
+];
+
+function computeDuplicateScore({level, strain, doubled, vul, tricksMade}){
+  const required = 6 + level;
+  if(tricksMade >= required){
+    const overtricks = tricksMade - required;
+    let base;
+    if(strain==='N') base = 40 + (level-1)*30;
+    else if(strain==='S' || strain==='H') base = level*30;
+    else base = level*20;
+    let contractPoints = base;
+    if(doubled===1) contractPoints *= 2;
+    if(doubled===2) contractPoints *= 4;
+    let overtrickPoints;
+    if(doubled===0){
+      const otVal = (strain==='C'||strain==='D') ? 20 : 30;
+      overtrickPoints = overtricks * otVal;
+    } else if(doubled===1){
+      overtrickPoints = overtricks * (vul?200:100);
+    } else {
+      overtrickPoints = overtricks * (vul?400:200);
+    }
+    const isGame = contractPoints >= 100;
+    const intoGame = isGame && base < 100 && doubled>0;
+    const bonus = isGame ? (vul?500:300) : 50;
+    const slamBonus = level===7 ? (vul?1500:1000) : level===6 ? (vul?750:500) : 0;
+    const insult = doubled===1?50:(doubled===2?100:0);
+    const total = contractPoints+overtrickPoints+bonus+slamBonus+insult;
+    return {made:true, total, contractPoints, overtrickPoints, bonus, slamBonus, insult, overtricks, isGame, intoGame};
+  } else {
+    const undertricks = required - tricksMade;
+    let penalty;
+    if(doubled===0){
+      penalty = undertricks*(vul?100:50);
+    } else if(doubled===1){
+      if(vul) penalty = 200 + Math.max(0,undertricks-1)*300;
+      else { penalty=0; for(let i=1;i<=undertricks;i++){ if(i===1) penalty+=100; else if(i<=3) penalty+=200; else penalty+=300; } }
+    } else {
+      if(vul) penalty = 400 + Math.max(0,undertricks-1)*600;
+      else { penalty=0; for(let i=1;i<=undertricks;i++){ if(i===1) penalty+=200; else if(i<=3) penalty+=400; else penalty+=600; } }
+    }
+    return {made:false, total:-penalty, undertricks};
+  }
+}
+
+let currentDeal = null;
+
+function dealRandomScore(){
+  const levels = [1,1,1,2,2,2,3,3,3,4,4,4,5,5,6,7];
+  const level = levels[Math.floor(Math.random()*levels.length)];
+  const strain = SCORE_STRAINS[Math.floor(Math.random()*SCORE_STRAINS.length)];
+  const doubledOptions = [0,0,0,0,0,1,1,2];
+  const doubled = doubledOptions[Math.floor(Math.random()*doubledOptions.length)];
+  const vul = Math.random() < 0.5;
+  const required = 6 + level;
+  const minTricks = Math.max(0, required - 6);
+  const tricksMade = minTricks + Math.floor(Math.random()*(13-minTricks+1));
+  return {level, strain, doubled, vul, tricksMade, required};
+}
+
+function renderScoreDeal(deal){
+  const el = document.getElementById('scoreDealDisplay');
+  const dblLabel = deal.doubled===1?'Doubled':deal.doubled===2?'Redoubled':'';
+  const strainDisplay = deal.strain.key==='N' ? 'NT' : deal.strain.sym;
+  const contractLine = `${deal.level}${strainDisplay}${dblLabel?' '+dblLabel:''}`;
+  const vulLabel = deal.vul ? 'Vulnerable' : 'Non-Vulnerable';
+  const diff = deal.tricksMade - deal.required;
+  let resultText, resultClass;
+  if(diff >= 0){
+    resultText = diff===0 ? `Declarer takes ${deal.tricksMade} tricks — makes exactly` : `Declarer takes ${deal.tricksMade} tricks — makes +${diff}`;
+    resultClass = 'made';
+  } else {
+    resultText = `Declarer takes ${deal.tricksMade} tricks — down ${-diff}`;
+    resultClass = 'down';
+  }
+  el.innerHTML = `
+    <div class="contract-line">${contractLine}</div>
+    <div class="meta-line">${vulLabel} · needs ${deal.required} tricks</div>
+    <div class="result-line ${resultClass}">${resultText}</div>`;
+  el.classList.add('show');
+  paintSuits(el);
+}
+
+document.getElementById('dealScoreBtn').addEventListener('click', ()=>{
+  currentDeal = dealRandomScore();
+  renderScoreDeal(currentDeal);
+  document.getElementById('scoreCheckRow').style.display = 'flex';
+  document.getElementById('scoreGuessInput').value = '';
+  document.getElementById('scoreResult').innerHTML = '';
+});
+
+document.getElementById('checkScoreBtn').addEventListener('click', ()=>{
+  if(!currentDeal) return;
+  const guessRaw = document.getElementById('scoreGuessInput').value;
+  if(guessRaw===''){ return; }
+  const guess = parseFloat(guessRaw);
+  const r = computeDuplicateScore({level:currentDeal.level, strain:currentDeal.strain.key, doubled:currentDeal.doubled, vul:currentDeal.vul, tricksMade:currentDeal.tricksMade});
+  const resultEl = document.getElementById('scoreResult');
+  const correct = Math.abs(guess - r.total) < 0.001;
+  let breakdown;
+  if(r.made){
+    breakdown = `Contract ${r.contractPoints} + Overtricks ${r.overtrickPoints} + Bonus ${r.bonus}${r.slamBonus?(' + Slam '+r.slamBonus):''}${r.insult?(' + Insult '+r.insult):''} = ${r.total}`;
+  } else {
+    breakdown = `Down ${r.undertricks} → opponents score ${-r.total} (declarer side: ${r.total})`;
+  }
+  resultEl.innerHTML = `
+    <div class="result-box ${correct?'correct':'wrong'}">
+      ${correct ? '✅ Correct! ' : '❌ Not quite. '} The score for declarer's side is <b>${r.total}</b>.
+      <div class="breakdown">${breakdown}</div>
+    </div>`;
+});
+
+document.getElementById('calcScoreBtn').addEventListener('click', ()=>{
+  const level = parseInt(document.getElementById('calcLevel').value, 10);
+  const strain = document.getElementById('calcStrain').value;
+  const doubled = parseInt(document.getElementById('calcDoubled').value, 10);
+  const vul = document.getElementById('calcVul').value === '1';
+  const tricksRaw = document.getElementById('calcTricks').value;
+  const resultEl = document.getElementById('calcResult');
+  if(tricksRaw===''){
+    resultEl.innerHTML = `<div class="result-box wrong">Enter how many tricks declarer took (0-13).</div>`;
+    return;
+  }
+  const tricksMade = parseInt(tricksRaw, 10);
+  if(isNaN(tricksMade) || tricksMade<0 || tricksMade>13){
+    resultEl.innerHTML = `<div class="result-box wrong">Tricks taken must be a number between 0 and 13.</div>`;
+    return;
+  }
+  const r = computeDuplicateScore({level, strain, doubled, vul, tricksMade});
+  const strainObj = SCORE_STRAINS.find(s=>s.key===strain);
+  const strainDisplay = strain==='N' ? 'NT' : strainObj.sym;
+  const dblLabel = doubled===1?' Doubled':doubled===2?' Redoubled':'';
+  const contractLabel = `${level}${strainDisplay}${dblLabel}`;
+  const vulLabel = vul ? 'Vulnerable' : 'Non-Vulnerable';
+
+  const lines = [];
+  if(r.made){
+    lines.push(`Contract/trick points: <b>${r.contractPoints}</b>`);
+    if(r.overtrickPoints) lines.push(`Overtrick points (${r.overtricks} over): <b>${r.overtrickPoints}</b>`);
+    lines.push(`${r.isGame ? 'Game' : 'Part-score'} bonus (${vulLabel}): <b>${r.bonus}</b>`);
+    if(r.slamBonus) lines.push(`${level===7?'Grand':'Small'} slam bonus: <b>${r.slamBonus}</b>`);
+    if(r.insult) lines.push(`${doubled===2?'Redouble':'Double'} insult bonus: <b>${r.insult}</b>`);
+    if(r.intoGame) lines.push(`<i>Reached game only because of the ${doubled===2?'redouble':'double'} — "into game" bonus applied</i>`);
+    lines.push(`<b style="font-size:14px;">Total for declarer's side: ${r.total}</b>`);
+  } else {
+    lines.push(`Undertricks: <b>${r.undertricks}</b>`);
+    lines.push(`Penalty conceded: <b>${-r.total}</b>`);
+    lines.push(`<b style="font-size:14px;">Total for declarer's side: ${r.total}</b> (opponents score ${-r.total})`);
+  }
+
+  resultEl.innerHTML = `
+    <div class="result-box ${r.made ? 'correct' : 'wrong'}">
+      <div style="font-size:15px; font-weight:800; margin-bottom:6px;">${contractLabel} · ${vulLabel} · ${tricksMade}/13 tricks (${r.made ? (r.overtricks?'made +'+r.overtricks:'made exactly') : 'down '+r.undertricks})</div>
+      ${lines.map(l=>`<div style="margin-top:3px;">${l}</div>`).join('')}
+    </div>`;
+  paintSuits(resultEl);
+});
 
 /* ===================== INIT ===================== */
 renderLadder();
