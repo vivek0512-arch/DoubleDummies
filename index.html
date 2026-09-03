@@ -300,6 +300,7 @@ nav.subtabs button.active{
 .card ul{margin:0; padding-left:20px; font-size:13.5px; line-height:1.6;}
 .card ul li{margin-bottom:6px;}
 .card ul li b{color:var(--violet); font-weight:700;}
+.card ul.sub-list li b{color:var(--ink); font-weight:800;}
 .lines-of-defence ul li b{color:var(--ink); font-weight:800;}
 .lines-of-defence .defence-name{color:var(--violet); font-weight:800; display:block; margin-bottom:4px; font-size:14px;}
 .lines-of-defence > .grid2 > ul > li{list-style:none; margin-bottom:14px;}
@@ -440,6 +441,7 @@ table.preempt-table td{font-weight:600;}
   font-size:13.5px; line-height:1.55; box-shadow:var(--shadow);
 }
 .principle-list li b{color:var(--red-deep);}
+.principle-list ul.sub-list li b{color:var(--ink);}
 
 /* ---------- Hand trainer widget ---------- */
 #handTrainerCard button{
@@ -488,6 +490,59 @@ table.preempt-table td{font-weight:600;}
   font-family:'Segoe UI',sans-serif; font-weight:700; font-size:13px; cursor:pointer;
   border:none; border-radius:999px; padding:9px 18px; transition:.15s;
 }
+
+/* ---------- Quiz tab ---------- */
+.quiz-topic-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(190px,1fr)); gap:14px;
+}
+.quiz-topic-card{
+  cursor:pointer; border-radius:16px; padding:20px 18px; text-align:center;
+  background:linear-gradient(165deg, rgba(255,252,244,.97), rgba(246,238,218,.9));
+  border:1px solid rgba(255,255,255,.5); box-shadow:0 8px 22px -10px rgba(5,8,24,.5);
+  transition:transform .18s, box-shadow .18s; position:relative; overflow:hidden;
+}
+.quiz-topic-card:hover{transform:translateY(-3px); box-shadow:0 14px 30px -10px rgba(5,8,24,.55);}
+.quiz-topic-card .qt-icon{font-size:26px; margin-bottom:8px; display:block;}
+.quiz-topic-card .qt-name{font-family:'Segoe UI',sans-serif; font-weight:800; font-size:14.5px; color:var(--ink); display:block;}
+.quiz-topic-card .qt-count{font-family:'Segoe UI',sans-serif; font-size:11.5px; color:var(--ink-soft); margin-top:4px; display:block;}
+.quiz-topic-card.qt-random{background:linear-gradient(135deg, var(--violet), var(--red));}
+.quiz-topic-card.qt-random .qt-name, .quiz-topic-card.qt-random .qt-count{color:#fff0f4;}
+
+.quiz-header-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;}
+.quiz-topic-label{font-family:'Segoe UI',sans-serif; font-weight:800; font-size:15px; color:var(--violet);}
+.quiz-score-label{
+  font-family:'Segoe UI',sans-serif; font-weight:700; font-size:13px; color:var(--ink);
+  background:rgba(0,201,167,.14); border:1px solid rgba(0,201,167,.4); padding:5px 14px; border-radius:999px;
+}
+.quiz-q-prompt{font-family:'Segoe UI',sans-serif; font-size:16px; font-weight:700; color:var(--ink); margin-bottom:16px; line-height:1.5;}
+.quiz-options{display:flex; flex-direction:column; gap:10px;}
+.quiz-option{
+  text-align:left; padding:12px 16px; border-radius:10px; border:1px solid var(--card-line);
+  background:#fffdf7; font-family:'Segoe UI',sans-serif; font-size:14px; color:var(--ink);
+  cursor:pointer; transition:.15s;
+}
+.quiz-option:hover{background:rgba(139,92,246,.1); border-color:rgba(139,92,246,.4);}
+.quiz-option.correct{background:rgba(0,201,167,.22); border-color:var(--teal); font-weight:700;}
+.quiz-option.wrong{background:rgba(255,61,110,.18); border-color:var(--red); font-weight:700;}
+.quiz-option.disabled{cursor:default; pointer-events:none;}
+.quiz-explanation{
+  margin-top:14px; padding:12px 16px; border-radius:10px; font-size:13px; line-height:1.6;
+  background:rgba(255,176,32,.14); border:1px solid rgba(255,176,32,.45); color:#5a4416;
+}
+.quiz-actions{display:flex; justify-content:space-between; align-items:center; margin-top:18px; gap:10px; flex-wrap:wrap;}
+.quiz-actions-left{display:flex; gap:10px; flex-wrap:wrap;}
+.quiz-actions button{
+  font-family:'Segoe UI',sans-serif; font-weight:700; font-size:13px; cursor:pointer;
+  border:none; border-radius:999px; padding:10px 20px; transition:.15s;
+}
+#quizNextBtn{background:linear-gradient(90deg, var(--teal), var(--cyan)); color:#04241d; box-shadow:0 4px 16px -4px rgba(0,201,167,.5);}
+#quizNextBtn:hover{transform:translateY(-1px);}
+#quizPrevBtn{background:rgba(255,176,32,.16); color:var(--gold-deep); border:1px solid rgba(255,176,32,.45) !important;}
+#quizPrevBtn:hover{background:rgba(255,176,32,.28);}
+#quizPrevBtn:disabled{opacity:.4; cursor:not-allowed;}
+#quizChangeTopicBtn{background:rgba(139,92,246,.14); color:var(--violet); border:1px solid rgba(139,92,246,.4) !important;}
+#quizChangeTopicBtn:hover{background:rgba(139,92,246,.24);}
+
 #dealScoreBtn{
   background:linear-gradient(90deg, var(--red), var(--violet)); color:#fff;
   box-shadow:0 4px 16px -4px rgba(255,61,110,.5);
@@ -555,7 +610,9 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   <button data-tab="defence">Defence</button>
   <button data-tab="principles">Principles &amp; Notes</button>
   <button data-tab="teamsimps">Teams / IMPS</button>
+  <button data-tab="matchpoints">Matchpoints</button>
   <button data-tab="scoring">Bridge Scoring</button>
+  <button data-tab="quiz">Quiz</button>
 </nav>
 
 <main>
@@ -725,6 +782,14 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   </div>
 
   <div class="card" style="margin-bottom:16px;">
+    <h3>Competing at the 3-Level</h3>
+    <ul>
+      <li><b>Never bid 3-level over an opponent's 3-level bid</b> when we are <b>vulnerable</b> — even with an <b>8-card or 9-card fit</b></li>
+      <li>Bid at the <b>3-level over a 2-level</b> auction only with a <b>9-card fit</b> (both vulnerable and non-vulnerable) — <b>do not do so with only an 8-card fit</b></li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
     <h3>How to Identify a Takeout Double from a Penalty Double?</h3>
     <ul>
       <li>For contracts at the <b>3-level or below</b>: if the double is the <b>very first double</b> made by you or partner in the auction, it can <b>never be for penalty</b> — it's always <b>takeout</b></li>
@@ -857,19 +922,19 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
 
   <div class="card" style="margin-top:16px;">
     <h3>Handling Preempts by Opponent</h3>
-    <p>B = balanced hand, S = stopper, MM = both majors. NA marks a bid that isn't used at that level.</p>
+    <p>MM = both majors. NA marks a bid that isn't used at that level.</p>
     <div class="ref-table-wrap">
       <table class="ref-table preempt-table">
         <thead><tr><th>Preempt</th><th>Double</th><th>2NT</th><th>3NT</th><th>4♣</th><th>4♦</th><th>Cue Bid (same suit)</th></tr></thead>
         <tbody>
-          <tr><td class="rowhead">2♣</td><td>12-14, B hand w/o S</td><td>15+, B hand with stopper</td><td>GF, with stopper</td><td>15+, both majors</td><td>15+, D &amp; a major</td><td>15+ w/o S</td></tr>
-          <tr><td class="rowhead">3♣</td><td>15+, B w/o S</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, both majors</td><td>15+, D &amp; a major</td><td class="na">NA</td></tr>
-          <tr><td class="rowhead">2♦</td><td>12-14, B hand w/o S</td><td>15+, B hand with stopper</td><td>GF, with stopper</td><td>15+, C &amp; a major</td><td>15+, both majors</td><td>15+ w/o S</td></tr>
-          <tr><td class="rowhead">3♦</td><td>15+, B w/o S</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, C &amp; a major</td><td>15+, both majors</td><td class="na">NA</td></tr>
-          <tr><td class="rowhead">2♥</td><td>12-14, B hand w/o S</td><td>15+, B hand with stopper</td><td>GF, with stopper</td><td>15+, ♠ &amp; ♣</td><td>15+, ♠ &amp; ♦</td><td>15+ w/o S</td></tr>
-          <tr><td class="rowhead">3♥</td><td>15+, B w/o S</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, ♠ &amp; ♣</td><td>15+, ♠ &amp; ♦</td><td class="na">NA</td></tr>
-          <tr><td class="rowhead">2♠</td><td>12-14, B hand w/o S</td><td>15+, B hand with stopper</td><td>GF, with stopper</td><td>15+, ♥ &amp; ♣</td><td>15+, ♥ &amp; ♦</td><td>15+ w/o S</td></tr>
-          <tr><td class="rowhead">3♠</td><td>15+, B w/o S</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, ♥ &amp; ♣</td><td>15+, ♥ &amp; ♦</td><td class="na">NA</td></tr>
+          <tr><td class="rowhead">2♣</td><td>12-14, Balanced hand without stopper</td><td>15+, Balanced hand with stopper</td><td>GF, with stopper</td><td>15+, both majors</td><td>15+, D &amp; a major</td><td>15+ without stopper</td></tr>
+          <tr><td class="rowhead">3♣</td><td>15+, Balanced hand without stopper</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, both majors</td><td>15+, D &amp; a major</td><td class="na">NA</td></tr>
+          <tr><td class="rowhead">2♦</td><td>12-14, Balanced hand without stopper</td><td>15+, Balanced hand with stopper</td><td>GF, with stopper</td><td>15+, C &amp; a major</td><td>15+, both majors</td><td>15+ without stopper</td></tr>
+          <tr><td class="rowhead">3♦</td><td>15+, Balanced hand without stopper</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, C &amp; a major</td><td>15+, both majors</td><td class="na">NA</td></tr>
+          <tr><td class="rowhead">2♥</td><td>12-14, Balanced hand without stopper</td><td>15+, Balanced hand with stopper</td><td>GF, with stopper</td><td>15+, ♠ &amp; ♣</td><td>15+, ♠ &amp; ♦</td><td>15+ without stopper</td></tr>
+          <tr><td class="rowhead">3♥</td><td>15+, Balanced hand without stopper</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, ♠ &amp; ♣</td><td>15+, ♠ &amp; ♦</td><td class="na">NA</td></tr>
+          <tr><td class="rowhead">2♠</td><td>12-14, Balanced hand without stopper</td><td>15+, Balanced hand with stopper</td><td>GF, with stopper</td><td>15+, ♥ &amp; ♣</td><td>15+, ♥ &amp; ♦</td><td>15+ without stopper</td></tr>
+          <tr><td class="rowhead">3♠</td><td>15+, Balanced hand without stopper</td><td class="na">NA</td><td>GF, with stopper</td><td>15+, ♥ &amp; ♣</td><td>15+, ♥ &amp; ♦</td><td class="na">NA</td></tr>
         </tbody>
       </table>
     </div>
@@ -905,6 +970,9 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
             <li>Be aggressive when a side suit is breaking well or the bidding showed slam interest</li>
             <li>We <b>voluntarily break new suits</b> ourselves to take our tricks before they vanish</li>
             <li>Against a gambling 3NT, <b>lead an ace</b> and race for 5 quick tricks</li>
+            <li>If dummy has a <b>long, strong suit</b>, we may at times even have to <b>overtake and lead into weakness</b> to have any chance of making some tricks</li>
+            <li>We will need to <b>lead away from honours</b> if necessary to promote tricks</li>
+            <li><b>Knock out entries</b> in side suits so that dummy <b>cannot enter</b> to cash their long suit tricks</li>
           </ul>
         </li>
         <li>
@@ -982,13 +1050,27 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
     <h3>Classic Defensive Guidelines</h3>
     <div class="grid2">
       <ul>
-        <li><b>Second hand low</b> — as second to play to a trick, play low and keep your options open rather than rising with an honour.</li>
-        <li><b>Third hand high</b> — as third to play, play your highest card (unless it can't beat anything useful) to try to force out or promote an honour.</li>
+        <li><b>Second hand low</b> — as second to play to a trick, play low and keep your options open rather than rising with an honour.
+          <ul class="sub-list" style="margin-top:6px; padding-left:20px; font-weight:400;">
+            <li><b>Second hand high exceptions:</b></li>
+            <li>When you need to <b>cover an honour</b>, provided it would surely <b>promote an honour trick</b> (including the Ten) for partner or us</li>
+            <li>When you have <b>two touching honours</b>, split them and play the honour in second hand instead of playing low</li>
+          </ul>
+        </li>
+        <li><b>Third hand high</b> — as third to play, play your highest card (unless it can't beat anything useful) to try to force out or promote an honour.
+          <ul class="sub-list" style="margin-top:6px; padding-left:20px; font-weight:400;">
+            <li><b>Third hand high exceptions:</b></li>
+            <li>If dummy is visible and holds, say, the Queen, play the Jack with a holding like <b>AJx</b> rather than the Ace — keeping an honour in reserve to cover dummy's honour</li>
+            <li>If dummy and partner are both <b>short</b> in a suit and declarer has <b>length</b>, while you also hold length with a holding like <b>Kxxx or Qxxx</b>, you can play <b>third hand low</b> instead — your honour will <b>eventually be promoted</b>. Playing third hand high here means you <b>won't get any winner</b> in that suit at all</li>
+          </ul>
+        </li>
         <li><b>Cover an honour with an honour</b> — covering can promote a lower honour in your or partner's hand; don't cover if it can't possibly promote anything.</li>
         <li><b>Lead through strength, up to weakness</b> — lead toward dummy's weak holding or through declarer's known strong suit to set up finesses for partner.</li>
       </ul>
       <ul>
         <li><b>Return partner's suit</b> — normally the higher of touching honours, or your original fourth-best, so partner can read the remaining count.</li>
+        <li>With a <b>doubleton left in a suit</b>, always <b>return or lead the higher of the two cards</b></li>
+        <li><b>Surrounding Play:</b> when leading a suit into weakness in dummy, lead a card <b>higher than dummy's highest card</b> in that suit — this can <b>trap an honour</b> and promote a trick for partner. <b>This applies to the trump suit as well</b></li>
         <li><b>Win as cheaply as possible</b> — don't spend an unnecessary high card when a lower one wins the trick just as well.</li>
         <li><b>Don't break a new suit needlessly</b> — when you have a safe exit, avoid opening a suit that could cost a trick; let declarer do the work.</li>
         <li><b>When in doubt, play third hand high or return partner's suit</b> — the two safest defaults when you don't have a clear read on the hand.</li>
@@ -1006,7 +1088,7 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   <ul class="principle-list">
     <li><b>Slow and fast arrival —</b> with strong hands, show strength first and fit second; bid slowly with strong hands, fast with weaker ones. E.g. 1♠–4♠ is a weak hand with no slam interest; 1♠–2♣–2♦–4♠ is strong.</li>
     <li><b>Never lie about strength —</b> when you can lie temporarily about shape instead. For example, opener's rebid of the same suit may sometimes be with only a 5-carder.
-      <ul style="margin-top:8px; padding-left:20px; font-weight:400;">
+      <ul class="sub-list" style="margin-top:8px; padding-left:20px; font-weight:400;">
         <li><b>Example 1:</b> Opener has 4432 shape with 12-14 points in S-H-D-C. Opener opens 1♦ and responder bids 1NT. Now opener's rebid can only be 2♣, with a doubleton. Any other rebid becomes a reverse — we shouldn't lie about strength (lying about shape is OK).</li>
         <li><b>Example 2:</b> Opener has 4522 shape with 12-14 points in S-H-D-C. Opener opens 1♥ and responder bids 1NT. Now opener's rebid can only be 2♣ or 2♦, with a doubleton. Any other rebid becomes a reverse — we shouldn't lie about strength (lying about shape is OK).</li>
         <li><b>Example 3:</b> When partner has <b>game-forced</b> the auction, opener can rebid in <b>NT with an unbalanced hand</b> if any other available bid would become a reverse.</li>
@@ -1092,6 +1174,57 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
         <li><b>Don't be a hero:</b> avoid a confusing call that might get passed when it's forcing, or that overstates your values.</li>
         <li>The player holding your cards at the other table faces the same tough decision — <b>if it's hard for you, it's hard for them too.</b></li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= MATCHPOINTS ======================= -->
+<section class="panel" id="panel-matchpoints">
+  <div class="section-head">
+    <h2>Matchpoints — General Tips</h2>
+    <p>Matchpoint (MP) scoring rewards frequency and relative comparison on every single board — it changes the risk calculus quite differently from IMPs.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="suit">♠</span>Bidding</h3>
+      <ul>
+        <li><b>Prefer notrump over a minor suit</b> for the same likely trick count — 3NT beats 5♣ on shared boards (same or fewer tricks needed, and the field will mostly be in NT too)</li>
+        <li><b>Don't bid thin games/slams</b> just because the odds are positive-EV in the IMP sense — at MP, going down in a game the field is stopping short of <b>costs you the whole board</b> with no partial credit; conversely, making an "automatic" game the field also bids <b>gains you nothing</b>, so look for the contract that's <b>different and better</b>, not just "correct"</li>
+        <li><b>Be more willing to compete one level higher</b> for a making partscore — an extra 50-100 points in a partial <b>swings matchpoints hugely</b>, since so many pairs are flat on the same auction</li>
+        <li><b>Preempt aggressively</b> — making the opponents guess in an uncontested-feeling auction is worth more at MP than at IMPs, since a guess wrong by them is a <b>near-top for you</b> even if it's not a game/slam swing</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♥</span>Play</h3>
+      <ul>
+        <li><b>Take the line that maximizes tricks</b>, not the line that maximizes safety, whenever the contract is comfortable to make anyway — an <b>overtrick is real money at MP</b>; at IMPs you'd automatically take a safety play costing a trick to guarantee the contract, but at MP that same safety play is often wrong once making is close to certain either way</li>
+        <li><b>Reserve safety plays</b> for hands where the contract itself is <b>genuinely in doubt</b></li>
+        <li>In no-play/marginal hands, play for the <b>layout most likely to be true</b> rather than the layout that only saves your contract — <b>MP rewards frequency</b>, not worst-case protection</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♦</span>Defense</h3>
+      <ul>
+        <li><b>Double competitive partscores more readily</b> when confident — converting their making partial into a penalty <b>beats the field's plus score</b> directly</li>
+        <li><b>Avoid speculative sacrifices</b> — a "cheap" IMP save can be a <b>flat-out bottom at MP</b> if the field is defending profitably or making their own contract</li>
+        <li><b>Fight harder for exact-value penalties</b> (don't let overtricks slip on defense) since the difference between +100 and +150 against you is a <b>full swing</b> in the matchpoint scale</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3><span class="pill" data-conv="balancingSeat">Balancing</span> — Matchpoints-Specific</h3>
+    <p>Balancing is a <b>matchpoints tool, not an IMPs one</b> — it's worth doing here in a way it usually isn't at IMPs. Balance from the <b>passout seat</b> based on these guidelines:</p>
+    <ul>
+      <li>If we're <b>vulnerable</b>, don't let opponents play a suit contract at <b>2♦ or below</b></li>
+      <li>If we're <b>non-vulnerable</b>, don't let opponents play a suit contract at <b>2♠ or below</b></li>
+      <li>Bid <b>2NT</b> in the passout seat to show <b>both minors</b></li>
+      <li>Bid <b>Double</b> to show <b>both majors</b></li>
+      <li>Bid <b>your own suit</b> with <b>5+ cards and 7+ suit quality</b></li>
+    </ul>
+    <div class="note">
+      All of this is subject to the <b>opponents having found a fit</b>. Balancing is <b>not applicable if opener has preempted</b>, and <b>not applicable if the opponents have stopped at 1NT</b>.
     </div>
   </div>
 </section>
@@ -1282,6 +1415,32 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   </div>
 </section>
 
+<!-- ======================= QUIZ ======================= -->
+<section class="panel" id="panel-quiz">
+  <div class="section-head">
+    <h2>Quiz</h2>
+    <p>Questions are generated live from the dashboard's own content — pick a topic (or Random) and test yourself. If the dashboard content changes, these questions change with it.</p>
+  </div>
+
+  <div class="quiz-topic-grid" id="quizTopicGrid"></div>
+
+  <div class="card" id="quizPlayCard" style="display:none; margin-top:20px;">
+    <div class="quiz-header-row">
+      <div id="quizTopicLabel" class="quiz-topic-label"></div>
+      <div id="quizCounterLabel" class="quiz-score-label"></div>
+      <div id="quizScoreLabel" class="quiz-score-label"></div>
+    </div>
+    <div id="quizQuestionBlock"></div>
+    <div class="quiz-actions">
+      <div class="quiz-actions-left">
+        <button id="quizPrevBtn" type="button">← Previous</button>
+        <button id="quizNextBtn" type="button">Next →</button>
+      </div>
+      <button id="quizChangeTopicBtn" type="button">Change Topic</button>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <div id="tooltip"></div>
@@ -1399,13 +1558,13 @@ const LADDER = {
     {h:"After a Takeout Double by Partner", range:"0 to 13+ pts", body:`<ul><li><b>0 to 9 points:</b> bid an unbid suit with 4+ cards, at the minimum level</li><li><b>10 to 12 points:</b> jump bid and show suit</li><li><b>13+ points:</b> ensure game (cue bid)</li><li>With no long suit, bid <b>1NT with a stopper (6 to 9 points)</b></li><li>With no long suit, bid <b>2NT with a stopper (10-12 points)</b></li><li>With no long suit, bid <b>3NT with a stopper (13+ points)</b></li><li>If the opponents interfere, <b>pass with below 9 points</b> and <b>bid something with 10+ points</b></li></ul>`},
   ],
   openerRebid: [
-    {cls:"gold", h:`${pill('balancedHand','Opener Rebid — Point Ladder')}`, range:"", body:`<p class="desc" style="font-weight:700; margin-top:0;">Balanced Hands</p><ul><li><b>Rebid NT without jump, or pass partner's 1NT</b> — 12-14</li><li><b>Rebid new suit without jump</b> — 12-14</li><li><b>Jump rebid in NT</b> — 18-19</li></ul><p class="desc" style="font-weight:700;">Unbalanced Hands</p><ul><li><b>Rebid new suit without jump/reverse</b> — 12-16</li><li><b>Rebid 2NT after a 1NT response</b> — 15-16</li><li><b>Rebid reverse</b> — 17-18</li><li><b>Jump rebid in new suit</b> — 19-21</li></ul>`},
+    {cls:"gold", h:`${pill('balancedHand','Opener Rebid — Point Ladder')}`, range:"", body:`<p class="desc" style="font-weight:700; margin-top:0;">Balanced Hands</p><ul><li><b>Rebid NT without jump, or pass partner's 1NT</b> — 12-14</li><li><b>Rebid new suit without jump</b> — 12-14</li><li><b>Jump rebid in NT</b> — 18-19 (not applicable after a game-force response by partner)</li></ul><p class="desc" style="font-weight:700;">Unbalanced Hands</p><ul><li><b>Rebid new suit without jump/reverse</b> — 12-16</li><li><b>Rebid 2NT after a 1NT response</b> — 15-16</li><li><b>Rebid reverse</b> — 17-18</li><li><b>Jump rebid in new suit</b> — 19-21 (not applicable after a game-force response by partner)</li></ul>`},
     {h:"Same Suit, No Jump", range:"12-14 pts · 7.5 NLTC", body:`<ul><li>Rebid of opener's own suit without a jump: <b>6+ cards, 12-14 points</b></li></ul>`},
     {h:"New Suit, No Jump/Reverse", range:"12-16 pts · 7.5-6.5 NLTC", body:`<ul><li>A new suit at the 1- or 2-level without jumping or reversing: <b>12-16 points</b></li></ul>`},
-    {cls:"red", h:"Reverse", range:"17-18 pts · 6.5 NLTC", body:`<ul><li>${pill('reverse')} — <b>not forcing for one round</b>; responder is allowed to pass</li><li>The suit reversed into should be opener's <b>second-longest suit</b> — don't reverse into a short suit just to show 17-18 points</li><li>It should <b>not involve a jump</b> in the new-suit bid — that's a jump shift instead</li><li>If a true reverse isn't possible, <b>don't fake one</b> — prefer 1NT, support, or rebidding your own suit instead</li><li>Reverses and jump shifts stay <b>on even after interference</b>, when still biddable</li><li>Reverses and jump bids used to show extra strength are also applicable <b>after responder has already forced to game</b></li></ul>`},
+    {cls:"red", h:"Reverse", range:"17-18 pts · 6.5 NLTC", body:`<ul><li>${pill('reverse')} — <b>not forcing for one round</b>; responder is allowed to pass</li><li>The suit reversed into should be opener's <b>second-longest suit</b> — don't reverse into a short suit just to show 17-18 points</li><li>It should <b>not involve a jump</b> in the new-suit bid — that's a jump shift instead</li><li>If a true reverse isn't possible, <b>don't fake one</b> — prefer 1NT, support, or rebidding your own suit instead</li><li>Reverses and jump shifts stay <b>on even after interference</b>, when still biddable</li><li><b>Reverse (17-18), jump rebid in a new suit (19-21), and jump rebid in NT (18-19) are not applicable after a game-force response</b> by responder</li></ul>`},
     {h:"Jump in Same Suit", range:"15-18 pts · 6.5 NLTC", body:`<ul><li>Jump rebid in opener's own suit: <b>6+ cards, 15-18 points</b></li></ul>`},
     {h:"Double Jump Rebid of Opener Suit", range:"19-21 pts", body:`<ul><li>A <b>double jump rebid</b> in opener's own suit shows <b>19-21 points</b></li></ul>`},
-    {h:"Jump in New Suit", range:"19-21 pts · 5.5 NLTC", body:`<ul><li>Jump rebid in a new suit: <b>19-21 points, game force</b></li></ul>`},
+    {h:"Jump in New Suit", range:"19-21 pts · 5.5 NLTC", body:`<ul><li>Jump rebid in a new suit: <b>19-21 points, game force</b></li><li>Not applicable <b>after a game-force response by partner</b></li></ul>`},
     {h:"Game Try After a Fit", range:"6.5 losers or below", body:`<ul><li>${pill('helpSuitGameTry')} — after 1M-2M, opener needs <b>6.5 losers or below</b></li><li>Opener bids the <b>suit he needs help in</b>, where he holds <b>3 losers</b> in that suit</li><li>Responder with <b>2 or below losers</b> in that suit bids <b>game in the major</b></li><li>Responder with <b>more than 2 losers</b> in that suit bids the <b>3-level suit</b>, and opener passes</li></ul>`},
     {cls:"gold", h:"After 2♣ — 2♦", range:"", body:`<ul><li>Opener rebids <b>any 6+ card suit</b> at the <b>cheapest level</b></li><li>With <b>no 6+ suit</b>, opener rebids <b>2NT</b> instead</li><li>Responder then continues with ${pill('puppetStayman')} or transfers</li></ul>`},
     {h:"After a Transfer (1NT open)", range:"17+ pts", body:`<ul><li><b>Super-acceptance:</b> jump to the 3-level after responder's transfer</li><li>Needs <b>17 points and 4+ card support</b></li></ul>`},
@@ -1413,7 +1572,7 @@ const LADDER = {
     {h:"After Interference over Responder's Major", range:"12-16 pts", body:`<ul><li>${pill('supportDouble')} — if responder has bid a 4+ card major and an opponent interferes</li><li>Opener's double or redouble shows <b>exactly 3-card support</b> for that major, <b>12-16 points</b></li></ul>`},
   ],
   responderRebid: [
-    {h:"Deciding the Final Contract", range:"", body:`<ul><li>Responder decides the <b>final level and strain</b> based on actual strength and Bergen points</li><li>After responder's rebid, opener can <b>only pass if responder has made a limit bid</b> — identifiable if responder had <b>passed earlier</b>, had responded <b>1NT</b> to opener's bid (6-12 points max), or is now <b>rebidding the same suit</b></li><li>If responder is rebidding a <b>new suit</b> and none of those limit-bid markers apply, <b>opener cannot pass</b></li></ul>`},
+    {h:"Deciding the Final Contract", range:"", body:`<ul><li>Responder decides the <b>final level and strain</b> based on actual strength and Bergen points</li><li>Responder <b>may pass opener's rebid</b> with <b>below 9 points</b>, provided opener <b>hasn't shown 17+</b> (through a reverse or jump rebid) and there's at least a <b>7-card combined suit fit</b></li><li>After responder's rebid, opener can <b>only pass if responder has made a limit bid</b> — identifiable if responder had <b>passed earlier</b>, had responded <b>1NT</b> to opener's bid (6-12 points max), or is now <b>rebidding the same suit</b></li><li>If responder is rebidding a <b>new suit</b> and none of those limit-bid markers apply, <b>opener cannot pass</b></li></ul>`},
     {h:"Jump Rebid of Same Suit", range:"15+ pts", body:`<ul><li>Rebid of responder's own suit <b>with a jump</b> shows <b>15+ points</b></li><li>Promises a <b>6+ card suit</b></li></ul>`},
     {h:"NT Rebid by Strength", range:"6-9 / 10-12 / 13+ pts", body:`<ul><li><b>1NT = 6-9 points</b></li><li><b>2NT = 10-12 points</b></li><li><b>3NT = 13+ points</b></li></ul>`},
     {cls:"muted", h:"After a Reverse (Ingberman — not played)", range:"", body:`<ul><li>${pill('ingberman')} — kept for <b>reference only</b></li><li><b>Not currently in the system</b></li></ul>`},
@@ -1432,8 +1591,8 @@ function renderLadder(){
     ['responderRebid',LADDER.responderRebid,'grp-responder','④ Responder Rebid'],
   ];
   wrap.innerHTML = cols.map(([key,items,grp,label], idx)=>{
-    return `<div class="stage-block ${grp}${idx===0?' open':''}" data-stage="${key}">
-      <button class="stage-header" type="button" aria-expanded="${idx===0?'true':'false'}">
+    return `<div class="stage-block ${grp}" data-stage="${key}">
+      <button class="stage-header" type="button" aria-expanded="false">
         <span>${label}</span><span class="chev">▸</span>
       </button>
       <div class="stage-col ${grp}">${items.map(it=>`
@@ -1574,6 +1733,13 @@ document.getElementById('tabs').addEventListener('click', e=>{
   e.target.classList.add('active');
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+e.target.dataset.tab).classList.add('active');
+  if(e.target.dataset.tab === 'auction'){
+    document.querySelectorAll('#ladder .stage-block').forEach(block=>{
+      block.classList.remove('open');
+      const btn = block.querySelector('.stage-header');
+      if(btn) btn.setAttribute('aria-expanded', 'false');
+    });
+  }
 });
 
 document.getElementById('scoringSubtabs').addEventListener('click', e=>{
@@ -1932,12 +2098,534 @@ document.getElementById('calcScoreBtn').addEventListener('click', ()=>{
   paintSuits(resultEl);
 });
 
+/* ===================== QUIZ ENGINE ===================== */
+/* Questions are generated live from the dashboard's own data (CONVENTIONS,
+   LADDER, and the on-page tables) plus a small curated set for prose-only
+   tabs. Rebuilding this at load time means the quiz always reflects
+   whatever the dashboard currently says. */
+
+const QUIZ_TOPICS = [
+  {key:'evaluation',  label:'Hand Evaluation',           icon:'♠'},
+  {key:'auction',     label:'O-R-O-R Bidding Sequences',  icon:'🎯'},
+  {key:'competitive', label:'Overcalls & Doubles',        icon:'🤝'},
+  {key:'conventions', label:'Conventions',                icon:'📖'},
+  {key:'defence',     label:'Defence',                    icon:'🛡️'},
+  {key:'principles',  label:'Principles & Notes',         icon:'💡'},
+  {key:'teamsimps',   label:'Teams / IMPS',               icon:'🏆'},
+  {key:'matchpoints', label:'Matchpoints',                icon:'📊'},
+  {key:'scoring',     label:'Bridge Scoring',             icon:'🧮'},
+];
+
+let QUIZ_BANK = [];
+let quizState = {topic:null, pool:[], idx:0, answers:{}, score:0, asked:0};
+let quizIdCounter = 0;
+
+function stripHtml(html){
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent.replace(/\s+/g,' ').trim();
+}
+
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function makeMCQuestion(topic, prompt, correctText, distractorTexts, explanation){
+  const correct = stripHtml(String(correctText));
+  const uniqDistractors = [...new Set(distractorTexts.map(d=>stripHtml(String(d))))].filter(d=>d && d!==correct);
+  if(!correct || uniqDistractors.length < 1) return null;
+  const chosen = shuffleArray(uniqDistractors).slice(0,3);
+  const allOptions = shuffleArray([correct, ...chosen]);
+  const optionIds = ['a','b','c','d'];
+  const options = allOptions.map((text,i)=>({id:optionIds[i], text}));
+  const correctOpt = options.find(o=>o.text===correct);
+  if(!correctOpt) return null;
+  quizIdCounter++;
+  return {id:'q'+quizIdCounter, topic, prompt, options, correctId:correctOpt.id, explanation: explanation || ('Correct answer: '+correct)};
+}
+
+function genConventionQuestions(){
+  const qs = [];
+  const entries = Object.entries(CONVENTIONS);
+  const allPts = entries.map(([k,c])=>c.pts).filter(p=>p && p!=='—');
+  const allShorts = entries.map(([k,c])=>c.short);
+  const allTriggers = entries.map(([k,c])=>c.trigger).filter(t=>t);
+  const allNames = entries.map(([k,c])=>c.name);
+  entries.forEach(([key,c])=>{
+    qs.push(makeMCQuestion('conventions', `Who typically makes the "${c.name}" bid/action?`, c.by, ['Opener','Responder','Competitive','Either'].filter(o=>o!==c.by), c.short));
+    qs.push(makeMCQuestion('conventions', `Which category does "${c.name}" belong to?`, c.cat, CONV_CATS.filter(cat=>cat!==c.cat), `${c.name} is filed under "${c.cat}".`));
+    qs.push(makeMCQuestion('conventions', `What does "${c.name}" mean in our system?`, c.short, shuffleArray(allShorts.filter(s=>s!==c.short)).slice(0,8), c.short));
+    qs.push(makeMCQuestion('conventions', `Which convention/action is being described here: "${c.short}"?`, c.name, shuffleArray(allNames.filter(n=>n!==c.name)).slice(0,8), `That's "${c.name}".`));
+    if(c.trigger){
+      qs.push(makeMCQuestion('conventions', `What triggers the "${c.name}" convention/action?`, c.trigger, shuffleArray(allTriggers.filter(t=>t!==c.trigger)).slice(0,8), `${c.name} is triggered by: ${c.trigger}`));
+      qs.push(makeMCQuestion('conventions', `Which convention/action has this trigger: "${c.trigger}"?`, c.name, shuffleArray(allNames.filter(n=>n!==c.name)).slice(0,8), `That's "${c.name}".`));
+    }
+    if(c.pts && c.pts !== '—'){
+      qs.push(makeMCQuestion('conventions', `What's the points/NLTC guideline for "${c.name}"?`, c.pts, shuffleArray(allPts.filter(p=>p!==c.pts)).slice(0,8), `${c.name}: ${c.pts}`));
+    }
+  });
+  return qs.filter(Boolean);
+}
+
+function genLadderQuestions(){
+  const qs = [];
+  const stageLabels = {opener:'Opener Bid', responder:'Responder Bid', openerRebid:'Opener Rebid', responderRebid:'Responder Rebid'};
+  const stageKeys = Object.keys(stageLabels);
+  const allRangesEverywhere = Object.values(LADDER).flat().map(x=>x.range).filter(r=>r);
+  const allTitlesByStage = {};
+  Object.entries(LADDER).forEach(([stageKey, items])=>{
+    allTitlesByStage[stageKey] = items.map(it=>stripHtml(it.h));
+    const stageRanges = items.map(it=>it.range).filter(r=>r);
+    items.forEach(it=>{
+      const title = stripHtml(it.h);
+      if(it.range){
+        let pool = shuffleArray(stageRanges.filter(r=>r!==it.range)).slice(0,5);
+        if(pool.length < 1) pool = shuffleArray(allRangesEverywhere.filter(r=>r!==it.range)).slice(0,5);
+        qs.push(makeMCQuestion('auction', `In the O-R-O-R tab (${stageLabels[stageKey]}), what's the guideline for "${title}"?`, it.range, pool, `${stageLabels[stageKey]} — ${title}: ${it.range}`));
+        // reverse lookup
+        const titlePool = shuffleArray(allTitlesByStage[stageKey].filter(t=>t!==title)).slice(0,5);
+        if(titlePool.length >= 1){
+          qs.push(makeMCQuestion('auction', `In the O-R-O-R tab (${stageLabels[stageKey]}), which bid/box has the guideline "${it.range}"?`, title, titlePool, `${stageLabels[stageKey]} — ${title}: ${it.range}`));
+        }
+      }
+      // mine individual bullets from the body for "which stage is this rule from" questions
+      const tmp = document.createElement('div');
+      tmp.innerHTML = it.body;
+      Array.from(tmp.querySelectorAll('li')).forEach(li=>{
+        const text = stripHtml(li.innerHTML);
+        if(text && text.length > 12 && text.length < 340){
+          const distractorStages = stageKeys.filter(sk=>sk!==stageKey).map(sk=>stageLabels[sk]);
+          qs.push(makeMCQuestion('auction', `In the O-R-O-R tab, this rule — "${text}" — belongs to which section?`, stageLabels[stageKey], distractorStages, `That rule is under ${stageLabels[stageKey]} ("${title}").`));
+        }
+      });
+    });
+  });
+  return qs.filter(Boolean);
+}
+
+function genTableQuestions(table, topic, subjectLabel){
+  if(!table) return [];
+  const qs = [];
+  const headerCells = Array.from(table.querySelectorAll('thead th')).map(th=>stripHtml(th.innerHTML));
+  const rows = Array.from(table.querySelectorAll('tbody tr'));
+  const rowData = rows.map(row=>Array.from(row.querySelectorAll('td')).map(td=>stripHtml(td.innerHTML)));
+  const rowLabels = rowData.map(rc=>rc[0]).filter(Boolean);
+  rowData.forEach(cells=>{
+    if(cells.length < 2) return;
+    const rowLabel = cells[0];
+    for(let c=1;c<cells.length;c++){
+      const answer = cells[c];
+      if(!answer || answer==='—' || answer.toUpperCase()==='NA') continue;
+      const colLabel = headerCells[c] || '';
+      const columnValues = rowData.map(rc=>rc[c]).filter(v=>v && v!=='—' && v.toUpperCase()!=='NA');
+      const distractorPool = columnValues.filter(v=>v!==answer);
+      const unique = [...new Set(distractorPool)];
+      if(unique.length >= 1){
+        const chosen = shuffleArray(unique).slice(0,3);
+        const prompt = colLabel ? `${subjectLabel} — for "${rowLabel}", what's the value under "${colLabel}"?` : `${subjectLabel} — what's the value for "${rowLabel}"?`;
+        qs.push(makeMCQuestion(topic, prompt, answer, chosen, `${subjectLabel}: ${rowLabel}${colLabel?' / '+colLabel:''} = ${answer}`));
+      }
+      // reverse lookup, only when this value is unique within its column (avoids ambiguous answers)
+      const occurrences = columnValues.filter(v=>v===answer).length;
+      if(occurrences === 1 && rowLabels.length >= 3){
+        const rowDistractors = shuffleArray(rowLabels.filter(r=>r!==rowLabel)).slice(0,3);
+        if(rowDistractors.length >= 1){
+          const revPrompt = colLabel ? `${subjectLabel} — which row has "${answer}" under "${colLabel}"?` : `${subjectLabel} — which row has the value "${answer}"?`;
+          qs.push(makeMCQuestion(topic, revPrompt, rowLabel, rowDistractors, `${subjectLabel}: ${rowLabel}${colLabel?' / '+colLabel:''} = ${answer}`));
+        }
+      }
+    }
+  });
+  return qs.filter(Boolean);
+}
+
+function findTableByHeading(headingText){
+  const headers = Array.from(document.querySelectorAll('h3'));
+  const h = headers.find(el=>el.textContent.toLowerCase().includes(headingText.toLowerCase()));
+  if(!h) return null;
+  const card = h.closest('.card');
+  return card ? card.querySelector('table') : null;
+}
+
+function genPanelHeadingQuestions(panelId, topic){
+  const panel = document.getElementById(panelId);
+  if(!panel) return [];
+  const walker = document.createTreeWalker(panel, NodeFilter.SHOW_ELEMENT, null);
+  let currentHeading = null;
+  const groups = {};
+  const order = [];
+  let node;
+  while((node = walker.nextNode())){
+    if(node.tagName === 'H3' || node.tagName === 'H4' || node.tagName === 'H2'){
+      currentHeading = stripHtml(node.innerHTML);
+      if(!groups[currentHeading]){ groups[currentHeading]=[]; order.push(currentHeading); }
+    } else if(node.classList && node.classList.contains('defence-name')){
+      currentHeading = stripHtml(node.innerHTML);
+      if(!groups[currentHeading]){ groups[currentHeading]=[]; order.push(currentHeading); }
+    } else if(node.tagName === 'LI' && currentHeading){
+      const text = stripHtml(node.innerHTML);
+      if(text && text.length > 12 && text.length < 340){
+        groups[currentHeading].push(text);
+      }
+    }
+  }
+  const qs = [];
+  const labels = order.filter(l=>groups[l] && groups[l].length>0);
+  if(labels.length < 2) return qs;
+  labels.forEach(label=>{
+    const distractors = labels.filter(l=>l!==label);
+    if(distractors.length < 1) return;
+    [...new Set(groups[label])].forEach(text=>{
+      qs.push(makeMCQuestion(topic, `Which topic/heading does this point belong to — "${text}"?`, label, shuffleArray(distractors).slice(0,3), `That's under "${label}".`));
+    });
+  });
+  return qs.filter(Boolean);
+}
+
+function genStaticQuestions(){
+  const raw = [
+    // Defence
+    ['defence', "What should second hand generally do when following to a trick?", "Play low", ["Play high","Always play an honour","Discard"]],
+    ["defence", "What's the second-hand-low exception when covering would surely promote an honour trick for us or partner?", "Cover the honour", ["Always play low regardless","Discard instead","Signal count instead"]],
+    ["defence", "What should third hand generally do?", "Play high", ["Play low","Discard","Duck"]],
+    ["defence", "Against a gambling 3NT, what's the recommended lead?", "An ace", ["Fourth highest","A trump","The lowest card"]],
+    ["defence", "What kind of defence suits a balanced dummy and a declarer with no strong side suit?", "Passive defence", ["Active defence","Forcing defence","Cutting down on ruffing"]],
+    ["defence", "What defence line is essential against 6NT and grand slams?", "Passive defence", ["Active defence","Forcing defence","Creating trump tricks"]],
+    ["defence", "When in doubt about which defence to play, what should you default to?", "Passive defence", ["Active defence","Forcing defence","A speculative sacrifice"]],
+    ["defence", "In Surrounding Play, when leading into dummy's weakness, what card should you lead?", "A card higher than dummy's highest card in that suit", ["Your lowest card","Fourth-highest always","The suit's Ace, always"]],
+    ["defence", "With a doubleton left in a suit, what should you return or lead?", "The higher of the two cards", ["The lower of the two cards","Either card, it doesn't matter","A different suit entirely"]],
+    ["defence", "When should you strongly consider leading trumps against the opponents?", "Against two-suited hands like Michaels or Unusual 2NT", ["Whenever you hold four trumps","Only when defending a slam","Never — trumps should be saved"]],
+    ["defence", "What comes first in our defensive signalling priority order?", "Attitude", ["Count","Suit preference","Length"]],
+    ["defence", "What should defenders try to work out as early as possible?", "Declarer's shape and points", ["Only declarer's high cards","Nothing until the end","Only the trump length"]],
+    ["defence", "In forcing defence, what should dummy's suit being attacked look like?", "Weak, and not short in that suit", ["Long and strong","Any suit will do","It must be dummy's trump suit"]],
+    ["defence", "In active defence, what might we voluntarily do to take our tricks before they vanish?", "Break new suits ourselves", ["Always lead trumps","Always play passively","Wait for declarer to lead"]],
+    // Principles & Notes
+    ["principles", "According to 'slow and fast arrival', what does 1♠–4♠ show?", "A weak hand with no slam interest", ["A strong hand with slam interest","A balanced 15-17 count","A game-forcing hand"]],
+    ["principles", "If opener has to lie, what should they lie about?", "Shape, not strength", ["Strength, not shape","Both shape and strength","Neither — always bid truthfully"]],
+    ["principles", "In our system, who is the temporizer and who is the describer?", "Responder is the temporizer, opener is the describer", ["Opener is the temporizer, responder is the describer","Both are describers","Neither role exists"]],
+    ["principles", "Once partner has passed, how do later bids by either partner compare to normal?", "A King (3 points) lighter than usual", ["Exactly the same strength","Stronger by a King","Forcing to game"]],
+    ["principles", "In the worked examples, what happens if opener rebids anything other than the forced doubleton suit after a 1NT response?", "It becomes a reverse", ["It becomes a jump shift","It shows a balanced hand","Nothing changes"]],
+    ["principles", "When can opener rebid NT with an unbalanced hand?", "When partner has game-forced and any other bid would become a reverse", ["Whenever opener feels like it","Only with 4333 shape","Never — NT always shows balanced"]],
+    ["principles", "During a live tourney, who should you ask to explain an alert?", "The opponent of the bidder, not the bidder", ["The bidder directly","The tournament director","Nobody — alerts explain themselves"]],
+    ["principles", "When can you correct partner's wrong alert explanation?", "Never before the auction ends", ["Immediately","Only if you're declarer","Whenever you notice"]],
+    ["principles", "What is dummy's sole job during the play of the hand?", "Tracking tricks won and lost until the 13th card", ["Advising declarer on strategy","Signalling to declarer","Counting opponents' points"]],
+    ["principles", "Do artificial, takeout, and penalty doubles need an alert?", "No", ["Yes, always","Only takeout doubles need one","Only in teams events"]],
+    // Teams / IMPS
+    ["teamsimps", "At IMPs, should you stretch to bid a vulnerable game at around a 40% chance?", "Yes", ["No, never below 50%","Only if non-vulnerable","Only on the last board"]],
+    ["teamsimps", "At IMPs, how thin a slam should you bid?", "Only slams that are at least 75%", ["Any slam above 50%","Any slam with an 8-card fit","Never bid slam at IMPs"]],
+    ["teamsimps", "How should overcalls be at IMPs compared to matchpoints?", "Sounder — upgrade by roughly a Queen", ["Lighter, to compete more","Identical to matchpoints","Overcalls should be avoided at IMPs"]],
+    ["teamsimps", "Can preempts be lighter at IMPs?", "Yes, since they deny opponents room to find games/slams", ["No, they must always be sound","Only in first seat","Only when vulnerable"]],
+    ["teamsimps", "At IMPs, which costs more — overbidding or underbidding?", "Overbidding", ["Underbidding","They cost exactly the same","Neither matters at IMPs"]],
+    ["teamsimps", "At IMPs, when should you double the opponents' partscore?", "Only if you have it beaten in your own hand", ["Whenever you have high cards","Whenever vulnerable","Every time they compete"]],
+    ["teamsimps", "Should you make speculative sacrifices at IMPs before the opponents reach game?", "No — interfere more before they get there instead", ["Yes, always sacrifice early","Only if non-vulnerable","Only against strong pairs"]],
+    ["teamsimps", "The moment dummy comes down at IMPs, what should declarer plan for first?", "How a bad trump break would affect the contract", ["How to maximize overtricks","Nothing — just start playing","Whether to claim immediately"]],
+    ["teamsimps", "At IMPs, is it right to choose a safe partial over a risky game-going line?", "Yes — play your safest contract", ["No, always chase the higher score","Only if vulnerable","Only against weak opponents"]],
+    ["teamsimps", "Why shouldn't you take a wild risk just because your team seems behind?", "Your partner at the other table faces the same decision", ["It's against the rules","Risk never matters at IMPs","You should always take risks when behind"]],
+    // Matchpoints
+    ["matchpoints", "At matchpoints, for the same likely trick count, which should you prefer?", "3NT over a minor-suit game", ["The minor-suit game over 3NT","Whichever partner prefers","A suit slam always"]],
+    ["matchpoints", "At MP, what happens if you bid a thin game the field is stopping short of and go down?", "You lose the whole board with no partial credit", ["You still get a partial score","MP ignores overbidding","You get bonus matchpoints for trying"]],
+    ["matchpoints", "At matchpoints, should you compete one level higher for a making partscore more often than at IMPs?", "Yes", ["No, less often","Only when vulnerable","Only in the last round"]],
+    ["matchpoints", "Why preempt aggressively at matchpoints?", "Making opponents guess wrong is a near-top for you", ["It guarantees a game swing","It only matters at IMPs","It has no effect on the score"]],
+    ["matchpoints", "At MP with a comfortable contract, should you usually take a safety play that costs a trick?", "Usually not — take the line that maximizes tricks", ["Always take the safety play","It makes no difference","Only if vulnerable"]],
+    ["matchpoints", "When should you reserve safety plays at matchpoints?", "For hands where the contract is genuinely in doubt", ["On every hand, always","Never — safety plays don't exist at MP","Only in the final round"]],
+    ["matchpoints", "In no-play/marginal hands at MP, what layout should you play for?", "The layout most likely to be true", ["The layout that saves your contract regardless of odds","Any layout at random","Whatever the opponents expect"]],
+    ["matchpoints", "Why double competitive partscores more readily at matchpoints?", "Converting their making partial into a penalty beats the field's plus score", ["It's required by MP rules","It guarantees a top every time","It has no real effect"]],
+    ["matchpoints", "Why avoid speculative sacrifices at matchpoints?", "A 'cheap' save can be a flat-out bottom at MP", ["Sacrifices always work better at MP than IMPs","They're illegal in MP events","They guarantee a good result"]],
+    ["matchpoints", "Why fight harder for exact-value penalties on defense at MP?", "The difference between +100 and +150 is a full swing on the matchpoint scale", ["Overtricks don't matter at MP","It only matters in the last round","IMPs scoring makes this irrelevant"]],
+    ["matchpoints", "Is balancing more valuable at matchpoints or at IMPs?", "Matchpoints", ["IMPs","Equally valuable in both","Neither — balancing isn't recommended"]],
+    ["matchpoints", "In the passout seat at matchpoints, what does bidding 2NT show?", "Both minors", ["Both majors","A strong balanced hand","A single long suit"]],
+    ["matchpoints", "In the passout seat at matchpoints, what does a Double show?", "Both majors", ["Both minors","A penalty double","A single long suit"]],
+    // Overcalls & Doubles (prose)
+    ["competitive", "At a 3-level-or-below contract, if a double is the very first double made by you or partner, what is it?", "Takeout", ["Penalty","Lead-directing","Support"]],
+    ["competitive", "At the 4-level or above (or against 3NT), what are all doubles?", "Penalty", ["Takeout","Negative","Support"]],
+    ["competitive", "If partner has passed earlier, can overcalls be lighter?", "Yes, a bit lighter (a king shy)", ["No, they must stay full strength","Only if vulnerable","Only from the 4th seat"]],
+    ["competitive", "If our opening 1NT is doubled, what happens to conventions like Puppet Stayman and transfers?", "They stay ON", ["They all switch off","Only transfers stay on","Only Puppet Stayman stays on"]],
+    ["competitive", "What system do we use to judge penalty doubles?", "Rule of 11 and Rule of 13", ["Rule of 15 and 17","Rule of 20","Rule of 2/3/4"]],
+    ["competitive", "With 10+ points, what must responder do if partner opens and an opponent overcalls?", "Bid something — at minimum 1NT with a stopper", ["Always pass to be safe","Double for penalty","Redouble"]],
+    ["competitive", "What does a Negative Double show?", "4+ cards in the unbid major(s)", ["A penalty double of the overcall","A balanced 18-20","A strong NT hand"]],
+    ["competitive", "What does the Support Double show?", "Exactly 3-card support for responder's major, 12-16 points", ["4+ card support and 15+ points","A penalty double","A weak hand with a long suit"]],
+    // Extra Defence
+    ["defence", "What's the exception when you hold two touching honours as second hand?", "Split them and play the honour instead of low", ["Always play the higher one low","Discard instead","Always play the lowest card"]],
+    ["defence", "With AJx and dummy showing the Queen visible, what should third hand play instead of the Ace?", "The Jack", ["The Ace","A low card","It doesn't matter which card"]],
+    ["defence", "What's the general rule for returning partner's suit?", "The higher of touching honours, or your original fourth-best", ["Always your lowest card","Always the same card you led originally","A random card"]],
+    ["defence", "Why is a forcing defence useful against a 4-3 or 4-4-with-a-4-1 trump fit?", "It makes declarer ruff and run short of trumps", ["It sets up extra overtricks","It promotes our own trump honours only","It has no real effect on trump control"]],
+    ["defence", "In forcing defence, when holding the trump ace, what should you typically do?", "Hold it up until dummy is out of trumps", ["Cash it immediately","Discard it","Lead it at trick one always"]],
+    ["defence", "In active defence, why might we voluntarily break new suits?", "To take our tricks before they vanish", ["To help declarer take finesses","To signal count to partner","There's no reason to do this"]],
+    ["defence", "What kind of suit lead should generally be avoided when going passive?", "A 4-card suit with only one honour", ["A trump lead","A suit headed only by small cards","A suit with no unsupported honour"]],
+    ["defence", "When should you consider leading trumps to cut down ruffing?", "When your side holds a trump stack, on misfits, or when you control everything but trumps", ["Only when defending notrump","Whenever partner passed","Never — trumps should be saved for declarer"]],
+    ["defence", "What's an 'uppercut' used for in creating trump tricks?", "Forcing declarer or dummy to ruff high, promoting a trump honour", ["Forcing an overtrick","Signalling attitude","Setting up a squeeze"]],
+    ["defence", "Should you chase a ruffing trick if you already hold natural trump tricks like QJ10?", "No", ["Yes, always","Only if vulnerable","Only against slams"]],
+    ["defence", "What should defenders identify before the opening lead, after dummy, and during play?", "The right line of defence", ["The final contract only","Nothing — just follow suit","Only the trump suit"]],
+    ["defence", "If declarer's contract involves a preempt bid or a sacrifice over our game, what should we do?", "Lead trumps and draw them", ["Avoid trumps entirely","Lead our longest suit only","Pass on defence"]],
+    // Extra Principles & Notes
+    ["principles", "What's the guiding idea behind 1♠–2♣–2♦–4♠ compared to 1♠–4♠?", "The first is strong, showing slam interest; the second is weak with none", ["Both show exactly the same strength","The first is weaker than the second","Neither sequence is meaningful"]],
+    ["principles", "In the 4432/4522-shape examples, what point range is opener shown to hold?", "12-14 points", ["15-17 points","17-18 points","19-21 points"]],
+    ["principles", "Why is lying about balance (via a false reverse or 1NT) worse than lying about shape?", "It falsely claims higher strength or a balanced hand when the hand is unbalanced and not strong", ["It's actually not worse at all","It only matters at slam level","It's illegal under bridge rules"]],
+    ["principles", "As declarer, when should you clarify alerts to the defenders?", "Before the opening lead", ["Only after the hand is over","Never — declarer doesn't explain alerts","Immediately when partner bids"]],
+    ["principles", "As a defender, when do you explain an alert to declarer?", "After the deal but before scores are agreed", ["Immediately during the auction","Never","Only if declarer asks mid-play"]],
+    ["principles", "Should slam-asking bids be alerted during the auction?", "No — offer to explain before the opening lead instead", ["Yes, always alert them immediately","Only if vulnerable","Only in teams events"]],
+    // Extra Teams / IMPS
+    ["teamsimps", "At IMPs, should you stretch to bid a non-vulnerable game around a 50% chance?", "Yes", ["No, only above 60%","Only if vulnerable","Never stretch at IMPs"]],
+    ["teamsimps", "At IMPs, is it right to bid thin games the field might miss?", "Yes — look for the contract that's different and better", ["No, always match the field","Only in the final match","Only if non-vulnerable"]],
+    ["teamsimps", "At IMPs, should you sacrifice more when non-vulnerable against vulnerable opponents?", "Yes", ["No, sacrifice less in that case","Only if you're already losing","Sacrifices are never worthwhile at IMPs"]],
+    ["teamsimps", "With 18 points when the opponents open, what should you do?", "Double and plan to find the best game", ["Pass and wait","Bid game blindly","Overcall your longest suit regardless of shape"]],
+    ["teamsimps", "At IMPs, is a hand each match where both sides can make game usually a flat, balanced deal?", "No — usually a wild, distributional deal", ["Yes, always balanced","It never happens","Only on the first board"]],
+    // Extra Matchpoints
+    ["matchpoints", "At matchpoints, if a game the field bids is 'automatic' and you also bid and make it, what do you gain?", "Nothing extra — everyone else got the same result", ["A guaranteed top","Bonus matchpoints","An automatic slam swing"]],
+    ["matchpoints", "At matchpoints, with an 8-card fit and non-vulnerable, how willing should you be to compete to the 3-level?", "Quite willing", ["Never compete that high","Only if vulnerable","Only with a 9-card fit"]],
+    ["matchpoints", "At matchpoints, if we are vulnerable, up to what level should we not let opponents play a suit contract?", "2♦ or below", ["3♣ or below","1NT or below","4♠ or below"]],
+    ["matchpoints", "At matchpoints, if we are non-vulnerable, up to what level should we not let opponents play a suit contract?", "2♠ or below", ["1NT or below","3NT or below","4♥ or below"]],
+    ["matchpoints", "In the passout seat at matchpoints, what does bidding your own suit show?", "5+ cards and 7+ suit quality", ["Any 4-card suit","A balanced hand","A penalty double intention"]],
+    ["matchpoints", "Is balancing applicable if the opener has preempted?", "No, it's not applicable then", ["Yes, always applicable","Only if vulnerable","Only against 1NT openings"]],
+    ["matchpoints", "Is balancing applicable if the opponents have stopped at 1NT?", "No, it's not applicable then", ["Yes, always applicable","Only if non-vulnerable","Only in the passout seat"]],
+    // Hand Evaluation — Bergen facts
+    ["evaluation", "In Bergen HCP, how many points is an Ace worth?", "4", ["3","5","2"]],
+    ["evaluation", "In Bergen HCP, how many points is a King worth?", "3", ["4","2","1"]],
+    ["evaluation", "In Bergen HCP, how many points is a Queen worth?", "2", ["1","3","4"]],
+    ["evaluation", "In Bergen HCP, how many points is a Jack worth?", "1", ["2","0.5","3"]],
+    ["evaluation", "How many length points does a 5-card suit add in Bergen scoring?", "1", ["2","0","3"]],
+    ["evaluation", "How many length points does a 6-card suit add in Bergen scoring?", "2", ["1","3","4"]],
+    ["evaluation", "How many length points does a 7-card suit add in Bergen scoring?", "3", ["2","4","1"]],
+    ["evaluation", "In Bergen scoring, what's the suit-quality bonus for a 4+ card suit with 3 of the top 5 honours?", "+1", ["+2","-1","0"]],
+    ["evaluation", "In Bergen scoring, what's the flatness penalty for a suit contract with ≥2 cards in every suit?", "-1", ["-2","0","+1"]],
+    ["evaluation", "Regardless of Bergen points, how many HCP does a 1-level suit opening need for sure?", "10+", ["8+","12+","14+"]],
+    ["evaluation", "Regardless of Bergen points, how many HCP does a 1NT opening need for sure?", "14+", ["12+","10+","17+"]],
+    ["evaluation", "Regardless of Bergen points, how many HCP should a 1-level response have for sure?", "4+", ["2+","6+","8+"]],
+    ["evaluation", "In the 3rd seat, what's the lowest HCP we can also open with?", "10 HCP", ["8 HCP","12 HCP","14 HCP"]],
+    ["evaluation", "How many total Bergen points are needed for a major-suit game?", "26+", ["24+","29+","33+"]],
+    ["evaluation", "How many total Bergen points are needed for a minor-suit game?", "29+", ["26+","24+","33+"]],
+    ["evaluation", "How many total Bergen points are needed for a small slam?", "33+", ["29+","26+","36+"]],
+    ["evaluation", "What test defines a balanced hand?", "The two longest suits together add up to 8 cards or fewer", ["The hand has no suit shorter than 3 cards","The hand has exactly 4333 shape","The hand has no void or singleton"]],
+    ["evaluation", "In NLTC, how many losers does a missing Ace cost?", "1.5", ["1","0.5","2"]],
+    ["evaluation", "In NLTC, how many losers does a missing King cost?", "1", ["1.5","0.5","2"]],
+    ["evaluation", "In NLTC, how many losers does a missing Queen cost?", "0.5", ["1","1.5","0"]],
+    ["evaluation", "With a confirmed 9-card (or longer) trump fit, what adjustment applies to combined NLTC losers?", "Subtract one loser", ["Add one loser","No adjustment","Subtract two losers"]],
+    ["evaluation", "To find the recommended contract level from NLTC, what do you subtract combined losers from?", "19", ["18","20","13"]],
+    ["evaluation", "With Kx or AQ in a suit RHO has opened/overcalled, what Bergen adjustment applies?", "+1", ["-1","+2","0"]],
+    ["evaluation", "With Kx or AQ in a suit LHO has opened/overcalled, what Bergen adjustment applies?", "-1", ["+1","-2","0"]],
+    // Bridge Scoring — fixed rule facts
+    ["scoring", "In duplicate scoring, what's the minimum trick-point total needed to count as bidding and making game?", "100", ["50","150","200"]],
+    ["scoring", "What's the partscore bonus for making a contract below game?", "50", ["100","0","300"]],
+    ["scoring", "What's the insult bonus for making a doubled contract?", "50", ["100","0","200"]],
+    ["scoring", "What's the insult bonus for making a redoubled contract?", "100", ["50","0","200"]],
+    ["scoring", "Is the small-slam bonus in addition to the game bonus, or instead of it?", "In addition to it", ["Instead of it","Neither applies for slams","Only the higher of the two applies"]],
+    ["scoring", "Is doubling an opponent into slam rewarded with a slam bonus?", "No", ["Yes, always","Only if vulnerable","Only for grand slams"]],
+    ["scoring", "If the doubled/redoubled trick points reach 100+, what bonus do you also become eligible for?", "The game bonus", ["The slam bonus only","No bonus at all","The insult bonus only"]],
+    ["scoring", "For NT contracts, how many trick points is the first odd trick worth (undoubled)?", "40", ["30","20","50"]],
+    ["scoring", "For NT contracts, how many trick points is each trick after the first worth (undoubled)?", "30", ["40","20","25"]],
+    ["scoring", "For a Major suit, how many trick points is each trick worth (undoubled)?", "30", ["20","40","25"]],
+    ["scoring", "For a Minor suit, how many trick points is each trick worth (undoubled)?", "20", ["30","40","10"]],
+    // Extra auction (O-R-O-R)
+    ["auction", "In the O-R-O-R tab, what must opener do after partner responds 1NT?", "Rebid — passing 1NT is not allowed", ["Pass if minimum","Redouble","Bid only with 17+"]],
+    ["auction", "In the O-R-O-R tab, when should responder open the bidding with 12+ Bergen points?", "With a 1-level suit opening", ["Never, responder can't open","Only with 20+ points","Only in 3rd seat"]],
+    ["auction", "In the O-R-O-R tab, what should you open with equal-length 5-card suits?", "The higher-ranking suit", ["The lower-ranking suit","Whichever suit has more honours","1NT instead"]],
+    ["auction", "In the O-R-O-R tab, what should you open with equal-length 4-card suits?", "The higher-ranking suit", ["The lower-ranking suit","Always clubs","1NT instead"]],
+    ["auction", "In the O-R-O-R tab, should you open your longest suit first?", "Yes, irrespective of which suit it is", ["No, always open a major first","No, always open a minor first","Only if it's 5+ cards"]],
+    ["auction", "In the O-R-O-R tab, after 2♣–2♦, what does opener rebid with no 6+ suit?", "2NT", ["3NT","Pass","A new 4-card suit"]],
+    ["auction", "In the O-R-O-R tab, after 2♣–2♦, what does opener rebid with a 6+ card suit?", "That suit, at the cheapest level", ["2NT always","3NT always","A jump to game"]],
+    ["auction", "In the O-R-O-R tab, minor-suit transfers after 1NT/2NT should show how many cards?", "6+ cards", ["5+ cards","4+ cards","Any length"]],
+    ["auction", "In the O-R-O-R tab, major-suit transfers after 1NT/2NT can show how many cards?", "5+ cards", ["6+ cards only","4+ cards only","Any length"]],
+    ["auction", "In the O-R-O-R tab, who must accept a four-way transfer after 1NT/2NT?", "Opener, mandatorily", ["Responder can decline it","Either partner, optionally","Only if opener is maximum"]],
+    ["auction", "In the O-R-O-R tab, what does responder need to raise partner's minor with a strong hand (1m-2m)?", "10-12 points", ["6-9 points","13+ points","5-9 points"]],
+    ["auction", "In the O-R-O-R tab, what does 1m-3m show for the minor raise?", "A weak hand, 9 points or below", ["A strong forcing raise","A game-forcing raise","18+ points"]],
+    ["auction", "In the O-R-O-R tab, when can responder pass opener's rebid with under 9 points?", "If opener hasn't shown 17+ and there's a 7-card fit", ["Never, responder must always bid on","Only if opener reversed","Only in a competitive auction"]],
+    ["auction", "In the O-R-O-R tab, a double-jump rebid of opener's own suit shows what?", "19-21 points", ["15-18 points","12-14 points","17-18 points"]],
+    ["auction", "In the O-R-O-R tab, what does a jump rebid in the same suit show?", "15-18 points, 6+ cards", ["19-21 points","12-14 points","17-18 points, forcing"]],
+    // Extra Overcalls & Doubles (competitive)
+    ["competitive", "In our system, what does 1-level negative double show in terms of points?", "6+ points", ["9+ points","12+ points","15+ points"]],
+    ["competitive", "In our system, what does 2-level negative double show in terms of points?", "9+ points", ["6+ points","12+ points","15+ points"]],
+    ["competitive", "In our system, what does 3-level negative double show?", "12+ points, game force", ["6+ points, non-forcing","9+ points, invitational","15+ points, slam try"]],
+    ["competitive", "What does a cue bid by advancer (overcaller's partner) of opener's suit show?", "8 losers or fewer", ["8+ points","A penalty double intent","A stopper in opener's suit"]],
+    ["competitive", "What does direct support of the overcalled suit by advancer show?", "Below 8 points", ["8+ points","12+ points","A penalty double"]],
+    ["competitive", "What's the requirement for a 1-level overcall in suit quality?", "7+", ["5+","9+","3+"]],
+    ["competitive", "What's the requirement for a 2-level overcall in suit quality?", "8+", ["6+","10+","4+"]],
+    ["competitive", "What does an immediate 1NT overcall show?", "15-17 points with a stopper", ["12-14 points, any shape","18-20 points balanced","8-10 points with a long suit"]],
+    ["competitive", "What do jump overcalls generally show in our system?", "A weak hand, 6-11 points", ["A strong hand, 15+ points","A balanced 18-20","A game-forcing hand"]],
+    ["competitive", "If we double and then bid an NT overcall, what does that show?", "18-20 with a stopper", ["12-14, any shape","21+ with a stopper","15-17 unbalanced"]],
+    ["competitive", "If we double and then bid a suit overcall, what does that show?", "18-20, unbalanced", ["12-14 balanced","21+ balanced","15-17, any shape"]],
+    ["competitive", "If we double and then jump in a suit, what does that show?", "21+, unbalanced", ["18-20, unbalanced","15-17 balanced","12-14, any shape"]],
+    ["competitive", "If we double and then jump in NT, what does that show?", "21+ with a stopper", ["18-20 with a stopper","15-17, any shape","12-14 balanced"]],
+    ["competitive", "What's the Rule of 2 for balancing (4th seat) over an opposing 1NT?", "Interfere with 6+ points or 2+ shortness points", ["Never interfere in 4th seat","Always interfere with any values","Only interfere with 12+ points"]],
+    ["competitive", "In the balancing seat over 1NT, what does bidding your own suit show?", "5+ cards", ["Any 3+ cards","A balanced hand","A penalty double intention"]],
+    ["competitive", "What's the mandate for responder with 10+ points after partner opens and an opponent overcalls?", "Bid something, at minimum 1NT with a stopper", ["Pass, it's safer","Always double","Always redouble"]],
+    // Extra Defence
+    ["defence", "What's the standard opening lead style in a suit contract?", "3rd/5th highest", ["4th highest always","Top of a sequence only","Always lead trumps"]],
+    ["defence", "What's the standard opening lead style in a notrump contract?", "4th highest", ["3rd/5th highest","Always the Ace","Top of nothing always"]],
+    ["defence", "Against NT, with 3 or fewer small cards in a suit, what should you lead?", "The top card", ["Fourth highest","The lowest card","A different suit entirely"]],
+    ["defence", "What's the rule for playing the lower of touching honours on lead?", "Always play it (e.g. JT lead the T, AQJ lead the J)", ["Always play the higher honour","Only applies on defense, never on lead","Only applies with exactly 2 honours"]],
+    ["defence", "What's the general signalling priority order in our defence?", "Attitude, then Count, then Suit Preference", ["Count, then Attitude, then Suit Preference","Suit Preference, then Attitude, then Count","We don't use a fixed order"]],
+    ["defence", "On defense, when giving discards, what comes first?", "Attitude", ["Count","Suit preference","Nothing — discards are random"]],
+    ["defence", "In active defence, what should we do to prevent dummy cashing long-suit tricks?", "Knock out entries in side suits", ["Always lead trumps instead","Give up on the defence","Wait passively"]],
+    ["defence", "In active defence, is it sometimes right to lead away from an honour?", "Yes, if necessary to promote tricks", ["No, never lead away from an honour","Only if defending a slam","Only on opening lead"]],
+    ["defence", "What's a 'stripe-tailed ape double'?", "A double of a game where the doubler fears a slam and hopes for the smaller doubled-game score", ["A standard penalty double","A double showing both majors","A lead-directing double"]],
+    ["defence", "If redoubled after a stripe-tailed ape double, what should you do?", "Run to a sacrifice", ["Stand and defend","Redouble again","Bid a new suit for penalty"]],
+    // Extra Principles & Notes
+    ["principles", "During a live tourney, should artificial, takeout, and penalty doubles be alerted?", "No", ["Yes, always","Only artificial doubles need one","Only in teams events"]],
+    ["principles", "In our pre-alert, how should we describe our system?", "SAYC 2-over-1", ["Precision Club","Strong Club","Acol"]],
+    ["principles", "What should be alerted about our 1NT opening range?", "That NT rebids can include a 4-card major or a partner fit", ["Nothing, 1NT needs no alert","That it's always exactly balanced","That it shows extra shape only"]],
+    ["principles", "During the auction, should slam-asking bids be alerted?", "No — explain before the opening lead instead", ["Yes, immediately","Only Kickback needs alerting","Only Gerber needs alerting"]],
+    // Extra Teams / IMPS
+    ["teamsimps", "At IMPs, should overcalls be sounder or lighter compared to matchpoints?", "Sounder", ["Lighter","Identical","Overcalls should be avoided"]],
+    ["teamsimps", "At IMPs, is it right to preempt lighter than at matchpoints?", "Yes, since it denies the opponents bidding room", ["No, preempts must be sound","Only if vulnerable","Only in the last board"]],
+    ["teamsimps", "At IMPs, why avoid a confusing call that might get passed when forcing?", "Don't be a hero — it risks a disaster for no gain", ["It's actually encouraged at IMPs","It only matters at matchpoints","There's no downside to confusing calls"]],
+    ["teamsimps", "At IMPs, should you assume the same result at the other table when deciding to take a risk?", "No — your partner there faces the same tough decision", ["Yes, assume they'll do the opposite","Yes, assume they'll always succeed","This has no bearing on your decision"]],
+    // Extra Matchpoints
+    ["matchpoints", "At matchpoints, should overcalls be sounder or can preempts be more aggressive than at IMPs?", "Preempts can be more aggressive", ["Overcalls must be much sounder","Neither changes from IMPs","Both must be sounder"]],
+    ["matchpoints", "At matchpoints, why does an overtrick matter so much?", "It's real money since so many pairs share the same contract", ["It never matters at matchpoints","Only in the last round","Only if vulnerable"]],
+    ["matchpoints", "Should you make an 'automatic' game the whole field is bidding?", "Yes — but it gains you nothing beyond matching the field", ["No, avoid it","Only if vulnerable","It always guarantees a top"]],
+    // Extra auction (push past 200)
+    ["auction", "In the O-R-O-R tab, what suit should a reverse be into?", "Opener's second-longest suit", ["Any suit at all","Always a major","Opener's shortest suit"]],
+    ["auction", "In the O-R-O-R tab, is a reverse forcing for one round?", "No, responder may pass", ["Yes, always forcing","Only forcing if vulnerable","Only forcing after interference"]],
+    ["auction", "In the O-R-O-R tab, after a game-force response by responder, is a reverse/jump-NT/jump-new-suit still applicable to show extra strength?", "No, not applicable then", ["Yes, always applicable","Only the reverse is applicable","Only the jump in NT is applicable"]],
+    ["auction", "In the O-R-O-R tab, what shows 15-16 points, unbalanced, after a 1NT response?", "A 2NT rebid", ["A 1NT rebid","A pass","A jump to 3NT"]],
+    ["auction", "In the O-R-O-R tab, with a fit and 6-9 points, what level should responder raise to?", "The 2-level", ["The 3-level","The 4-level","1-level only"]],
+    ["auction", "In the O-R-O-R tab, with a fit and 10-12 points, what level should responder raise to?", "The 3-level", ["The 2-level","The 4-level","Pass instead"]],
+    ["auction", "In the O-R-O-R tab, what's the mandate for responder with 10+ points after an opponent overcalls?", "Bid something, at least 1NT with a stopper", ["Pass to stay safe","Always double","Redouble only"]],
+    ["auction", "In the O-R-O-R tab, what's required for a game-forcing new-suit response without a jump?", "12+ points (5+ suit if a major)", ["6-9 points","19-21 points","Any point count"]],
+    ["auction", "In the O-R-O-R tab, what does responder's 1NT response show?", "12 points or fewer", ["13+ points","6-9 points only","A 4-card major"]],
+    ["auction", "In the O-R-O-R tab, what's the Puppet Stayman point requirement after 1NT?", "9+ points (or 8 with 8 cards above the 10)", ["12+ points always","5+ points always","Any point count"]],
+  ];
+  return raw.map(([topic, prompt, correct, distractors])=>makeMCQuestion(topic, prompt, correct, distractors)).filter(Boolean);
+}
+
+function buildQuizBank(){
+  quizIdCounter = 0;
+  let bank = [];
+  bank = bank.concat(genConventionQuestions());
+  bank = bank.concat(genLadderQuestions());
+  bank = bank.concat(genTableQuestions(document.getElementById('ltcTable'), 'evaluation', 'NLTC Table'));
+  bank = bank.concat(genTableQuestions(findTableByHeading('Contract (Trick) Points'), 'scoring', 'Contract (Trick) Points'));
+  bank = bank.concat(genTableQuestions(findTableByHeading('Overtrick Points'), 'scoring', 'Overtrick Points'));
+  bank = bank.concat(genTableQuestions(findTableByHeading('Bonus for making'), 'scoring', 'Bonus for making a Part Score/Game/Slam'));
+  bank = bank.concat(genTableQuestions(findTableByHeading('Insult Bonus'), 'scoring', 'Insult Bonus'));
+  bank = bank.concat(genTableQuestions(findTableByHeading('Undertrick Penalties'), 'scoring', 'Undertrick Penalties'));
+  bank = bank.concat(genTableQuestions(findTableByHeading('TONT'), 'competitive', 'TONT Structure'));
+  bank = bank.concat(genTableQuestions(findTableByHeading('Leaping Michaels'), 'competitive', 'Leaping Michaels'));
+  bank = bank.concat(genTableQuestions(findTableByHeading('Handling Preempts'), 'competitive', 'Handling Preempts by Opponent'));
+  bank = bank.concat(genStaticQuestions());
+  bank = bank.concat(genPanelHeadingQuestions('panel-defence', 'defence'));
+  bank = bank.concat(genPanelHeadingQuestions('panel-principles', 'principles'));
+  bank = bank.concat(genPanelHeadingQuestions('panel-teamsimps', 'teamsimps'));
+  bank = bank.concat(genPanelHeadingQuestions('panel-matchpoints', 'matchpoints'));
+  bank = bank.concat(genPanelHeadingQuestions('panel-competitive', 'competitive'));
+  bank = bank.concat(genPanelHeadingQuestions('panel-evaluation', 'evaluation'));
+  // de-duplicate near-identical prompts (same prompt text) to keep variety high
+  const seenPrompts = new Set();
+  bank = bank.filter(q=>{
+    if(seenPrompts.has(q.prompt)) return false;
+    seenPrompts.add(q.prompt);
+    return true;
+  });
+  return bank;
+}
+
+function renderQuizTopics(){
+  const grid = document.getElementById('quizTopicGrid');
+  const counts = {};
+  QUIZ_BANK.forEach(q=>{ counts[q.topic] = (counts[q.topic]||0)+1; });
+  const cards = QUIZ_TOPICS.map(t=>`
+    <div class="quiz-topic-card" data-topic="${t.key}" tabindex="0">
+      <span class="qt-icon">${t.icon}</span>
+      <span class="qt-name">${t.label}</span>
+      <span class="qt-count">${counts[t.key]||0} questions</span>
+    </div>`).join('');
+  const randomCard = `
+    <div class="quiz-topic-card qt-random" data-topic="random" tabindex="0">
+      <span class="qt-icon">🎲</span>
+      <span class="qt-name">Random</span>
+      <span class="qt-count">${QUIZ_BANK.length} questions</span>
+    </div>`;
+  grid.innerHTML = cards + randomCard;
+  grid.querySelectorAll('.quiz-topic-card').forEach(card=>{
+    card.addEventListener('click', ()=> startQuizTopic(card.dataset.topic));
+  });
+  paintSuits(grid);
+}
+
+function startQuizTopic(topicKey){
+  const base = topicKey==='random' ? QUIZ_BANK.slice() : QUIZ_BANK.filter(q=>q.topic===topicKey);
+  if(base.length===0) return;
+  quizState = {topic:topicKey, base: shuffleArray(base), pool: shuffleArray(base), idx:0, answers:{}, score:0, asked:0};
+  document.getElementById('quizPlayCard').style.display = 'block';
+  const topicObj = QUIZ_TOPICS.find(t=>t.key===topicKey);
+  document.getElementById('quizTopicLabel').textContent = topicKey==='random' ? '🎲 Random' : (topicObj ? topicObj.icon+' '+topicObj.label : topicKey);
+  renderQuizAt(0);
+  const playCardEl = document.getElementById('quizPlayCard');
+  if(playCardEl.scrollIntoView) playCardEl.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function renderQuizScore(){
+  document.getElementById('quizScoreLabel').textContent = `Score: ${quizState.score} / ${quizState.asked}`;
+  document.getElementById('quizCounterLabel').textContent = `Question ${quizState.idx+1}`;
+}
+
+function renderQuizAt(idx){
+  if(idx < 0) idx = 0;
+  while(idx >= quizState.pool.length){
+    quizState.pool = quizState.pool.concat(shuffleArray(quizState.base));
+  }
+  quizState.idx = idx;
+  const q = quizState.pool[idx];
+  const alreadyAnswered = quizState.answers[idx];
+  const block = document.getElementById('quizQuestionBlock');
+  block.innerHTML = `
+    <div class="quiz-q-prompt">${q.prompt}</div>
+    <div class="quiz-options">
+      ${q.options.map(o=>`<button class="quiz-option${alreadyAnswered?' disabled':''}" data-oid="${o.id}">${o.text}</button>`).join('')}
+    </div>`;
+  if(alreadyAnswered){
+    block.querySelectorAll('.quiz-option').forEach(btn=>{
+      if(btn.dataset.oid === q.correctId) btn.classList.add('correct');
+      else if(btn.dataset.oid === alreadyAnswered) btn.classList.add('wrong');
+    });
+    const expl = document.createElement('div');
+    expl.className = 'quiz-explanation';
+    const wasCorrect = alreadyAnswered === q.correctId;
+    expl.innerHTML = (wasCorrect ? '✅ Correct! ' : '❌ Not quite. ') + q.explanation;
+    block.appendChild(expl);
+  } else {
+    block.querySelectorAll('.quiz-option').forEach(btn=>{
+      btn.addEventListener('click', ()=>handleQuizAnswer(btn.dataset.oid));
+    });
+  }
+  document.getElementById('quizPrevBtn').disabled = (idx === 0);
+  renderQuizScore();
+  paintSuits(block);
+}
+
+function handleQuizAnswer(chosenId){
+  const idx = quizState.idx;
+  if(quizState.answers[idx] !== undefined) return;
+  const q = quizState.pool[idx];
+  quizState.answers[idx] = chosenId;
+  quizState.asked++;
+  if(chosenId === q.correctId) quizState.score++;
+  renderQuizAt(idx);
+}
+
+document.getElementById('quizNextBtn').addEventListener('click', ()=>{
+  renderQuizAt(quizState.idx + 1);
+});
+document.getElementById('quizPrevBtn').addEventListener('click', ()=>{
+  if(quizState.idx > 0) renderQuizAt(quizState.idx - 1);
+});
+document.getElementById('quizChangeTopicBtn').addEventListener('click', ()=>{
+  document.getElementById('quizPlayCard').style.display = 'none';
+});
+
 /* ===================== INIT ===================== */
 renderLadder();
 renderConvFilters();
 renderConvTable();
 renderLTC();
 paintSuits(document.body);
+QUIZ_BANK = buildQuizBank();
+renderQuizTopics();
 </script>
 </body>
 </html>
