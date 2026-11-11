@@ -150,6 +150,9 @@ nav.subtabs button.active{
   background:linear-gradient(90deg, var(--teal), var(--cyan)); color:#04241d; border-color:transparent;
   box-shadow:var(--glow-teal);
 }
+.checklist-list{column-count:2; column-gap:36px; margin:0;}
+.checklist-list li{break-inside:avoid; margin-bottom:8px;}
+@media (max-width:900px){ .checklist-list{column-count:1;} }
 .subpanel{display:none;}
 .subpanel.active{display:block; animation:fade .18s ease-out;}
 @keyframes fade{from{opacity:0;} to{opacity:1;}}
@@ -254,6 +257,8 @@ nav.subtabs button.active{
 .pill:hover, .pill:focus{transform:translateY(-1px) scale(1.03); box-shadow:0 4px 16px -2px rgba(0,201,167,.75); outline:none;}
 .pill.p2{background:linear-gradient(90deg, var(--red), var(--violet)); color:#fff0f4; box-shadow:0 2px 10px -2px rgba(255,61,110,.55);}
 .pill.p2:hover{box-shadow:0 4px 16px -2px rgba(255,61,110,.8);}
+.pill.p3{background:linear-gradient(90deg, #16a34a, #84cc16); color:#052e16; box-shadow:0 2px 10px -2px rgba(34,197,94,.6);}
+.pill.p3:hover{box-shadow:0 4px 16px -2px rgba(34,197,94,.85);}
 
 #tooltip{
   position:fixed; z-index:1000; max-width:280px; background:linear-gradient(165deg,#181234,#0d0a20);
@@ -395,6 +400,22 @@ table.ref-table td{padding:8px 10px; border-bottom:1px solid var(--card-line); v
 table.ref-table tr:nth-child(even) td{background:rgba(255,176,32,.06);}
 table.ref-table tr:hover td{background:rgba(0,201,167,.08);}
 table.ref-table td.rowhead{font-weight:700; white-space:nowrap; color:var(--gold-deep);}
+
+/* Defence checklist table */
+table.ref-table.defcheck{width:100%; border-collapse:separate; border-spacing:0 6px; font-size:13.5px; min-width:720px; color:var(--ink);}
+table.ref-table.defcheck th{padding:12px 14px; color:#fff; text-align:left; font-weight:800; letter-spacing:.3px;}
+table.ref-table.defcheck th:nth-child(1){background:linear-gradient(135deg,#8b5cf6,#6d3de0); border-radius:10px 0 0 10px;}
+table.ref-table.defcheck th:nth-child(2){background:linear-gradient(135deg,#ff3d6e,#d61856);}
+table.ref-table.defcheck th:nth-child(3){background:linear-gradient(135deg,#00c9a7,#00a389); border-radius:0 10px 10px 0;}
+table.ref-table.defcheck td{padding:12px 14px; vertical-align:top; line-height:1.55; border:0; }
+table.ref-table.defcheck td:first-child{border-radius:10px 0 0 10px; font-weight:700;}
+table.ref-table.defcheck td:last-child{border-radius:0 10px 10px 0; font-weight:600;}
+table.ref-table.defcheck td:nth-child(1){background:rgba(139,92,246,.16); border-radius:10px 0 0 10px;}
+table.ref-table.defcheck td:nth-child(2){background:rgba(255,61,110,.13);}
+table.ref-table.defcheck td:nth-child(3){background:rgba(0,201,167,.17); border-radius:0 10px 10px 0;}
+table.ref-table.defcheck tr:nth-child(even) td:nth-child(1), table.ref-table.defcheck tr:hover td:nth-child(1){background:rgba(139,92,246,.16);}
+table.ref-table.defcheck tr:nth-child(even) td:nth-child(2), table.ref-table.defcheck tr:hover td:nth-child(2){background:rgba(255,61,110,.13);}
+table.ref-table.defcheck tr:nth-child(even) td:nth-child(3), table.ref-table.defcheck tr:hover td:nth-child(3){background:rgba(0,201,167,.17);}
 table.ref-table td.na{color:var(--ink-soft); font-style:italic;}
 
 .s-red{color:var(--red-deep);}
@@ -606,6 +627,7 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   <button data-tab="evaluation" class="active">Hand Evaluation</button>
   <button data-tab="auction">O-R-O-R Bidding Sequences</button>
   <button data-tab="competitive">Overcalls &amp; Doubles</button>
+  <button data-tab="cuebids">Various Cue Bids</button>
   <button data-tab="conventions">Conventions</button>
   <button data-tab="defence">Defence</button>
   <button data-tab="principles">Principles &amp; Notes</button>
@@ -613,6 +635,9 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   <button data-tab="matchpoints">Matchpoints</button>
   <button data-tab="scoring">Bridge Scoring</button>
   <button data-tab="quiz">Quiz</button>
+  <button data-tab="checklist">Checklist to see one day before Tournaments</button>
+  <button data-tab="declarer">Declarer Play Tips</button>
+  <button data-tab="defchecklist">Defence Checklist</button>
 </nav>
 
 <main>
@@ -658,6 +683,7 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   <div class="grid2">
     <div class="card">
       <h3><span class="suit">♠</span>Bergen — Starting Points</h3>
+      <p style="margin:0 0 10px;"><b>Bergen points are to be used only to decide on opening a suit at the 1-level. They are not to be used for opener rebids (reverses, jump rebids) or for a 1NT opening.</b></p>
       <ul>
         <li>HCP: A=4, K=3, Q=2, J=1</li>
         <li>Length points: +1 for a 5-card suit, +2 for 6-card, +3 for 7-card, etc.</li>
@@ -668,14 +694,60 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
       <div class="highlight-box">
         <h4>Additional Adjustments</h4>
         <ul>
+          <li><b>Honours in our long suit</b> are <b>more valuable</b>; <b>honours in a short suit</b> are <b>less valuable in offence</b> (if <b>all your honours are in 2 suits</b>, <b>reduce one losing trick</b> and decide the final suit contract). Similarly, if <b>all your honours are in your two shortest suits</b>, just <b>downgrade by 1 losing trick</b></li>
+          <li>When in doubt whether to <b>push or not</b>, look at the <b>trump suit</b> and decide</li>
+          <li><b>Concentrated honours in the same suit</b> are <b>offensive</b>; <b>distributed honours</b> are <b>defensive</b></li>
+          <li><b>Primary and secondary honours evaluation:</b> for <b>offence</b>, it is better to have <b>secondary honours in partner's suit</b> and <b>primary honours in other suits</b> (can be unbid or opponent suits) than vice versa (primary honours in partner's suit and secondary honours in other suits)</li>
+          <li><b>Culbertson's Rule of Visualization:</b> invite <b>game or slam</b> if a <b>"perfect" minimum hand</b> in your partner will make it a <b>laydown</b></li>
           <li>Flatness: −1 if your hand has ≥2 cards in every suit (suit contract); −1 only with 4333 shape in an NT contract</li>
           <li>Honour adjustment: count (Aces+Tens) minus (Queens+Jacks). Difference &gt;2 → +1 HCP, &gt;5 → +2 HCP; &lt;−2 → −1 HCP, &lt;−5 → −2 HCP (Aces and Tens are undervalued; Queens and Jacks are overvalued)</li>
           <li><b>Honours opposite partner shortness are wasted</b></li>
           <li><b>Shortness opposite partner honours are also wasted</b></li>
           <li><b>Honours (other than the Ace) opposite an opponent's long suit are also wastage</b></li>
           <li><b>Length in an opponent's suit is also wasted</b>, since you can't develop your own long suits with your partner</li>
+          <li>Length in <b>RHO's bid suit</b> (especially without wastages) is an <b>asset</b>; length in <b>LHO's bid suit</b> is a <b>liability</b></li>
           <li>If partner <b>takeout doubles</b> and you have <b>more losers in that opponent suit</b> (implying no wasted values opposite partner's shortness), it's <b>good for us</b> and we can <b>stretch bidding</b></li>
+          <li>If the majority of your <b>HCP are in your two longest suits</b>, <b>upgrade</b> the hand; if your HCP are <b>spread across suits</b> and/or <b>concentrated in your shorter suits</b>, <b>downgrade</b> it</li>
+          <li>If you have a <b>confirmed double fit</b> (<b>2 suits with 8+ cards</b>) with partner, <b>upgrade your hand by a trick</b></li>
+          <li>If your hand has <b>more than 1 Ten and 1 Nine</b>, <b>upgrade slightly</b>; if not, <b>downgrade</b></li>
         </ul>
+        <p style="font-weight:700; margin:12px 0 6px;">Hand Evaluation — Mike Lawrence Tips</p>
+        <ul style="margin:0 0 10px;">
+          <li>If the opponent has <b>opened a suit</b>, having <b>3 cards</b> in it is the <b>worst</b></li>
+          <li>If the opponent has opened a suit and his <b>partner has raised</b>, having <b>2 cards</b> in it is the <b>worst</b></li>
+          <li>Calculate <b>shell points (working points)</b> based on partner's bids. At times <b>6 shell points</b> might even be worth more than <b>15 non-working points</b></li>
+          <li>Whenever opponents are bidding, see which are the <b>safe suits</b> (suits they could have bid but skipped) and the <b>dangerous suits</b> (suits they didn't get a chance to bid), and bid accordingly</li>
+        </ul>
+        <p style="font-weight:700; margin:12px 0 6px;">Offensive vs. Defensive Criteria</p>
+        <p style="margin:0 0 8px;">An <b>offensive hand</b> means our side should <b>strive to become declarer</b>; a <b>defensive hand</b> means we're <b>fine to play as defenders</b>.</p>
+        <ul style="margin:0 0 10px;">
+          <li><b>How to know if a hand is offence or defence oriented:</b> an average opening hand has <b>4-5 offence tricks</b> and <b>2-3 defence tricks</b>; depending on how many your hand has, decide</li>
+          <li><b>Decide whether to defend or bid more</b> (penalty double vs bidding on, double or overcall, pass vs bidding on) based on the <b>offensive and defensive potential</b> of your hand</li>
+          <li>If a hand has <b>equal offence and defence tricks</b>, we should be fine to <b>play it as defence</b></li>
+          <li><b>Primary honours (A, K)</b> are good both in <b>offence</b> and <b>defence</b></li>
+        </ul>
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead><tr><th>Criteria</th><th>Type</th></tr></thead>
+            <tbody>
+              <tr><td class="rowhead">Trump fit beyond 8 cards</td><td>Offensive</td></tr>
+              <tr><td class="rowhead">Honours in own suit (at least 3 of the top 5)</td><td>Offensive</td></tr>
+              <tr><td class="rowhead">Honours in our long suit</td><td>Offensive</td></tr>
+              <tr><td class="rowhead">Secondary honours in our/partner's suit and primary honours in another (unbid or opponent-bid) suit</td><td>Offensive</td></tr>
+              <tr><td class="rowhead">Honours in partner's suit (4+ points is great, 3 is OK)</td><td>Offensive</td></tr>
+              <tr><td class="rowhead">Concentrated HCP in side suits (1, or at most 2, suits)</td><td>Offensive</td></tr>
+              <tr><td class="rowhead">Unbalanced hands (5+ in some suits, below 3 in a few)</td><td>Offensive</td></tr>
+              <tr><td class="rowhead">Side-suit shortness (singleton or void only)</td><td>Offensive</td></tr>
+              <tr><td class="rowhead">Primary honours in our/partner's suit and secondary honours in another (unbid or opponent-bid) suit</td><td>Defensive</td></tr>
+              <tr><td class="rowhead">Honours in our short suit</td><td>Defensive</td></tr>
+              <tr><td class="rowhead">Honours in an opponent's bid suit, or an outside suit (not partner's)</td><td>Defensive</td></tr>
+              <tr><td class="rowhead">Length in an opponent's bid suit (3+ is bad for offense, 2 is neutral)</td><td>Defensive</td></tr>
+              <tr><td class="rowhead">Distributed HCP across side suits (3-4 suits)</td><td>Defensive</td></tr>
+              <tr><td class="rowhead">Balanced hands</td><td>Defensive</td></tr>
+              <tr><td class="rowhead">Misfit hands</td><td>Defensive (high cards unlikely to be ruffed)</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -741,6 +813,20 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
     <ul>
       <li><span class="pill" data-conv="kickback">Kickback</span> and <span class="pill" data-conv="gerber">Gerber</span> ask for key cards/aces once a suit or NT slam is in view; <span class="pill" data-conv="depo">DEPO</span> takes over if opponents interfere over either ask.</li>
       <li><span class="pill" data-conv="pickASlam5NT">5NT — Pick a Slam</span> lets partner choose the denomination when the slam is on but the strain isn't settled.</li>
+      <li><span class="pill p3" data-conv="quant4NT">Quantitative 4NT</span> — with <b>16+ points</b> and <b>no suit fit agreed</b>, 4NT asks partner to bid <b>6NT with 16+ points</b> too; otherwise partner passes. It's not Kickback: there will be no spade bid earlier in the auction.</li>
+      <li><span class="pill" data-conv="controlCueBids">Control Showing Cue Bids</span> — having <b>control</b> of a suit means <b>not having two quick losers</b> in that suit; if we have such a suit, we <b>don't try slam</b>.
+        <ol style="margin:6px 0 0; padding-left:20px;">
+          <li>A <b>trump suit must have been agreed</b></li>
+          <li>With a <b>major</b> agreed, a new suit bid <b>above 3 of the major</b> is a cue bid</li>
+          <li>With a <b>minor</b> agreed, a new suit bid <b>above 3NT</b> is a cue bid</li>
+        </ol>
+        <ul style="margin:6px 0 0; padding-left:20px;">
+          <li><b>First-round control</b> = Ace or void; <b>second-round control</b> = King or singleton</li>
+          <li>Start from the <b>first suit above the trump suit</b>; any suit <b>skipped denies control</b></li>
+          <li>We can show <span class="pill" data-conv="kickback">Kickback</span> <b>later</b>, after the cue bidding is done as well</li>
+        </ul>
+      </li>
+      <li><b>3 HCP = 1 trick</b> in bridge. Estimate the total tricks from the bidding so far, and if we're close to <b>12 tricks</b>, we should try for slam.</li>
       <li>Need at least 3 aces between the two hands and no 2 immediate losers before bidding a small slam in a major; a 7NT grand slam with 13 top tricks is safer than a trump-suit grand, since the opening lead can't be ruffed away.</li>
     </ul>
   </div>
@@ -785,7 +871,14 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
     <h3>Competing at the 3-Level</h3>
     <ul>
       <li><b>Never bid 3-level over an opponent's 3-level bid</b> when we are <b>vulnerable</b> — even with an <b>8-card or 9-card fit</b></li>
-      <li>Bid at the <b>3-level over a 2-level</b> auction only with a <b>9-card fit</b> (both vulnerable and non-vulnerable) — <b>do not do so with only an 8-card fit</b></li>
+      <li>Bid at the <b>3-level over a 2-level</b> auction only with a <b>9-card fit</b> (only when <b>non-vulnerable</b>) — <b>do not do so with only an 8-card fit</b></li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <h3>Fighting Against a Preempt</h3>
+    <ul>
+      <li>If the opponents have <b>preempted</b> — especially after <b>one of their partnership has already passed</b> — the <b>onus falls on the stronger hand</b> in our partnership to <b>take responsibility</b> and make sure we're <b>not robbed</b> of a part score, game, or slam</li>
     </ul>
   </div>
 
@@ -809,7 +902,7 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
         <li>Overcalls can be a <b>bit lighter (a king shy)</b> if partner or yourself has passed earlier</li>
         <li><span class="pill" data-conv="michaels">Michaels Cue Bid</span> — <b>5-5 two-suiter</b>. 2♣ over 1♣ and 2♦ over 1♦ promise <b>5+ in both majors</b>; 2♥ over 1♥ promises <b>5+ spades and a minor</b>, 2♠ over 1♠ promises <b>5+ hearts and a minor</b></li>
         <li><span class="pill" data-conv="unusual2NT">Unusual 2NT</span> — <b>5-5 in the two lowest unbid suits</b>, 9+</li>
-        <li><span class="pill p2" data-conv="leapingMichaels">Leaping Michaels</span> — near game force, 18+; see the dedicated table below for the exact suits shown</li>
+        <li><span class="pill p2" data-conv="leapingMichaels">Leaping Michaels</span> — near game force, 18+; <b>not applicable if partner has passed earlier</b>; see the dedicated table below for the exact suits shown</li>
       </ul>
     </div>
     <div class="card">
@@ -851,8 +944,55 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
     <h3>Penalty Doubles</h3>
     <ul>
       <li>Any double of a <b>3-level or higher</b> suit contract is for <b>penalty</b> — the one exception is a double after an opponent's <b>3-level preempt opening</b>, which is for takeout instead.</li>
-      <li>We judge penalty doubles using the <b>Rule of 11</b> and the <b>Rule of 13</b>.</li>
+      <li>We judge penalty doubles using the <span class="pill" data-conv="ruleOf11">Rule of 11</span> and the <span class="pill" data-conv="ruleOf13">Rule of 13</span>.</li>
     </ul>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3>Penalty Double Guidelines</h3>
+    <p>Matchpoints uses the <b>Rule of 10</b> and the <b>Rule of 12</b>; IMPs/Teams uses <span class="pill" data-conv="ruleOf11">Rule of 11</span> and <span class="pill" data-conv="ruleOf13">Rule of 13</span> — the same idea, just <b>one trick more conservative</b> for the team game.</p>
+
+    <p style="font-weight:800; font-family:'Segoe UI',sans-serif; margin:16px 0 6px; color:var(--violet);">Rule of 10 — Trump Strength (Matchpoints)</p>
+    <p>When contemplating a penalty double of a suit contract below game, add your <b>expected trump winners</b> to the number of tricks the opponents are trying to win. <b>10 or more</b> = you have the right number of trump tricks to double; <b>below 10</b> = the double isn't sound.</p>
+    <div class="ref-table-wrap">
+      <table class="ref-table">
+        <thead><tr><th>Double at</th><th>Opponents need</th><th>Trump winners needed</th></tr></thead>
+        <tbody>
+          <tr><td class="rowhead">1-level</td><td>7 tricks</td><td>3</td></tr>
+          <tr><td class="rowhead">2-level</td><td>8 tricks</td><td>2</td></tr>
+          <tr><td class="rowhead">3-level</td><td>9 tricks</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:14px;"><b>Assessing trump winners:</b> count each card beyond the 4th as a winner. For the top 4 cards, assume declarer leads the suit from the top and estimate how many tricks that gives you — these are potential, not sure, winners:</p>
+    <ul>
+      <li><b>Q-10-6-5-3:</b> ~3 tricks — one for the 5th card, two more once declarer leads the AK and another</li>
+      <li><b>K-Q-9-6:</b> ~3 tricks — after the A and J (which you win), K-9 is left against declarer's 10</li>
+      <li><b>K-Q-7-6:</b> ~2 tricks — after the A and J (which you win), declarer's 10-9 against your K-7 gives just one more trick</li>
+    </ul>
+
+    <div class="note">
+      <b>Worked example:</b> West holds ♠7 ♥QT3 ♦AJ863 ♣K952. Partner opens 1♠; RHO intervenes. Should West consider a penalty double?
+      <div style="margin-top:8px;"><b>(a) RHO bids 2♣:</b> Don't look for penalties — only 1 potential club trick (1+8=9).</div>
+      <div style="margin-top:4px;"><b>(b) RHO bids 2♦:</b> Look for penalties — 3 potential diamond tricks (3+8=11), 20+ combined HCP, and a misfit with partner. Double if it's for penalty in your methods; if it would be for takeout (negative doubles), pass — and pass again if partner reopens with the expected takeout double.</div>
+      <div style="margin-top:4px;"><b>(c) RHO bids 2♥:</b> Don't look for penalties — only 1 potential heart trick (1+8=9), and the length is also inadequate for a 2-level double (see the Rule of 12 below).</div>
+    </div>
+
+    <p style="font-weight:800; font-family:'Segoe UI',sans-serif; margin:16px 0 6px; color:var(--violet);">Rule of 12 — Trump Length (Matchpoints)</p>
+    <p>When contemplating a penalty double below game, add the <b>number of trumps you hold</b> to the number of tricks the opponents are trying to win. <b>12 or more</b> = enough trump length to play for penalties; <b>below 12</b> = not enough.</p>
+    <div class="ref-table-wrap">
+      <table class="ref-table">
+        <thead><tr><th>Double at</th><th>Opponents need</th><th>Trumps needed</th></tr></thead>
+        <tbody>
+          <tr><td class="rowhead">1-level</td><td>7 tricks</td><td>5</td></tr>
+          <tr><td class="rowhead">2-level</td><td>8 tricks</td><td>4</td></tr>
+          <tr><td class="rowhead">3-level</td><td>9 tricks</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note"><span class="pill" data-conv="ruleOf11">Rule of 11</span> and <span class="pill" data-conv="ruleOf13">Rule of 13</span> (IMPs/Teams) work exactly the same way as Rule of 10 and Rule of 12 above — just <b>one trick more conservative</b> for the team game.</div>
   </div>
 
   <div class="card" style="margin-top:16px;">
@@ -905,7 +1045,7 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
 
   <div class="card" style="margin-top:16px;">
     <h3><span class="pill p2" data-conv="leapingMichaels">Leaping Michaels</span> — Full Structure</h3>
-    <p>What our 4♣ or 4♦ shows, depending on what the opponent opened.</p>
+    <p>What our 4♣ or 4♦ shows, depending on what the opponent opened. <b>Not applicable if partner has passed earlier.</b></p>
     <div class="ref-table-wrap">
       <table class="ref-table leaping-table">
         <thead><tr><th>Opponent Opens</th><th>Our 4♣</th><th>Our 4♦</th></tr></thead>
@@ -938,6 +1078,54 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
         </tbody>
       </table>
     </div>
+  </div>
+</section>
+
+<!-- ======================= VARIOUS CUE BIDS ======================= -->
+<section class="panel" id="panel-cuebids">
+  <div class="section-head">
+    <h2>Various Cue Bids</h2>
+    <p>A cue bid is a bid of the opponents' suit. What it means depends on who bid the suit and who is cue bidding.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="suit">♠</span>1. Michaels Cue Bid</h3>
+      <ul>
+        <li><span class="pill" data-conv="michaels">Michaels Cue Bid</span> — a <b>5-5 two-suiter</b> (5+ cards in each of two suits), shown by a <b>cue bid of the opponent's opening suit</b></li>
+        <li>Over a <b>minor</b> opening: shows <b>both majors</b></li>
+        <li>Over a <b>major</b> opening: shows the <b>other major plus a minor</b></li>
+        <li><b>9+ points</b> · <b>7.5 NLTC</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♥</span>2. Cue Bid After Partner Overcalls</h3>
+      <ul>
+        <li>A <b>cue bid of the opponent's opening suit</b> after <b>partner overcalls</b> shows an <b>8-card fit</b> with partner</li>
+        <li>Shows <b>8.5 losers or fewer</b></li>
+        <li>It is a strong raise, not a stopper ask</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♣</span>3. Cue Bid After Opponents Overcall</h3>
+      <ul>
+        <li>When partner opens and the <b>opponents overcall</b>, a <b>cue bid of their suit</b> asks partner for a <b>stopper in their suit</b></li>
+        <li>Used to find out whether <b>NT</b> can be played</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♦</span>4. Cue Bid After Partner Doubles</h3>
+      <ul>
+        <li>After <b>partner doubles</b>, a <b>cue bid of the opponent's suit</b> asks partner for a <b>stopper in their suit</b></li>
+        <li>Used to find out whether <b>NT</b> can be played</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3><span class="suit">♠</span>5. Cue Bid After Opponents Interfere Over Partner's 1NT</h3>
+    <ul>
+      <li>When the <b>opponents interfere</b> over partner's <b>1NT</b>, a <b>cue bid of their suit</b> asks partner for a <b>stopper in their suit</b></li>
+      <li>Used to find out whether <b>NT</b> can be played</li>
+    </ul>
   </div>
 </section>
 
@@ -1008,6 +1196,11 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
             <li>Look for an <b>uppercut</b> — forcing declarer or dummy to ruff high — to promote a trump honour in your or partner's hand</li>
             <li>Don't chase ruffing tricks if you already hold natural trump tricks (e.g. QJ10)</li>
             <li>A high trump entry helps you cash in on a short holding</li>
+            <li><b>Trump promotion</b>
+              <ul>
+                <li>If your trump holding has no natural trump trick (Qx, Jxx, Txxx), aim for trump promotion. This means we can either overruff and gain a trick, or, if the opponents use a higher trump, ours can get promoted</li>
+              </ul>
+            </li>
           </ul>
         </li>
       </ul>
@@ -1019,7 +1212,9 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
       <h3><span class="suit">♠</span>Opening Leads</h3>
       <ul>
         <li>4th highest in a notrump contract</li>
-        <li>3rd/5th highest in a suit contract</li>
+        <li>3rd/5th highest in a suit contract
+          <ul class="sub-list" style="margin-top:6px; padding-left:20px;"><li>We can use the <b>Rule of 10</b> (for a <b>3rd highest</b> lead) and the <b>Rule of 12</b> (for a <b>5th highest</b> lead), similar to how we use the <b>Rule of 11</b> in a NT contract (<b>4th highest</b> lead)</li></ul>
+        </li>
         <li>Do not lead away from honours</li>
         <li>Always play the <b>lower of touching honours</b> — A to T (e.g. with J-T lead the T; with A-Q-J lead the J)</li>
         <li>Against a <b>NT contract</b>, with <b>3 or fewer small cards</b> in a suit, lead the <b>top card</b></li>
@@ -1042,6 +1237,12 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
         <li>Count, when declarer plays a suit</li>
         <li>Suit preference</li>
       </ol>
+      <h3 style="margin-top:16px;"><span class="suit">♣</span>Smith Echo</h3>
+      <ul>
+        <li>Used in <b>NT contracts</b>, when <b>declarer or dummy plays his suit</b></li>
+        <li><b>High card (7+)</b> = we <b>show interest</b> in the <b>opening lead suit</b></li>
+        <li><b>Low card (5-)</b> = we <b>don't show interest</b> in the opening lead suit</li>
+      </ul>
       <div class="note">Work out declarer's shape and points as early in the defence as possible.</div>
     </div>
   </div>
@@ -1050,6 +1251,9 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
     <h3>Classic Defensive Guidelines</h3>
     <div class="grid2">
       <ul>
+        <li>In a <b>suit contract</b>, <b>don't duck or play second hand low by default</b> just because dummy has a long suit in that suit. See if <b>dummy has other side entries or ruffs</b>, in which case there is <b>no point in ducking</b>; better to <b>cash your available tricks</b> before declarer ruffs that suit</li>
+        <li>If declarer is <b>not ruffing a suit</b> in his own hand and is instead <b>discarding another suit</b>, he's basically <b>discarding his losers</b>. We should immediately <b>take the lead and play the suit declarer is discarding</b></li>
+        <li>If declarer is <b>not drawing trumps</b> instead of ruffing an obvious <b>short suit in dummy</b>, that means he <b>doesn't have losers</b> in that short suit</li>
         <li><b>Second hand low</b> — as second to play to a trick, play low and keep your options open rather than rising with an honour.
           <ul class="sub-list" style="margin-top:6px; padding-left:20px; font-weight:400;">
             <li><b>Second hand high exceptions:</b></li>
@@ -1185,10 +1389,24 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
     <p>Matchpoint (MP) scoring rewards frequency and relative comparison on every single board — it changes the risk calculus quite differently from IMPs.</p>
   </div>
 
+  <div class="card" style="margin-bottom:16px;">
+    <h3><span class="suit">♦</span>Matchpoint Rules</h3>
+    <ul>
+      <li><b>Rule 1:</b> <b>Avoid sacrifices</b></li>
+      <li><b>Rule 2:</b> When you have <b>pushed the opponents</b>, <b>pass</b> and don't save or double. So <b>avoid 3 over 3 bids and 5 over 5 bids</b></li>
+      <li><b>Rule 3:</b> <b>Prefer major suit games</b> to even NT</li>
+      <li><b>Rule 4:</b> <b>Evaluate 6NT</b> instead of other small slams</li>
+      <li><b>Rule 5:</b> If <b>spades + HCP is 14 or above</b>, <b>open in 4th seat</b></li>
+      <li><b>Rule 6:</b> Do not let opponents play at the <b>2-level</b> when we are <b>NV</b>, and do not let them play <b>2♦ or below</b> when we are <b>V</b></li>
+      <li><b>Rule 7:</b> In declarer play in MP format, <b>play the suits based on their likely split and distribution</b> to score the maximum</li>
+    </ul>
+  </div>
+
   <div class="grid2">
     <div class="card">
       <h3><span class="suit">♠</span>Bidding</h3>
       <ul>
+        <li>We will <b>always prefer a part-score contract in a major suit over a minor suit</b>, and also <b>prefer 3NT over a 5-level minor game</b></li>
         <li><b>Prefer notrump over a minor suit</b> for the same likely trick count — 3NT beats 5♣ on shared boards (same or fewer tricks needed, and the field will mostly be in NT too)</li>
         <li><b>Don't bid thin games/slams</b> just because the odds are positive-EV in the IMP sense — at MP, going down in a game the field is stopping short of <b>costs you the whole board</b> with no partial credit; conversely, making an "automatic" game the field also bids <b>gains you nothing</b>, so look for the contract that's <b>different and better</b>, not just "correct"</li>
         <li><b>Be more willing to compete one level higher</b> for a making partscore — an extra 50-100 points in a partial <b>swings matchpoints hugely</b>, since so many pairs are flat on the same auction</li>
@@ -1206,9 +1424,11 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
     <div class="card">
       <h3><span class="suit">♦</span>Defense</h3>
       <ul>
+        <li>In a <b>suit contract</b>, <b>don't duck or play second hand low by default</b> just because dummy has a long suit in that suit. See if <b>dummy has other side entries or ruffs</b>, in which case there is <b>no point in ducking</b>; better to <b>cash your available tricks</b> before declarer ruffs that suit</li>
         <li><b>Double competitive partscores more readily</b> when confident — converting their making partial into a penalty <b>beats the field's plus score</b> directly</li>
         <li><b>Avoid speculative sacrifices</b> — a "cheap" IMP save can be a <b>flat-out bottom at MP</b> if the field is defending profitably or making their own contract</li>
         <li><b>Fight harder for exact-value penalties</b> (don't let overtricks slip on defense) since the difference between +100 and +150 against you is a <b>full swing</b> in the matchpoint scale</li>
+        <li>Judge penalty doubles at matchpoints using the <b>Rule of 10</b> (trump strength) and the <b>Rule of 12</b> (trump length) — see the full Penalty Double Guidelines in the Overcalls &amp; Doubles tab</li>
       </ul>
     </div>
   </div>
@@ -1441,6 +1661,161 @@ footer{text-align:center; color:#9db4e8; font-size:12px; padding:40px 20px 10px;
   </div>
 </section>
 
+<!-- ======================= CHECKLIST ======================= -->
+<section class="panel" id="panel-checklist">
+  <div class="section-head">
+    <h2>Checklist to See One Day Before Tournaments</h2>
+    <p>A quick revision list of the key reminders to go through the day before a tournament.</p>
+  </div>
+
+  <div class="card">
+    <ul class="checklist-list">
+      <li>Any responder rebid after opener's 1NT is Puppet/Transfer (unless the bid is logically not so)</li>
+      <li>Cue bid after partner overcalls shows fit and 8.5 or below losers</li>
+      <li>Quantitative 4NT</li>
+      <li>Discard signaling</li>
+      <li>2NT invite bid as responder</li>
+      <li>Help suit game try</li>
+      <li>Leaping Michaels</li>
+      <li>No TONT when Vulnerable</li>
+      <li>No 3 level bid when Vulnerable</li>
+      <li>Don't bid close slams!</li>
+      <li>Going slow shows slam interest, fast is only game.</li>
+      <li>No reverse jump bid after game force</li>
+      <li>Leading into weakness is applicable for trump suit as well</li>
+      <li>With Kxxx we can play third hand low</li>
+      <li>When we penalty double, lead trumps</li>
+      <li>We don't play Gazilli</li>
+      <li>Reverse can be passed</li>
+      <li>Never underlead an Ace in suit contract</li>
+      <li>Double jump rebid of opener suit - 19 to 21</li>
+      <li>Inverted minor is off</li>
+      <li>When dummy has long suit, switch to active defence breaking new suits/leading away from honor etc.</li>
+      <li>Negative Double after overcall by opponents</li>
+      <li>With 3 low cards in NT, lead top</li>
+      <li>Lead from bottom of touching honors in NT and suit contracts</li>
+      <li>Key cards for slams can include void</li>
+      <li>After pass, partner or you can do anything to prevent game</li>
+      <li>When declarer is not drawing trumps, you draw!.</li>
+      <li>With 4333 hand, prefer to play in 3NT than 5-3 suit in 4M because there is no way we can ruff anything if we become the dummy.</li>
+      <li>We play 4 way transfers</li>
+      <li>After 1NT overcall (15-17), puppet stayman and transfers are ON</li>
+      <li>Just make the contract in IMPs, don't take risk for overtricks.</li>
+      <li>By default go with passive leads against 4 level and below contracts</li>
+      <li>If preempt or sacrifice involved or distributional hands, lead trumps.</li>
+      <li>Attitude signals in NT is very important. On opening lead, encourage with high card for partner to continue suit and discourage with low card to switch.</li>
+      <li>Do not lead singleton trumps.</li>
+      <li>QJ9 is a broken sequence in NT. Lead bottom of touching honor.</li>
+      <li>If you have singleton trumps or 4+ trumps or declarer is playing with 7 trumps like 4-3 or a two suiter hand, attack our long suit to make declarer ruff in his hand!!.</li>
+      <li>If you are establishing partner suit, protect his entries and take tricks with yours.and vice versa.</li>
+      <li>Overcall at one level only with 7 SQ and two level with 8 SQ.</li>
+      <li>Honors opposite shortness in partner are wasted values!. So if partner is short in a suit, honors in other suits are much better.</li>
+      <li>If opponents overcalls after partner opens, we just go ahead and make the bid that we would have anyways made without the overcall. If such a bid is not available due to the overcall, we just pass (even with 15-16 points where we planned for 1NT rebid but now that is not available) especially given partner gets another bid!.</li>
+      <li>Splinters for slam try</li>
+      <li>Reduce a loser for 9+ trump fit</li>
+      <li>Stolen bid double</li>
+      <li>Don't bid part score at 3 level especially when V. Till 2 level is fine.</li>
+      <li>In MP format, passout seat bids (2NT or double) do only if absolutely sure of making a 3 level contract</li>
+      <li>DEPO - Double is Even Pass is Odd key cards when opponents interfere our kickback slam check.</li>
+      <li>If opponents have gone to game, don't sacrifice. But sacrifice or interfere more before they go their obvious game.</li>
+      <li>No penalty double unless they have clearly sacrificed (use Rule of 11 and 13 along with 20+ points between our side).</li>
+      <li>If RHO has overcalled or bid a suit, upgrade your honors and vice versa.</li>
+      <li>Just bid close games (especially deals where we are vulnerable which is very counter intuitive) without blinking if you want to win in IMPs teams and also prevent opponent from games with interference and preempts. This is the platinum rule to win in IMPs games!!.</li>
+      <li>If partner has passed, learn to interfere more and prevent game.</li>
+      <li>5NT bid is pick a slam partner</li>
+      <li>2C interference - Any suit bid by opener is 6+ carder suit.</li>
+      <li>Passout seat bids (double for majors and 2NT for minors is applicable only after opponents have found a trump fit).</li>
+      <li>Drury - 2C after partner opens a major in third seat.</li>
+      <li>Sacrifice only when we are favourable Vulnerability</li>
+      <li>5 and below - discourage, 6 is neutral and 7-T is encourage</li>
+      <li>After 1NT and 2NT strong bids or rebids, erase all previous bids and do stayman or transfers.</li>
+      <li>Mathe, TONT - Use against opponent strong 2C and precision 1C.</li>
+      <li>Michaels, unusual 2NT - not necessarily weak</li>
+      <li>Don't open 4 losers 2C if you have less than 22 points without 6+ suit.</li>
+      <li>4 way transfers - 2NT 3NT is transfer to D</li>
+      <li>Reverse and jump shift by opener and responder - 17-18 with unbalanced hands.</li>
+      <li>Opener rebid 1NT and 2NT with balanced hands mostly.</li>
+      <li>Do not draw or play trumps such that your trump count in master hand is below opponent.</li>
+      <li>If bad break in trump, do not draw trumps.</li>
+      <li>Jacoby 2NT and splinter bid is applicable after interference as well</li>
+      <li>Do not preempt from 2nd seat</li>
+      <li>Don't get into 6NT or 3NT with singleton or void, explore suits</li>
+      <li>If they are sacrificing clearly, penalty double</li>
+      <li>9 card trump fit means we should be declarer!!.</li>
+      <li>Preempts at 3 or above level should have a singleton or void.</li>
+      <li>If there is no 8 card fit and say only 7 cards, evaluate games by assuming 8 card fit and increase LTC by 1.</li>
+      <li>Maintain length with dummy's long suit in NT contract when defending.</li>
+      <li>Never risk a contract in IMP format for over tricks</li>
+      <li>Preempt liberally in 1 and 3 seats</li>
+      <li>Smith Echo signaling in NT contract defence</li>
+      <li>Count signals on declarer leads</li>
+      <li>Kokish game tries</li>
+      <li>Control showing cue bids</li>
+      <li>Game force sequences: Opener rebid at 2 level is 12-14 and 3 level is 15+.</li>
+      <li>Opening leads - 3rd and 5th in suit contract, 4th highest in NT</li>
+      <li>Super acceptance by opener after 1NT transfer</li>
+      <li>Jump overcalls after partner has passed are always weak</li>
+      <li>After game force response, any bid at 3 level by opener is 15+ and any rebid at 2 level is 12-14</li>
+      <li>Key cards response after Kickback (slam check in suit contract) is including void</li>
+      <li>Game force with 2♥ by responder should ONLY be with a 5+ card suit</li>
+      <li>Bergen points is only to decide opening bids, not rebids!</li>
+      <li>After 3 level preempt by partner, any new suit response is forcing to game</li>
+      <li>Don't blindly think a high card is encouraging on opening lead</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================= DECLARER PLAY TIPS ======================= -->
+<section class="panel" id="panel-declarer">
+  <div class="section-head">
+    <h2>Declarer Play Tips</h2>
+    <p>Practical guidelines for planning the play as declarer.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="suit">♠</span>Suit Contracts</h3>
+      <ul>
+        <li>Whenever an opponent <b>takeout doubles</b>, his <b>partner is likely to have a higher number of trumps</b>. As declarer, we can <b>play accordingly for bad breaks</b>, etc.</li>
+        <li>When it is likely that the <b>opponents will switch to your weakest suit</b>, surprising results can be obtained by <b>leading the suit yourself</b> (lead from <b>dummy towards the closed hand</b>)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="suit">♦</span>NT Contracts</h3>
+      <ul>
+        <li>If <b>two suits</b> both need to be <b>established</b> to make the contract, and one has a <b>sure loser</b> while the other has a <b>half-sure loser</b> (depending on a <b>finesse</b>), <b>establish the suit with the sure loser first</b>. This is the <b>best line of play</b>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= DEFENCE CHECKLIST ======================= -->
+<section class="panel" id="panel-defchecklist">
+  <div class="section-head">
+    <h2>Defence Checklist</h2>
+    <p>Quick reference: what to do in defence depending on the situation and declarer's plan.</p>
+  </div>
+  <div class="card">
+    <div class="ref-table-wrap">
+      <table class="ref-table defcheck">
+        <thead><tr><th>Situation</th><th>Declarer's plan</th><th>What should we do in defence</th></tr></thead>
+        <tbody>
+<tr><td><b>Declarer bids two suits</b></td><td>Ruff the non-trump suit bid by him in dummy</td><td>Lead trumps to reduce ruffing power</td></tr>
+<tr><td><b>Dummy is short in a suit</b></td><td>Ruff</td><td>Draw trumps</td></tr>
+<tr><td><b>Dummy has a long, strong suit along with side suit entries</b></td><td>Discard losers in the long suit</td><td>Active Defence - <b>DON’T DRAW TRUMPS</b>, knock out side suit entries, take my winners, enable partner to take his winners - break new suits / lead away from honor, lead through strength, lead into weakness</td></tr>
+<tr><td><b>No short suit or no long suit in dummy (4 level or below suit contracts)</b></td><td>Give lead to defence, don’t break new suits, don’t lead away from honor, play back same suit</td><td>Give lead to declarer, play back same suit, don’t break new suit, don’t lead away from honor</td></tr>
+<tr><td><b>5 or above suit contracts</b></td><td>—</td><td>Take your tricks, active defence</td></tr>
+<tr><td><b>5 or above NT contracts</b></td><td>—</td><td>Passive defence (establish long suit), don’t break new suits, don’t lead away from honor</td></tr>
+<tr><td><b>Auction involves some preemptive bids (either side or their side preempt)</b></td><td>Ruffing</td><td>Opening lead - Lead trumps, draw trumps</td></tr>
+<tr><td><b>Opponents have sacrificed</b></td><td>Ruffing</td><td>Opening lead - Lead trumps, draw trumps</td></tr>
+<tr><td><b>If we have penalty doubled opponents</b></td><td>Ruffing</td><td>Opening lead - Lead trumps, draw trumps</td></tr>
+<tr><td><b>When trumps break badly for opponents (1 singleton trump, 4 trumps)</b></td><td>—</td><td>Forcing Defence - Lead long suit and make declarer ruff in his hand and make him lose trump control</td></tr>
+<tr><td><b>Declarer not drawing trumps</b></td><td>—</td><td>Draw trumps</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <div id="tooltip"></div>
@@ -1459,19 +1834,20 @@ const CONVENTIONS = {
   mathe:           {name:"Mathe", cat:"Defense vs 2♣", by:"Competitive", trigger:"Over an opponent's strong/artificial 2♣", meaning:"Interference structure over the opponent's 2♣. Our 2♦ = hearts and spades. Our 2♥ = hearts and a minor. Our 2♠ = spades and a minor. Our 2NT = both minors. Any bid at the 3-level = a natural 6+ card suit.", pts:"9+ (8.5 NLTC)", short:"Interference over an opponent's strong 2♣: 2♦=both majors, 2♥=hearts+minor, 2♠=spades+minor, 2NT=both minors, 3-level=natural 6+ suit."},
   michaels:        {name:"Michaels Cue Bid", cat:"Overcall", by:"Competitive", trigger:"Cue bid of opener's own suit", meaning:"5-5 two-suiter. 2♣ over 1♣ promises 5+ in both majors; 2♦ over 1♦ promises 5+ in both majors. 2♥ over 1♥ promises 5+ in spades and a minor; 2♠ over 1♠ promises 5+ in hearts and a minor.", pts:"9+ (7.5 NLTC)", short:"A cue bid of opener's suit — 5-5 two-suiter. Over a minor, shows both majors; over a major, shows the other major plus a minor."},
   unusual2NT:      {name:"Unusual 2NT", cat:"Overcall", by:"Competitive", trigger:"2NT overcall after a 1-level opening", meaning:"Shows the two lowest unbid suits, 5-5.", pts:"9+ (7.5 NLTC)", short:"Overcall showing 5-5 in the two lowest unbid suits."},
-  leapingMichaels: {name:"Leaping Michaels", cat:"Overcall", by:"Competitive", trigger:"4♣ / 4♦ over an opponent's weak-two or 3-level preempt", meaning:"Shows a two-suited hand, near game-force strength — the exact suits shown depend on what the opponent opened. See the dedicated Leaping Michaels table for the full structure.", pts:"18+ (6.5-5.5 NLTC)", short:"4♣/4♦ over an opponent's weak preempt — two-suiter, essentially game force. Exact suits depend on their opening (see table)."},
+  leapingMichaels: {name:"Leaping Michaels", cat:"Overcall", by:"Competitive", trigger:"4♣ / 4♦ over an opponent's weak-two or 3-level preempt", meaning:"Shows a two-suited hand, near game-force strength — the exact suits shown depend on what the opponent opened. Not applicable if partner has passed earlier. See the dedicated Leaping Michaels table for the full structure.", pts:"18+ (6.5-5.5 NLTC)", short:"4♣/4♦ over an opponent's weak preempt — two-suiter, essentially game force. Not applicable if partner has passed earlier. Exact suits depend on their opening (see table)."},
   negativeDouble:  {name:"Negative Double", cat:"Competitive", by:"Competitive", trigger:"Partner opens, opponent overcalls, we double", meaning:"Shows 4+ cards in the unbid major(s) — not a penalty double, even at the 3-level.", pts:"6+/9+/12+ by level", short:"Shows 4+ cards in the unbid major(s) after partner opens and an opponent overcalls."},
   leadDirectingDouble:{name:"Lead-Directing Double", cat:"Competitive", by:"Competitive", trigger:"Double of an artificial bid", meaning:"Asks partner to lead that suit — needs no alert.", pts:"—", short:"Doubling an artificial bid asks partner to lead that suit."},
-  kickback:        {name:"Kickback", cat:"Slam Try", by:"Either", trigger:"A bid at the 4-level, one step below the agreed trump suit", meaning:"Key-card ask keyed to the trump suit rather than always 4NT — saves bidding space and avoids Blackwood ambiguity. Handling interference: DEPO.", pts:"—", short:"Key-card ask pitched one level below 4NT, keyed to the agreed trump suit."},
+  kickback:        {name:"Kickback", cat:"Slam Try", by:"Either", trigger:"A bid at the 4-level, one step below the agreed trump suit", meaning:"Key-card ask keyed to the trump suit rather than always 4NT — saves bidding space and avoids Blackwood ambiguity. Handling interference: DEPO. If it is unclear whether a 4♥ or 4♠ bid is Kickback for a slam check or a sign-off in major game, check whether the person bidding 4♥/4♠ has already bid that major naturally earlier in the auction. If yes, it is a game sign-off. If you still want to go to slam, you may use the 4♣ route (Gerber) and then go to 6M.", pts:"—", short:"Key-card ask pitched one level below 4NT, keyed to the agreed trump suit. If the 4♥/4♠ bidder bid that major naturally earlier, it is a game sign-off, not Kickback."},
   gerber:          {name:"Gerber", cat:"Slam Try", by:"Either", trigger:"4♣ after a natural NT auction (e.g. after 3NT)", meaning:"Ace-ask for slams in notrump. Off if there is interference (except after a takeout double, when it stays on).", pts:"33+ combined for the auction to be live", short:"4♣ ace-ask for NT slams, used once the partnership is already in a natural NT auction."},
   pickASlam5NT:    {name:"5NT — Pick a Slam", cat:"Slam Try", by:"Either", trigger:"5NT after establishing a fit or a 4-card suit", meaning:"Asks partner to choose the slam denomination.", pts:"—", short:"Asks partner to pick the denomination for the slam."},
   balancingSeat:   {name:"Balancing in Passout Seat", cat:"Competitive", by:"Competitive", trigger:"Passout (4th) seat, after 1NT-P-P or similar", meaning:"2NT shows both minors, Double shows both majors, bidding your own suit shows 5+ cards.", pts:"6+ starting points, or 2+ shortness points", short:"In the passout seat: 2NT=minors, Double=majors, own suit=5+ cards."},
   jacoby2NT:       {name:"Jacoby 2NT", cat:"Slam Try", by:"Responder", trigger:"2NT response to partner's major-suit opening", meaning:"Forcing raise, slam invitational in the suit contract with a balanced-ish hand.", pts:"15+ (losers matter more than points)", short:"Forcing raise of partner's major — sets up a slam-going auction."},
   splinter:        {name:"Splinter Bid", cat:"Slam Try", by:"Responder", trigger:"Double-jump response, showing a void or singleton", meaning:"Slam invite in a suit contract, showing shortness in the bid suit. Off when there is interference.", pts:"15+ (losers matter more than points)", short:"Double-jump response showing a singleton/void — a slam try with shortness. Off when opponents interfere."},
+  kokish: {name:"Kokish Game Tries", cat:"Game Try", by:"Opener", trigger:"After 1M–2M, opener rebids 2NT/2♠, a 3-level side suit, or 3M", meaning:"After 1♠–2♠, 2NT is a help-suit game try; after 1♥–2♥, 2♠ is the help-suit game try. Responder shows help (2 or below losers) up the line — after 1♠–2♠ starting from 3♣ for clubs, etc.; after 1♥–2♥ starting from 2NT for spades, 3♣ for clubs, etc. A direct bid of a suit at the 3-level by opener after 1M–2M is a short-suit game try (2NT after 1♥–2♥ shows shortness in spades); partner bids game with no wasted values in that suit, otherwise signs off at the 3-level. Opener bidding trump at the 3-level asks for help in the trump suit; partner bids game or passes accordingly.", pts:"6.5 losers or below (opener)", short:"After 1M–2M: 2NT (1♠) / 2♠ (1♥) = help-suit try, direct 3-level suit = short-suit try, 3M = trump-help try."},
   helpSuitGameTry: {name:"Help Suit Game Try", cat:"Game Try", by:"Opener", trigger:"After 1M–2M, opener rebids a new suit at the 3-level", meaning:"Opener needs 6.5 losers or below, and bids the suit he needs help in — where he holds exactly 3 losers. Responder bids game in the major with 2 or below losers in that suit; otherwise responder bids the 3-level suit and opener passes.", pts:"6.5 losers or below (opener)", short:"After a major fit, opener's new-suit bid at the 3-level (6.5 losers or below, 3 losers in that suit) asks for help there."},
   drury:           {name:"Drury", cat:"Competitive", by:"Responder", trigger:"2♣ by a passed-hand responder, after partner opens a major in 3rd/4th seat, with a confirmed 8-card fit", meaning:"Checks that opener isn't a light 3rd/4th-seat opening before committing higher. Bid 2♣ with 8.5 losers or below; with 9.5 or more losers, respond directly in the suit at the 2-level instead.", pts:"8.5 NLTC or below", short:"2♣ by a passed hand after partner's 3rd/4th-seat major opening, with an 8-card fit and 8.5 losers or below — checks it isn't a light opening."},
   depo:            {name:"DEPO", cat:"Slam Try", by:"Either", trigger:"Opponents interfere over our Kickback or Gerber", meaning:"Double = Even number of key cards/aces, Pass = Odd number.", pts:"—", short:"Double = Even key cards/aces, Pass = Odd — used when opponents interfere over Kickback/Gerber."},
-  invertedMinors:  {name:"Inverted Minors", cat:"Responding (not in use)", by:"Responder", trigger:"Raise of partner's minor-suit opening", meaning:"1m–3m is weak, 9 points or below; 1m–2m is strong, 10-12 points. Not currently played — kept for reference only.", pts:"9 or below (weak) / 10-12 (strong)", short:"Not currently played. 1m-3m would be weak (9 or below); 1m-2m would be strong (10-12 pts) and forcing."},
+  invertedMinors:  {name:"Inverted Minors", cat:"Responding (not in use)", by:"Responder", trigger:"Raise of partner's minor-suit opening", meaning:"Responder bids the 2-level minor suit with 10+ points and an 8-card fit (5+ suit in responder's hand). Opener then rebids 3NT with 15+ points, or 2NT with 12-14 points. Responder then rebids 3NT, the 5-level minor game, or a slam in NT or the minor, as appropriate. Not currently played — kept for reference only.", pts:"10+ (responder) / 15+ or 12-14 (opener)", short:"Not currently played. Responder's 2-level minor raise would show 10+ points and an 8-card fit; opener rebids 3NT (15+) or 2NT (12-14)."},
   fsf:             {name:"Fourth Suit Forcing (FSF)", cat:"Rebidding", by:"Responder", trigger:"Partnership has bid three suits in the first two rounds; responder bids the fourth", meaning:"Artificial, forcing for one round, doesn't promise a stopper — must be alerted; asks opener to describe further.", pts:"10+", short:"Artificial bid of the unbid 4th suit — forcing one round, asks opener to keep describing."},
   nmf:             {name:"New Minor Forcing (NMF)", cat:"Rebidding (not in use)", by:"Responder", trigger:"After responder bids 1H/1S and hears a 1NT rebid", meaning:"2♣/2♦ is artificial, forcing one round, usually shows a 5-card major and says nothing about clubs/diamonds. Not currently played — FSF/direct methods used instead.", pts:"10+", short:"Not currently played. 2♣/2♦ after opener's 1NT rebid would be an artificial forcing probe for a 5-card major."},
   ingberman:       {name:"Ingberman", cat:"Rebidding (not in use)", by:"Responder", trigger:"After opener reverses, responder wants to sign off", meaning:"Responder's 2NT is an artificial relay; opener must bid 3♣, and responder's next bid signs off at the 3-level. Not currently played — kept for reference only.", pts:"—", short:"Not currently played. Responder's 2NT after a reverse would be an artificial relay asking opener to bid 3♣, so responder can sign off at the 3-level."},
@@ -1480,6 +1856,10 @@ const CONVENTIONS = {
   reverse:         {name:"Reverse", cat:"Rebidding", by:"Opener", trigger:"Opener's 2nd bid is in a new suit ranked higher than the suit opened", meaning:"Shows 17-18 points (the 'Barrier Principle'). The suit reversed into should be opener's second-longest suit — don't reverse into a short suit just to show 17-18 points. Not forcing for one round — responder is allowed to pass. No jump is involved — that distinguishes it from a jump shift. Reverses are on even after interference, if still biddable; if not possible, prefer 1NT, supporting partner, or rebidding your own suit rather than lying.", pts:"17-18 (6.5 NLTC)", short:"Opener bids a new, higher-ranking suit — should be opener's 2nd-longest suit, shows 17-18 points. Not forcing; responder may pass."},
   balancedHand:    {name:"Balanced Hand", cat:"Hand Evaluation", by:"Either", trigger:"Judging any hand's shape", meaning:"If the sum of the lengths of your two longest suits is 8 or below, the hand is balanced; if it's 9 or more, the hand is unbalanced.", pts:"—", short:"Add the lengths of your two longest suits: 8 or below = balanced, 9 or more = unbalanced."},
   supportDouble:   {name:"Support Double", cat:"Competitive", by:"Opener", trigger:"Partner opens, responder bids a 4+ card major, opponent interferes", meaning:"Opener's double or redouble at that point shows exactly 3-card support for responder's major, 12-16 points.", pts:"12-16", short:"After responder bids a major and an opponent interferes, opener's double/redouble shows exactly 3-card support, 12-16 points."},
+  controlCueBids:  {name:"Control Showing Cue Bids", cat:"Slam Try", by:"Either", trigger:"After a trump suit is agreed: a new suit above 3M (major fit) or above 3NT (minor fit)", meaning:"Having control of a suit means not having two quick losers in that suit; if we have such a suit, we don't try slam. A trump suit must have been agreed. With a major agreed, a new suit bid above 3 of the major is a cue bid; with a minor agreed, a new suit bid above 3NT is a cue bid. First-round control is the Ace or a void; second-round control is the King or a singleton. Start from the first suit above the trump suit; any suit skipped denies control. Kickback can be used later, after the cue bidding is done as well.", pts:"Slam interest", short:"Once trump is agreed, new suits above 3M (major) or above 3NT (minor) show controls: Ace/void first round, King/singleton second round. A skipped suit denies control."},
+  quant4NT:        {name:"Quantitative 4NT", cat:"Slam Try", by:"Either", pillClass:"p3", trigger:"Opener or responder has 16+ points, no suit fit has been agreed, and 6NT might be on", meaning:"Either partner bids 4NT to ask partner to bid 6NT if they also have 16+ points; with less, partner simply passes 4NT. Typically used when game is forced with no suit fit and we'd otherwise play 3NT, or when opponents have interfered and robbed us of slam-check space. Not to be confused with the slam check in spades (the Kickback convention, where 4NT is the key-card ask): the two are easy to tell apart because Quantitative 4NT is only used when no suit fit is agreed, so there will have been no spade bid earlier in the auction.", pts:"16+", short:"4NT with 16+ and no suit fit: asks partner to bid 6NT with 16+ too, otherwise pass. Not Kickback: no spade bid earlier in the auction."},
+  ruleOf11:        {name:"Rule of 11", cat:"Competitive", by:"Either", trigger:"Judging a penalty double below game, at IMPs/Teams scoring", meaning:"Add your expected trump winners (count each card beyond the 4th as a winner, plus estimated tricks from the top 4) to the number of tricks the opponents are trying to win. If the total is 11 or more, you have the trump strength to double for penalty. This is the IMP/Teams version of the matchpoint Rule of 10 — one trick more conservative.", pts:"—", short:"IMPs/Teams trump-strength test for penalty doubles: your trump winners + opponents' target tricks ≥ 11 to double."},
+  ruleOf13:        {name:"Rule of 13", cat:"Competitive", by:"Either", trigger:"Judging a penalty double below game, at IMPs/Teams scoring", meaning:"Add the number of trumps you hold to the number of tricks the opponents are trying to win. If the total is 13 or more, you have the trump length to double for penalty. This is the IMP/Teams version of the matchpoint Rule of 12 — one trick more conservative.", pts:"—", short:"IMPs/Teams trump-length test for penalty doubles: your trump count + opponents' target tricks ≥ 13 to double."},
 };
 
 const CONV_CATS = [...new Set(Object.values(CONVENTIONS).map(c=>c.cat))].sort();
@@ -1518,7 +1898,7 @@ const LTC_ROWS = [
  ["Leaping Michaels","6.5 to 5.5","6 to 5","18+","Based on distribution"],
  ["Negative Double","9.5 to 7.5","9 to 7","6+: 1 level, 9: 2 level, 12+: 3 level",""],
  ["Drury by responder","8.5","8","10+",""],
- ["Inverted Minors","8.5","8","10 to 12",""],
+ ["Inverted Minors","8.5","8","10+","Not currently played"],
  ["Fourth Suit Forcing","8.5 to 7.5","8 to 7","10+",""],
  ["New Minor Forcing","8.5 to 7.5","8 to 7","10+",""],
  ["Weak Jump Shift Response (WJS)","8.5","8","Below 6",""],
@@ -1528,13 +1908,13 @@ const LTC_ROWS = [
 function pill(key, alt){
   const c = CONVENTIONS[key];
   if(!c) return alt||key;
-  const cls = c.cat.includes("Defense") || c.cat==="Overcall" ? "pill p2" : "pill";
+  const cls = c.pillClass ? ("pill "+c.pillClass) : (c.cat.includes("Defense") || c.cat==="Overcall" ? "pill p2" : "pill");
   return `<span class="${cls}" data-conv="${key}" tabindex="0">${alt||c.name}</span>`;
 }
 
 const LADDER = {
   opener: [
-    {cls:"gold", h:"1-Level Suit Opening", range:"12-21 pts · 7.5 NLTC", body:`<ul><li>Open with <b>12+ Bergen points</b></li><li><b>Open your longest suit first</b>, irrespective of which suit it is</li><li>With equal-length suits, open the <b>higher of two 5-card suits</b>, or the <b>higher of two 4-card suits</b></li></ul>`},
+    {cls:"gold", h:"1-Level Suit Opening", range:"12-21 pts · 7.5 NLTC", body:`<ul><li>Open with <b>12+ Bergen points</b></li><li><b>Open your longest suit first</b>, irrespective of which suit it is</li><li>With <b>equal-length suits</b>, plan your rebid before you open at the 1-level: if you have an <b>unbalanced hand</b> and are going to <b>reverse or jump rebid to show 17+ points</b>, open the <b>lower</b> of the two equal suits; with only <b>12-16 points</b>, open the <b>higher</b> of the two suits — this solves a lot of rebid problems with unbalanced hands</li><li>Regardless of Bergen points, a 1-level suit opening needs <b>10+ HCP</b> for sure</li></ul>`},
     {h:"1NT Opening", range:"15-17 pts · 6.5 NLTC", body:`<ul><li><b>Balanced hand, 15-17 points</b></li><li>Responder uses ${pill('puppetStayman')}, ${pill('fourWayTransfers','four-way transfers')}, or Jacoby/minor transfers</li><li>If interfered with: <b>2NT is game force</b> with a stopper (then Puppet/transfers); a <b>cue bid</b> of the opponent's suit is game force without a stopper</li></ul>`},
     {h:"2NT Opening", range:"20-21 pts · 5.5 NLTC", body:`<ul><li><b>Balanced, 20-21 points</b></li><li>Responder needs <b>5+ points</b> to respond</li><li>Puppet Stayman applies with 5+</li></ul>`},
     {h:"2♣ Strong", range:"22+ pts · 4.5 NLTC", body:`<ul><li>${pill('strong2C','Artificial')}, <b>22+ points, or a 4.5-loser hand (NLTC)</b></li><li>Responder needs <b>3+ points</b> to bid the artificial 2♦ relay</li><li>Otherwise, respond any other bid to show the <b>long suit at the cheapest level</b></li><li>If an opponent interferes over 2♣, responder's <b>double is game-forcing, not penalty</b></li><li>Defended against with ${pill('mathe')}</li></ul>`},
@@ -1543,21 +1923,24 @@ const LADDER = {
     {h:"Overcalls Recap", range:"8-17 pts · 8.5-6.5 NLTC", body:`<ul><li><b>1-level overcall 8-17 points</b></li><li><b>2-level overcall 12-17 points</b></li><li>1NT overcall 15-17 with a stopper</li><li>Jump overcalls weak (6-11)</li><li>See the Overcalls &amp; Doubles tab for the full picture</li></ul>`},
   ],
   responder: [
+    {cls:"gold", h:"Game Force with 25+ HCP", range:"25+ pts", body:`<ul><li>With a <b>game force</b> (25+ combined HCP), show the <b>game force first</b>, before showing a fit, <b>in minor suits</b></li></ul>`},
     {h:"Longest Suit First", range:"6+ pts", body:`<ul><li>Respond in a new suit or NT with <b>6+ points</b></li><li><b>Bid your longest suit first</b> (5D + 4S → respond 1D) — helps find major fits</li><li>With equal length, bid the <b>lower suit first</b></li><li>One-level new-suit response ranges from 6 up to 28 points</li></ul>`},
     {h:"1NT Response", range:"≤12 pts", body:`<ul><li>Respond 1NT with <b>12 points or fewer</b> when a new-suit or NT response isn't available/appropriate</li></ul>`},
     {cls:"red", h:"Weak Jump Shift", range:"Below 6 pts · 8.5 NLTC", body:`<ul><li>${pill('wjs')} — a jump response in a new suit at the 2-level or above is a <b>weak sign-off</b> (minimum 6-card suit)</li></ul>`},
     {h:"Game Force in New Suit", range:"12+ pts", body:`<ul><li>A 2-level response without a jump in a new suit is <b>game-forcing with 12+ points</b> (5+ suit if it's a major)</li><li>Otherwise respond at the 1-level and force to game after opener's rebid</li><li>Show any game-force intent <b>before showing fit</b></li></ul>`},
     {h:"With a Confirmed Fit", range:"6-9 pts (9.5 NLTC) / 10-12 pts (8.5 NLTC)", body:`<ul><li>After an 8-card fit: <b>2-level response shows 6-9 points</b></li><li><b>3-level response shows 10-12 points</b></li></ul>`},
-    {cls:"muted", h:"Raising Partner's Minor (not played)", range:"9 or below (weak) / 10-12 (strong) · 8.5 NLTC", body:`<ul><li>${pill('invertedMinors')} — kept for <b>reference only</b></li><li><b>Not currently in the system</b></li></ul>`},
+    {h:"Raising Partner's Minor", range:"", body:`<ul><li>Responder will raise opener's minor based on <b>losing tricks</b></li><li>${pill('invertedMinors')} <b>(not played)</b> — kept for <b>reference only</b>: responder bids the <b>2-level minor suit</b> with <b>10+ points</b> and an <b>8-card fit</b> (5+ suit in responder's hand)</li><li>Opener would then rebid <b>3NT with 15+ points</b> (since responder promises 10+), or <b>2NT with 12-14 points</b></li><li>Responder would then rebid <b>3NT</b>, the <b>5-level minor game</b>, or a <b>slam in NT or the minor</b>, as appropriate</li></ul>`},
     {h:"Responding to 2♣ Open", range:"3+ pts", body:`<ul><li>Against a 2♣ opening, respond the artificial 2♦ with <b>3+ points</b></li><li>Otherwise, respond any other bid to show your <b>long suit at the cheapest level</b></li></ul>`},
     {h:"Responding to 2NT Open", range:"5+ pts", body:`<ul><li>Against a 2NT opening, respond with <b>5+ points</b></li><li>${pill('puppetStayman')} is applicable after a 2NT open as well</li></ul>`},
     {h:"Puppet Stayman (after 1NT)", range:"9+ pts", body:`<ul><li>${pill('puppetStayman')} — respond the artificial 2♣ with <b>9 points or above</b></li><li>Also usable with <b>8 points</b>, provided there are 8 cards above 8 (i.e. above the 10)</li><li>Asks opener to show a <b>3-card major</b> as well as 4+, finding 5-3 fits too</li></ul>`},
     {h:"Four-Way Transfers (after 1NT/2NT)", range:"Any points", body:`<ul><li>${pill('fourWayTransfers')} — responder can transfer with <b>any point count</b>, weak or strong</li><li>A <b>minor-suit transfer always needs 6+ cards</b>; a <b>major-suit transfer can be 5+ cards</b></li><li>Opener must <b>mandatorily accept</b> and complete the transfer</li></ul>`},
-    {cls:"gold", h:"Slam Tries After Any 8+ Suit Fit (All Suits)", range:"15+ pts · 6.5 NLTC", body:`<ul><li>${pill('jacoby2NT')} — <b>forcing raise</b>, balanced-ish slam invite</li><li>${pill('splinter')} — double-jump shows a <b>void/singleton</b>, slam invite with shortness</li><li>Splinter is <b>off when there is interference</b></li><li>Both are based on <b>losers</b> as much as raw points</li></ul>`},
+    {cls:"gold", h:"Slam Tries After Any 8+ Suit Fit (All Suits)", range:"15+ pts · 6.5 NLTC", body:`<ul><li>${pill('jacoby2NT')} — <b>forcing raise</b>, balanced-ish slam invite<ul class="sub-list" style="margin-top:6px; padding-left:20px;"><li>Opener can also use ${pill('helpSuitGameTry')}: he bids a <b>suit at the 3-level</b> asking for <b>help in that suit</b></li><li>Responder with <b>2 or below losers</b> in that suit bids ${pill('kickback')}, otherwise <b>stops at game</b></li></ul></li><li>${pill('splinter')} — double-jump shows a <b>void/singleton</b>, slam invite with shortness</li><li>Splinter is <b>off when there is interference</b></li><li>Both are based on <b>losers</b> as much as raw points</li></ul>`},
     {cls:"", h:"Drury", range:"8.5 NLTC or below", body:`<ul><li>${pill('drury')} — a passed-hand responder's <b>2♣</b> after partner opens a major from the 3rd or 4th seat, <b>only with a confirmed 8-card fit</b></li><li>Bid 2♣ when your <b>losing tricks are 8.5 or below</b></li><li>With <b>9.5 or more losers</b>, respond directly in the suit at the <b>2-level</b> instead</li><li>Checks that the opening <b>isn't sub-minimum</b></li></ul>`},
     {h:"After a Takeout Double by Partner", range:"0 to 13+ pts", body:`<ul><li><b>0 to 9 points:</b> bid an unbid suit with 4+ cards, at the minimum level</li><li><b>10 to 12 points:</b> jump bid and show suit</li><li><b>13+ points:</b> ensure game (cue bid)</li><li>With no long suit, bid <b>1NT with a stopper (6 to 9 points)</b></li><li>With no long suit, bid <b>2NT with a stopper (10-12 points)</b></li><li>With no long suit, bid <b>3NT with a stopper (13+ points)</b></li><li>If the opponents interfere, <b>pass with below 9 points</b> and <b>bid something with 10+ points</b></li></ul>`},
+    {h:"Responding after 3-Level Preempts by Opener", range:"17+ pts (new suit)", body:`<ul><li>Any <b>new suit bid by responder</b> is <b>forcing for one round</b>, shows <b>17+ points</b> and a <b>strong suit</b></li><li>Opener can <b>rebid his same suit</b>, <b>support our suit</b> or even bid <b>3NT</b></li><li>With <b>2+ card support</b> for opener's suit, responder can also use <b>LTC</b> and bid <b>game</b> or make a slam check (${pill('kickback')})</li></ul>`},
   ],
   openerRebid: [
+    {h:"Showing extras after game force by responder", range:"", body:`<ul><li>Opener rebids at the <b>2-level</b> are always <b>below 15</b> (a rebid of the opening suit at the 2-level can be a <b>5-carder</b>)<ul class="sub-list" style="margin-top:6px; padding-left:20px;"><li>Responder then rebids a <b>3-level suit</b> with <b>15+</b>, or <b>2NT</b> with <b>12-14</b></li><li>After <b>2NT</b>, opener follows with the <b>same suit at the 3-level</b> to confirm a <b>6-carder</b>, or bids <b>3NT</b> with a <b>5-carder</b></li></ul></li><li><b>2NT rebid</b> = <b>12-14</b> or <b>18-19</b> with <b>stoppers in the unbid suits</b> (opener later bids <b>4NT after 3NT</b> to show <b>18-19</b>)</li><li>Opener rebids at the <b>3-level</b> are <b>15+</b> (a rebid of the opened suit at the 3-level is <b>15+</b>)</li><li>Responder's <b>direct game bid</b> after a fit in <b>opener's second suit</b> is <b>minimum</b></li><li>Responder bidding <b>opener's second suit at the 3-level</b> = <b>15+</b></li><li>Responder's <b>rebid of 3NT</b> (with stoppers in the unbid suits) is <b>minimum</b></li><li>Responder rebidding a <b>new suit at the 3-level</b> = <b>15+</b></li><li>Responder can also bid <b>4NT</b> with <b>strong hands</b></li><li>After opener bids at the <b>2-level</b> (meaning he <b>doesn't have extra values</b>), responder can also show a ${pill('splinter')} with a <b>single jump raise in a new suit</b> (in <b>GF auctions</b>, a single jump should suffice) — this means he is <b>short in the bid suit</b>, and opener can accordingly <b>recalculate his losers</b> and go for <b>slam</b></li><li>${pill('controlCueBids')} can be used <b>after a fit is communicated</b>, before we embark on the <b>slam check</b></li></ul>`},
     {cls:"gold", h:`${pill('balancedHand','Opener Rebid — Point Ladder')}`, range:"", body:`<p class="desc" style="font-weight:700; margin-top:0;">Balanced Hands</p><ul><li><b>Rebid NT without jump, or pass partner's 1NT</b> — 12-14</li><li><b>Rebid new suit without jump</b> — 12-14</li><li><b>Jump rebid in NT</b> — 18-19 (not applicable after a game-force response by partner)</li></ul><p class="desc" style="font-weight:700;">Unbalanced Hands</p><ul><li><b>Rebid new suit without jump/reverse</b> — 12-16</li><li><b>Rebid 2NT after a 1NT response</b> — 15-16</li><li><b>Rebid reverse</b> — 17-18</li><li><b>Jump rebid in new suit</b> — 19-21 (not applicable after a game-force response by partner)</li></ul>`},
     {h:"Same Suit, No Jump", range:"12-14 pts · 7.5 NLTC", body:`<ul><li>Rebid of opener's own suit without a jump: <b>6+ cards, 12-14 points</b></li></ul>`},
     {h:"New Suit, No Jump/Reverse", range:"12-16 pts · 7.5-6.5 NLTC", body:`<ul><li>A new suit at the 1- or 2-level without jumping or reversing: <b>12-16 points</b></li></ul>`},
@@ -1565,19 +1948,23 @@ const LADDER = {
     {h:"Jump in Same Suit", range:"15-18 pts · 6.5 NLTC", body:`<ul><li>Jump rebid in opener's own suit: <b>6+ cards, 15-18 points</b></li></ul>`},
     {h:"Double Jump Rebid of Opener Suit", range:"19-21 pts", body:`<ul><li>A <b>double jump rebid</b> in opener's own suit shows <b>19-21 points</b></li></ul>`},
     {h:"Jump in New Suit", range:"19-21 pts · 5.5 NLTC", body:`<ul><li>Jump rebid in a new suit: <b>19-21 points, game force</b></li><li>Not applicable <b>after a game-force response by partner</b></li></ul>`},
+    {h:"Kokish Game Tries", range:"6.5 losers or below", body:`<ul><li>${pill('kokish')} — game tries after a major is confirmed <b>1M-2M</b></li><li><b>1♠-2♠: 2NT</b> = <b>help-suit game try</b>; responder shows help (<b>2 or below losers</b>) <b>up the line</b>, starting from <b>3♣ for ♣</b>, etc.</li><li><b>1♥-2♥: 2♠</b> = <b>help-suit game try</b>; responder shows help <b>up the line</b>, starting from <b>2NT for ♠</b>, <b>3♣ for ♣</b>, etc.</li><li>A <b>direct bid of a suit at the 3-level</b> by opener after 1M-2M = <b>short-suit game try</b> (<b>2NT after 1♥-2♥</b> is short in ♠)</li><li>Partner bids <b>game</b> with <b>no wasted values</b> in that suit, else <b>signs off at the 3-level</b></li><li>Opener bids <b>trump at the 3-level</b> = asking for <b>help in the trump suit</b>; partner bids <b>game</b> or <b>passes</b> accordingly</li></ul>`},
     {h:"Game Try After a Fit", range:"6.5 losers or below", body:`<ul><li>${pill('helpSuitGameTry')} — after 1M-2M, opener needs <b>6.5 losers or below</b></li><li>Opener bids the <b>suit he needs help in</b>, where he holds <b>3 losers</b> in that suit</li><li>Responder with <b>2 or below losers</b> in that suit bids <b>game in the major</b></li><li>Responder with <b>more than 2 losers</b> in that suit bids the <b>3-level suit</b>, and opener passes</li></ul>`},
     {cls:"gold", h:"After 2♣ — 2♦", range:"", body:`<ul><li>Opener rebids <b>any 6+ card suit</b> at the <b>cheapest level</b></li><li>With <b>no 6+ suit</b>, opener rebids <b>2NT</b> instead</li><li>Responder then continues with ${pill('puppetStayman')} or transfers</li></ul>`},
     {h:"After a Transfer (1NT open)", range:"17+ pts", body:`<ul><li><b>Super-acceptance:</b> jump to the 3-level after responder's transfer</li><li>Needs <b>17 points and 4+ card support</b></li></ul>`},
     {h:"Four-Way Transfers — Opener's Duty", range:"Any points", body:`<ul><li>${pill('fourWayTransfers')} — responder can transfer with <b>any point count</b> after 1NT or 2NT</li><li>A <b>minor-suit transfer always needs 6+ cards</b>; a <b>major-suit transfer can be 5+ cards</b></li><li>Opener must <b>mandatorily accept</b> and complete the transfer</li></ul>`},
     {h:"After Interference over Responder's Major", range:"12-16 pts", body:`<ul><li>${pill('supportDouble')} — if responder has bid a 4+ card major and an opponent interferes</li><li>Opener's double or redouble shows <b>exactly 3-card support</b> for that major, <b>12-16 points</b></li></ul>`},
+    {cls:"gold", h:"Quantitative 4NT", range:"16+ pts", body:`<ul><li>${pill('quant4NT')} — with <b>16+ points</b> and <b>no suit fit agreed</b>, if 6NT might be on, bid <b>4NT</b></li><li>It asks partner to <b>bid 6NT with 16+ points</b> too; otherwise partner simply <b>passes 4NT</b></li><li>Typically used when <b>game is forced</b> with no suit fit and we'd otherwise play 3NT, or when <b>opponents have interfered</b> and robbed us of slam-check space</li></ul>`},
   ],
   responderRebid: [
-    {h:"Deciding the Final Contract", range:"", body:`<ul><li>Responder decides the <b>final level and strain</b> based on actual strength and Bergen points</li><li>Responder <b>may pass opener's rebid</b> with <b>below 9 points</b>, provided opener <b>hasn't shown 17+</b> (through a reverse or jump rebid) and there's at least a <b>7-card combined suit fit</b></li><li>After responder's rebid, opener can <b>only pass if responder has made a limit bid</b> — identifiable if responder had <b>passed earlier</b>, had responded <b>1NT</b> to opener's bid (6-12 points max), or is now <b>rebidding the same suit</b></li><li>If responder is rebidding a <b>new suit</b> and none of those limit-bid markers apply, <b>opener cannot pass</b></li></ul>`},
+    {h:"Deciding the Final Contract", range:"", body:`<ul><li>Responder decides the <b>final level and strain</b> based on actual strength and Bergen points</li><li>With an <b>invitational hand (10-12 points)</b>, responder must ensure — before finally passing — that this invite has actually been <b>shown (with a 2NT bid)</b>, so we don't miss game when partner turns up with <b>15-16 points</b> (whether partner is the opener or the overcaller, it doesn't matter)</li><li>Responder <b>may pass opener's rebid</b> with <b>below 9 points</b>, provided opener <b>hasn't shown 17+</b> (through a reverse or jump rebid) and there's at least a <b>7-card combined suit fit</b></li><li>After responder's rebid, opener can <b>only pass if responder has made a limit bid</b> — identifiable if responder had <b>passed earlier</b>, had responded <b>1NT</b> to opener's bid (6-12 points max), or is now <b>rebidding the same suit</b></li><li>If responder is rebidding a <b>new suit</b> and none of those limit-bid markers apply, <b>opener cannot pass</b></li></ul>`},
+    {h:"Rebid of Same Suit Without Jump", range:"6-12 pts", body:`<ul><li>Rebid of responder's own suit <b>without a jump</b> shows <b>6 to 12 points</b></li><li>Promises a <b>6+ card suit</b></li></ul>`},
     {h:"Jump Rebid of Same Suit", range:"15+ pts", body:`<ul><li>Rebid of responder's own suit <b>with a jump</b> shows <b>15+ points</b></li><li>Promises a <b>6+ card suit</b></li></ul>`},
     {h:"NT Rebid by Strength", range:"6-9 / 10-12 / 13+ pts", body:`<ul><li><b>1NT = 6-9 points</b></li><li><b>2NT = 10-12 points</b></li><li><b>3NT = 13+ points</b></li></ul>`},
     {cls:"muted", h:"After a Reverse (Ingberman — not played)", range:"", body:`<ul><li>${pill('ingberman')} — kept for <b>reference only</b></li><li><b>Not currently in the system</b></li></ul>`},
     {h:"After Opener's NT Rebid", range:"11+ pts for GF", body:`<ul><li>With <b>game force</b>, use ${pill('puppetStayman')} or a transfer</li><li>Otherwise, pass or rebid your own suit, which opener is expected to pass</li><li>After 1H/1S met by a 1NT rebid, go to Puppet Stayman/transfers with <b>11+ points</b></li></ul>`},
     {cls:"gold", h:"Fourth Suit Forcing", range:"10+ pts · 8.5-7.5 NLTC", body:`<ul><li>${pill('fsf')} — <b>forcing one round</b>, no promised stopper, must be alerted</li><li>Opener with 15-16 bids <b>2NT</b> (game force, responder transfers/puppets)</li><li>Any other rebid is <b>12-14</b>, showing 3-card support for responder's major or extra length in a suit already shown</li></ul>`},
+    {cls:"gold", h:"Quantitative 4NT", range:"16+ pts", body:`<ul><li>${pill('quant4NT')} — with <b>16+ points</b> and <b>no suit fit agreed</b>, if 6NT might be on, bid <b>4NT</b></li><li>It asks partner to <b>bid 6NT with 16+ points</b> too; otherwise partner simply <b>passes 4NT</b></li><li>Typically used when <b>game is forced</b> with no suit fit and we'd otherwise play 3NT, or when <b>opponents have interfered</b> and robbed us of slam-check space</li></ul>`},
     {cls:"muted", h:"New Minor Forcing (not played)", range:"10+ pts · 8.5-7.5 NLTC", body:`<ul><li>${pill('nmf')} — kept for <b>reference only</b></li><li><b>Not currently in the system</b></li></ul>`},
   ],
 };
@@ -1659,7 +2046,7 @@ function renderConvTable(filterText='', cat='all', by='All'){
     const notInUse = c.cat.includes('not in use');
     return `
     <tr${notInUse ? ' class="dim-row"' : ''}>
-      <td class="conv-name">${c.name}</td>
+      <td class="conv-name">${c.pillClass ? `<span class="pill ${c.pillClass}" data-conv="${k}" tabindex="0">${c.name}</span>` : c.name}</td>
       <td><span class="cat-tag${notInUse?' notinuse':''}">${c.cat}</span></td>
       <td><span class="by-tag ${byClass(c.by)}">${c.by}</span></td>
       <td>${c.trigger}</td>
